@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 
 import { getLeadDestination, type LeadRecord } from "@/lib/lead-delivery";
-import { leadSchema, optionalLeadFields, toFieldErrors } from "@/lib/lead-schema";
+import { leadSchema, normalizeLeadInput, toFieldErrors } from "@/lib/lead-schema";
 import { checkRateLimit, clientKeyFromHeaders } from "@/lib/rate-limit";
 
 const GENERIC_ERROR =
@@ -25,14 +25,9 @@ export async function POST(request: Request) {
 
   // Optional fields arrive as "" from the browser; required fields keep their
   // empty value so the schema reports its own copy rather than "Required".
-  const optionalFields = new Set<string>(optionalLeadFields);
   const normalised =
     typeof body === "object" && body !== null
-      ? Object.fromEntries(
-          Object.entries(body as Record<string, unknown>).map(([key, value]) =>
-            value === "" && optionalFields.has(key) ? [key, undefined] : [key, value],
-          ),
-        )
+      ? normalizeLeadInput(body as Record<string, unknown>)
       : body;
 
   // Honeypot filled: accept silently so bots learn nothing from the response.

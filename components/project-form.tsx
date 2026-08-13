@@ -348,7 +348,12 @@ export function ProjectForm() {
       {stepIndex === 2 ? (
         <div className="flex flex-col gap-6">
           <div className="grid gap-5 sm:grid-cols-2">
-            <Field label="Budget range" htmlFor={`${formId}-budgetRange`} optional>
+            <Field
+              label="Budget range"
+              htmlFor={`${formId}-budgetRange`}
+              optional
+              error={errors.budgetRange}
+            >
               <select
                 {...fieldProps("budgetRange")}
                 value={values.budgetRange}
@@ -362,7 +367,7 @@ export function ProjectForm() {
                 ))}
               </select>
             </Field>
-            <Field label="Timing" htmlFor={`${formId}-timing`} optional>
+            <Field label="Timing" htmlFor={`${formId}-timing`} optional error={errors.timing}>
               <select
                 {...fieldProps("timing")}
                 value={values.timing}
@@ -383,6 +388,7 @@ export function ProjectForm() {
             htmlFor={`${formId}-tools`}
             optional
             hint="CRM, calendar, email platform, or anything the system must connect to."
+            error={errors.tools}
           >
             <input
               {...fieldProps("tools")}
@@ -391,7 +397,12 @@ export function ProjectForm() {
             />
           </Field>
 
-          <Field label="Anything else we should know?" htmlFor={`${formId}-context`} optional>
+          <Field
+            label="Anything else we should know?"
+            htmlFor={`${formId}-context`}
+            optional
+            error={errors.context}
+          >
             <textarea
               {...fieldProps("context")}
               rows={3}

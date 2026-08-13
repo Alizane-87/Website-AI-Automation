@@ -97,6 +97,17 @@ export const optionalLeadFields: readonly LeadField[] = [
   "context",
 ];
 
+/** Blank optional fields are absent, not empty strings, before validation. */
+export function normalizeLeadInput(values: Record<string, unknown>): Record<string, unknown> {
+  const normalized = { ...values };
+  for (const field of optionalLeadFields) {
+    if (typeof normalized[field] === "string" && normalized[field].trim() === "") {
+      delete normalized[field];
+    }
+  }
+  return normalized;
+}
+
 export function toFieldErrors(error: z.ZodError): LeadFieldErrors {
   const errors: LeadFieldErrors = {};
   for (const issue of error.issues) {
@@ -113,7 +124,7 @@ export function validateStep(
   fields: readonly LeadField[],
   values: Record<string, unknown>,
 ): LeadFieldErrors {
-  const parsed = leadSchema.safeParse(values);
+  const parsed = leadSchema.safeParse(normalizeLeadInput(values));
   if (parsed.success) return {};
   const all = toFieldErrors(parsed.error);
   const errors: LeadFieldErrors = {};
