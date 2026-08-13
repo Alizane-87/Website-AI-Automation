@@ -3,11 +3,11 @@
 import Link from "next/link";
 import type { ComponentProps, ReactNode } from "react";
 
-import { buttonClass } from "@/components/ui/button";
+import { ButtonArrow, buttonClass } from "@/components/ui/button";
 import { cn } from "@/components/ui/cn";
 import { trackEvent, type AnalyticsEvent } from "@/lib/analytics";
 
-type Variant = "primary" | "secondary" | "ghost" | "onDark";
+type Variant = "primary" | "secondary" | "quiet" | "onInk" | "onInkSolid";
 type Size = "md" | "lg";
 
 type TrackedLinkProps = ComponentProps<typeof Link> & {
@@ -15,6 +15,7 @@ type TrackedLinkProps = ComponentProps<typeof Link> & {
   location: string;
   variant?: Variant;
   size?: Size;
+  withArrow?: boolean;
   children: ReactNode;
 };
 
@@ -24,6 +25,7 @@ export function TrackedLink({
   location,
   variant = "primary",
   size = "md",
+  withArrow = false,
   className,
   children,
   onClick,
@@ -39,6 +41,7 @@ export function TrackedLink({
       {...props}
     >
       {children}
+      {withArrow ? <ButtonArrow /> : null}
     </Link>
   );
 }

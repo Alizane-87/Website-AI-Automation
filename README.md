@@ -1,7 +1,7 @@
 # Alizane Labs website
 
-Marketing site for Alizane Labs and the Restoration Emergency Engine — Verified
-Dispatch Assurance for independent US restoration companies.
+Marketing site for Alizane Labs — a digital systems studio building custom
+websites and practical AI automation.
 
 Next.js (App Router) · TypeScript · Tailwind CSS v4 · deployed on Vercel.
 
@@ -19,25 +19,45 @@ npm run typecheck   # tsc --noEmit
 npm run build       # production build
 ```
 
+## Routes
+
+| Route | Purpose |
+| --- | --- |
+| `/` | Positioning, services, illustrative automation walkthrough, process, FAQ |
+| `/work` | How projects are approached, plus labelled example engagements |
+| `/services/websites` | Custom website capability detail |
+| `/services/ai-automation` | Automation capability detail and boundaries |
+| `/process` | Four-stage engagement model with inputs and deliverables |
+| `/about` | Studio positioning, beliefs, and working practices |
+| `/contact` | Three-step project intake form |
+| `/ai-disclosure` | How automation is used in delivered systems |
+| `/privacy`, `/terms` | Legal drafts pending review |
+| `/thank-you` | Post-submission confirmation (noindex) |
+
+Routes from the previous restoration-specific site (`/restoration-emergency-engine`,
+`/how-it-works`, `/pricing`, `/dispatch-audit`, `/ai-call-disclosure`) are
+permanently redirected in `next.config.ts`.
+
 ## Structure
 
 | Path | Purpose |
 | --- | --- |
-| `app/` | Launch routes plus `api/lead` (server-side lead intake), `sitemap.ts`, `robots.ts` |
-| `components/` | Shared layout, section components, and `ui/` primitives (button, card, section, status chip, step list) |
-| `content/` | All editable copy: `site.ts` (nav, hero, offer, **pricing**), `faqs.ts`, `legal.ts` |
+| `app/` | Routes plus `api/lead` (server-side intake), `sitemap.ts`, `robots.ts` |
+| `components/` | Header, footer, forms, visuals, and `ui/` primitives (button, card, section) |
+| `content/` | All editable copy: `site.ts`, `service-pages.ts`, `process-page.ts`, `about-page.ts`, `work.ts`, `faqs.ts`, `legal.ts`, `claims.ts` |
 | `lib/` | `env.ts` (validated env), `lead-schema.ts`, `lead-delivery.ts`, `rate-limit.ts`, `analytics.ts`, `structured-data.ts`, `metadata.ts` |
+| `docs/` | Content gaps, asset manifest, analytics event reference |
 
-Pricing lives in one place: `content/site.ts` → `pricing`. Every page reads it.
+Unverified business facts live only in `content/claims.ts`. Anything still unknown
+is `null` there and simply does not render — no placeholder invention.
 
 ## Environment variables
 
 | Name | Required | Purpose |
 | --- | --- | --- |
 | `NEXT_PUBLIC_SITE_URL` | Yes in production | Absolute origin for canonicals, sitemap, Open Graph |
-| `NEXT_PUBLIC_SCHEDULING_URL` | No | External scheduler. Unset ⇒ all CTAs route to `/dispatch-audit` |
-| `NEXT_PUBLIC_DEMO_PHONE` | No | E.164 demo line, rendered only once a tested number exists |
-| `LEAD_WEBHOOK_URL` | Yes in production | Server-side destination for dispatch-audit leads |
+| `NEXT_PUBLIC_SCHEDULING_URL` | No | External scheduler. Unset ⇒ CTAs route to `/contact` |
+| `LEAD_WEBHOOK_URL` | Yes in production | Server-side destination for project inquiries |
 | `LEAD_WEBHOOK_TOKEN` | No | Bearer token for the lead webhook |
 | `LEAD_NOTIFY_EMAIL` | No | Mailbox passed to the destination for notification routing |
 
@@ -48,12 +68,16 @@ visible error** instead of discarding it.
 
 ## Content and claims policy
 
-The site must not state "never miss a call", a guaranteed callback time,
-guaranteed revenue, universal uptime, or blanket legal compliance, and must not
-add testimonials, customer logos, metrics, or case studies that are not real.
-Dispatch evidence language is always scoped to calls routed into the Engine.
+Never add testimonials, case studies, client logos, awards, certifications, team
+credentials, performance metrics, revenue results, pricing, or delivery promises
+that are not confirmed. Example engagements on `/work` are clearly labelled as
+illustrative and must stay that way until a client approves a real case study.
+The automation walkthrough on `/` and `/services/ai-automation` states that it is
+illustrative, sends no request, and collects no input.
 
 `content/legal.ts` holds draft privacy, terms, and AI-disclosure copy. Values the
 founder still has to supply (legal entity, address, privacy contact, governing
-law) are `null` and render as "To be confirmed before launch" rather than being
-invented. Legal drafts require founder and counsel review before launch.
+law) are `null` and render as "To be confirmed before launch". Legal drafts
+require founder and counsel review before launch.
+
+Open items are tracked in [`docs/content-gaps.md`](docs/content-gaps.md).

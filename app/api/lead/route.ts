@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 
 import { getLeadDestination, type LeadRecord } from "@/lib/lead-delivery";
-import { leadSchema, toFieldErrors } from "@/lib/lead-schema";
+import { leadSchema, optionalLeadFields, toFieldErrors } from "@/lib/lead-schema";
 import { checkRateLimit, clientKeyFromHeaders } from "@/lib/rate-limit";
 
 const GENERIC_ERROR =
@@ -25,7 +25,7 @@ export async function POST(request: Request) {
 
   // Optional fields arrive as "" from the browser; required fields keep their
   // empty value so the schema reports its own copy rather than "Required".
-  const optionalFields = new Set(["monthlyCallRange", "crm"]);
+  const optionalFields = new Set<string>(optionalLeadFields);
   const normalised =
     typeof body === "object" && body !== null
       ? Object.fromEntries(
@@ -39,8 +39,8 @@ export async function POST(request: Request) {
   if (
     typeof normalised === "object" &&
     normalised !== null &&
-    typeof (normalised as Record<string, unknown>).website === "string" &&
-    (normalised as Record<string, unknown>).website !== ""
+    typeof (normalised as Record<string, unknown>).nickname === "string" &&
+    (normalised as Record<string, unknown>).nickname !== ""
   ) {
     return NextResponse.json({ ok: true }, { status: 202 });
   }
@@ -54,7 +54,7 @@ export async function POST(request: Request) {
   }
 
   const lead = { ...parsed.data };
-  delete lead.website;
+  delete lead.nickname;
   const record: LeadRecord = { ...lead, submittedAt: new Date().toISOString() };
 
   const destination = getLeadDestination();

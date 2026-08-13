@@ -3,23 +3,23 @@ import type { ComponentProps, ReactNode } from "react";
 
 import { cn } from "@/components/ui/cn";
 
-type Variant = "primary" | "secondary" | "ghost" | "onDark";
+type Variant = "primary" | "secondary" | "quiet" | "onInk" | "onInkSolid";
 type Size = "md" | "lg";
 
 const base =
-  "inline-flex items-center justify-center gap-2 rounded-md font-semibold transition-colors duration-150 disabled:cursor-not-allowed disabled:opacity-60";
+  "group/button inline-flex items-center justify-center gap-2 rounded-full font-medium transition-[background-color,border-color,color,transform] duration-200 active:translate-y-px disabled:cursor-not-allowed disabled:opacity-60";
 
 const variants: Record<Variant, string> = {
-  primary: "bg-amber text-navy hover:bg-[#e0912f]",
-  secondary:
-    "border border-navy/20 bg-white text-navy hover:border-navy/40 hover:bg-offwhite",
-  ghost: "text-navy underline underline-offset-4 hover:text-carbon",
-  onDark: "border border-white/25 text-white hover:border-white/60 hover:bg-white/10",
+  primary: "bg-cobalt text-white hover:bg-cobalt-deep",
+  secondary: "border border-ink/20 bg-transparent text-ink hover:border-ink/50 hover:bg-ink/[0.04]",
+  quiet: "text-cobalt-deep underline decoration-cobalt/40 underline-offset-4 hover:decoration-cobalt",
+  onInk: "border border-white/25 text-white hover:border-white/60 hover:bg-white/10",
+  onInkSolid: "bg-white text-ink hover:bg-canvas",
 };
 
 const sizes: Record<Size, string> = {
-  md: "px-4 py-2.5 text-sm",
-  lg: "px-5 py-3 text-base",
+  md: "px-5 py-2.5 text-sm",
+  lg: "px-6 py-3.5 text-base",
 };
 
 export function buttonClass(variant: Variant = "primary", size: Size = "md") {
@@ -57,5 +57,17 @@ export function Button({
 }: ButtonProps) {
   return (
     <button type={type} className={cn(buttonClass(variant, size), className)} {...props} />
+  );
+}
+
+/** Arrow that nudges on hover. Decorative: always paired with a text label. */
+export function ButtonArrow() {
+  return (
+    <span
+      aria-hidden="true"
+      className="transition-transform duration-200 group-hover/button:translate-x-0.5"
+    >
+      →
+    </span>
   );
 }

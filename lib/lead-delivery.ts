@@ -3,7 +3,7 @@ import "server-only";
 import { env, hasLeadDestination } from "@/lib/env";
 import type { LeadInput } from "@/lib/lead-schema";
 
-export type LeadRecord = Omit<LeadInput, "website"> & { submittedAt: string };
+export type LeadRecord = Omit<LeadInput, "nickname"> & { submittedAt: string };
 
 export interface LeadDestination {
   readonly name: string;
@@ -11,7 +11,7 @@ export interface LeadDestination {
 }
 
 /**
- * Posts the lead to a server-side webhook (CRM or automation endpoint).
+ * Posts the inquiry to a server-side webhook (CRM or automation endpoint).
  * The URL and token never reach the browser.
  */
 class WebhookDestination implements LeadDestination {
@@ -30,7 +30,7 @@ class WebhookDestination implements LeadDestination {
         ...(this.token ? { authorization: `Bearer ${this.token}` } : {}),
       },
       body: JSON.stringify({
-        source: "alizanelabs.site/dispatch-audit",
+        source: "alizanelabs-site/contact",
         notify: env.LEAD_NOTIFY_EMAIL,
         lead,
       }),
@@ -52,7 +52,7 @@ class DevelopmentLogDestination implements LeadDestination {
   async deliver(lead: LeadRecord): Promise<void> {
     if (env.NODE_ENV === "production") {
       throw new Error(
-        "No lead destination configured. Set LEAD_WEBHOOK_URL before accepting production leads.",
+        "No lead destination configured. Set LEAD_WEBHOOK_URL before accepting production inquiries.",
       );
     }
     console.info(

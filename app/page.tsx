@@ -1,249 +1,358 @@
-import { ComparisonTable } from "@/components/comparison-table";
+import type { Metadata } from "next";
+import Link from "next/link";
+
+import { AutomationDemo } from "@/components/automation-demo";
 import { FaqList } from "@/components/faq";
-import { HeroDispatchTimeline } from "@/components/hero-dispatch-timeline";
-import { PricingCards } from "@/components/pricing-cards";
-import { ProofProtocol } from "@/components/proof-protocol";
+import { HeroSystem } from "@/components/hero-system";
 import { TrackedLink } from "@/components/tracked-link";
-import { Card, CardBody, CardTitle } from "@/components/ui/card";
-import { Container, Eyebrow, ScopeNote, Section, SectionHeading } from "@/components/ui/section";
-import { StepList } from "@/components/ui/step-list";
-import { homeFaqs } from "@/content/faqs";
-import { cta, dispatchSteps, offerColumns, pricing, problemCards, site } from "@/content/site";
+import { Card, CardBody, CardTitle, IllustrativeLabel, TickList } from "@/components/ui/card";
+import {
+  Container,
+  Eyebrow,
+  Note,
+  Section,
+  SectionHeading,
+  revealStyle,
+} from "@/components/ui/section";
+import { faqSection, homeFaqs } from "@/content/faqs";
+import {
+  capabilityStrip,
+  cta,
+  demo,
+  differentiation,
+  engagement,
+  finalCta,
+  hero,
+  processSection,
+  processSteps,
+  reframe,
+  services,
+  servicesSection,
+  site,
+} from "@/content/site";
+import { exampleEngagements, workPage } from "@/content/work";
 import { analyticsEvents } from "@/lib/analytics";
-import { faqSchema, serviceSchema } from "@/lib/structured-data";
+import { pageMetadata } from "@/lib/metadata";
+import { faqSchema } from "@/lib/structured-data";
+
+export const metadata: Metadata = pageMetadata({
+  title: site.defaultTitle,
+  description: site.defaultDescription,
+  path: "/",
+});
 
 export default function HomePage() {
   return (
     <>
-      <div className="bg-amber text-navy py-2 px-4 text-center text-sm font-medium">
-        [Placeholder] The After-Hours Gap Report: How Restoration Companies Lose $40,000+ a Year Without Knowing It. <a href="#" className="underline font-semibold hover:text-black">Download the free gap report &rarr;</a>
-      </div>
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(serviceSchema()) }}
-      />
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema(homeFaqs)) }}
       />
 
-      <div className="bg-navy text-offwhite">
-        <Container className="py-16 sm:py-20 lg:py-28">
-          <div className="grid items-start gap-12 lg:grid-cols-[1.05fr_0.95fr] lg:gap-16">
-            <div className="animate-rise-in flex flex-col gap-6">
-              <Eyebrow tone="dark">
-                For restoration companies. After-hours emergency dispatch.
-              </Eyebrow>
-              <h1 className="text-3xl font-semibold leading-[1.1] text-white sm:text-4xl lg:text-5xl">
-                You're losing jobs you never even knew you were losing.
-              </h1>
-              <p className="max-w-xl text-base leading-relaxed text-steel sm:text-lg">
-                At 2 AM, a homeowner's basement is flooding. They call your number. Instead of voicemail, they reach our system — which collects the details, calls your technician, and records their verbal acceptance before hanging up. You wake up with a confirmed dispatch, not a missed lead.
-              </p>
+      <div className="bg-canvas">
+        <Container className="pt-14 pb-16 sm:pt-20 sm:pb-24">
+          <div className="grid items-center gap-12 lg:grid-cols-[1.05fr_0.95fr] lg:gap-16">
+            <div data-reveal className="flex flex-col gap-7">
+              <Eyebrow>{hero.eyebrow}</Eyebrow>
+              <h1 className="display-face text-display text-ink">{hero.headline}</h1>
+              <p className="max-w-xl text-lead text-graphite">{hero.body}</p>
               <div className="flex flex-col gap-3 sm:flex-row">
                 <TrackedLink
                   href={cta.primary.href}
-                  event={analyticsEvents.heroDemoCtaClick}
+                  event={analyticsEvents.primaryCtaClick}
                   location="hero"
                   size="lg"
+                  withArrow
                 >
                   {cta.primary.label}
                 </TrackedLink>
                 <TrackedLink
                   href={cta.secondary.href}
-                  event={analyticsEvents.productCtaClick}
-                  location="hero-secondary"
-                  variant="onDark"
+                  event={analyticsEvents.secondaryCtaClick}
+                  location="hero"
+                  variant="secondary"
                   size="lg"
                 >
                   {cta.secondary.label}
                 </TrackedLink>
               </div>
-              <ScopeNote tone="dark">Tested across 20 failure scenarios before your first live call.</ScopeNote>
+              <p className="text-sm text-graphite">{hero.reassurance}</p>
             </div>
 
-            <HeroDispatchTimeline />
+            <div data-reveal style={revealStyle(120)}>
+              <HeroSystem />
+            </div>
           </div>
         </Container>
       </div>
 
-      <Section tone="light" labelledBy="problem-heading">
-        <SectionHeading
-          id="problem-heading"
-          eyebrow="The gap"
-          title="A message is not a dispatch."
-          description="Voicemail waits. Generic answering services take notes. Notifications can be missed. During an after-hours restoration call, the operational question is simple: who has accepted responsibility for calling the homeowner?"
-        />
-        <div className="mt-10 mb-8 rounded-lg border border-amber/20 bg-amber/5 px-6 py-5 text-amber-900 shadow-sm text-center">
-          <p className="text-base sm:text-lg font-medium leading-relaxed">
-            The average restoration job is worth $4,000–$12,000.<br/>
-            Every missed after-hours call is a coin flip on that revenue.<br/>
-            The average restoration company loses 3–7 jobs per month to after-hours gaps.
-          </p>
-        </div>
-        <ul className="grid gap-4 md:grid-cols-3">
-          {problemCards.map((card) => (
-            <Card key={card.title} as="li">
-              <CardTitle>{card.title}</CardTitle>
-              <CardBody>{card.body}</CardBody>
-            </Card>
-          ))}
-        </ul>
-      </Section>
+      <div className="border-y border-ink/10 bg-paper">
+        <Container className="flex flex-col gap-4 py-7 sm:flex-row sm:items-center sm:justify-between">
+          <ul className="flex flex-wrap items-center gap-x-7 gap-y-2">
+            {capabilityStrip.items.map((item) => (
+              <li
+                key={item}
+                className="font-mono text-[0.6875rem] uppercase tracking-[0.2em] text-ink"
+              >
+                {item}
+              </li>
+            ))}
+          </ul>
+          <p className="text-sm text-graphite">{capabilityStrip.supporting}</p>
+        </Container>
+      </div>
 
-      <Section tone="dark" labelledBy="mechanism-heading">
-        <SectionHeading
-          id="mechanism-heading"
-          tone="dark"
-          eyebrow="Mechanism"
-          title="From routed call to named acceptance"
-          description="Six steps run every time a call is routed into the Engine."
-        />
-        <StepList steps={dispatchSteps} tone="dark" className="mt-10" />
-        <div className="mt-10">
-          <TrackedLink
-            href="/how-it-works"
-            event={analyticsEvents.productCtaClick}
-            location="mechanism"
-            variant="onDark"
-            size="lg"
-          >
-            Experience all six steps
-          </TrackedLink>
-        </div>
-      </Section>
+      <Section tone="canvas" labelledBy="reframe-heading">
+        <div className="grid gap-12 lg:grid-cols-[1fr_0.9fr] lg:gap-16">
+          <div data-reveal className="flex flex-col gap-6">
+            <SectionHeading
+              id="reframe-heading"
+              eyebrow={reframe.label}
+              title={reframe.headline}
+              description={reframe.body}
+            />
+            <p className="text-lead text-ink">{reframe.closing}</p>
+          </div>
 
-      <Section tone="muted" labelledBy="difference-heading">
-        <SectionHeading
-          id="difference-heading"
-          eyebrow="Category difference"
-          title="Not another AI receptionist subscription"
-          description="Both categories answer the phone. Only one is built to end with a named human who has accepted the incident."
-        />
-        <ComparisonTable />
-        <p className="mt-5 text-sm text-steel-dark">
-          Competitor capabilities vary. This compares common product categories, not every
-          individual provider.
-        </p>
-      </Section>
-
-      <Section tone="dark" labelledBy="proof-heading">
-        <SectionHeading
-          id="proof-heading"
-          tone="dark"
-          eyebrow="Proof by process"
-          title="You test it before it handles a single real emergency."
-          description="We don't ask you to trust a sales deck. We run the system through your exact on-call roster, simulate 20 failure scenarios, and confirm every edge case passes before your first live call goes live. Our onboarding is more thorough than most competitors' SLAs."
-        />
-        <ProofProtocol />
-      </Section>
-
-      <Section tone="light" labelledBy="safety-heading">
-        <div className="grid gap-10 lg:grid-cols-[1fr_0.9fr]">
-          <SectionHeading
-            id="safety-heading"
-            eyebrow="Safety and transparency"
-            title="Designed for urgency without pretending to be a human"
-            description="The caller is told that an automated after-hours assistant is handling and processing the call. The Engine gathers the information your team approved, stays inside defined safety boundaries, and does not quote prices, promise insurance coverage, or invent technician availability."
-          />
-          <div className="self-center">
-            <TrackedLink
-              href="/ai-call-disclosure"
-              event={analyticsEvents.productCtaClick}
-              location="safety"
-              variant="secondary"
-              size="lg"
-            >
-              Read our AI call and recording approach
-            </TrackedLink>
+          <div data-reveal className="grid gap-4 self-start sm:grid-cols-2">
+            {[reframe.traditional, reframe.system].map((path, pathIndex) => (
+              <div
+                key={path.label}
+                className={
+                  pathIndex === 1
+                    ? "rounded-xl border border-cobalt/25 bg-cobalt-soft p-5"
+                    : "rounded-xl border border-ink/10 bg-paper p-5"
+                }
+              >
+                <p className="font-mono text-[0.625rem] uppercase tracking-[0.2em] text-graphite">
+                  {path.label}
+                </p>
+                <ol className="mt-4 flex flex-col gap-2.5">
+                  {path.steps.map((step, index) => (
+                    <li key={step} className="flex items-center gap-3 text-sm text-ink">
+                      <span
+                        aria-hidden="true"
+                        className={
+                          pathIndex === 1
+                            ? "h-1.5 w-1.5 rounded-full bg-cobalt"
+                            : "h-1.5 w-1.5 rounded-full bg-ink/25"
+                        }
+                      />
+                      {step}
+                      {pathIndex === 0 && index === path.steps.length - 1 ? (
+                        <span className="text-graphite">— and nothing follows</span>
+                      ) : null}
+                    </li>
+                  ))}
+                </ol>
+              </div>
+            ))}
           </div>
         </div>
       </Section>
 
-      <Section tone="muted" labelledBy="offer-heading">
+      <Section tone="paper" id="services" labelledBy="services-heading">
         <SectionHeading
-          id="offer-heading"
-          eyebrow="The offer"
-          title="Installed around your on-call reality"
-          description="Alizane Labs runs the deployment as managed infrastructure rather than handing you software to configure."
+          id="services-heading"
+          eyebrow={servicesSection.label}
+          title={servicesSection.headline}
         />
-        <div className="mt-10 grid gap-5 md:grid-cols-3">
-          {offerColumns.map((column) => (
-            <Card key={column.title}>
-              <CardTitle>{column.title}</CardTitle>
-              <ul className="mt-4 flex flex-col gap-2.5 text-sm text-steel-dark">
-                {column.items.map((item) => (
-                  <li key={item} className="grid grid-cols-[auto_1fr] gap-2.5">
-                    <span
-                      aria-hidden="true"
-                      className="mt-2 h-1.5 w-1.5 rounded-full bg-steel"
-                    />
-                    <span>{item}</span>
-                  </li>
-                ))}
-              </ul>
+        <div className="mt-12 grid gap-5 lg:grid-cols-2">
+          {services.map((service, index) => (
+            <Card
+              key={service.slug}
+              as="article"
+              reveal
+              delay={index * 90}
+              className="border-ink/12 bg-canvas"
+            >
+              <CardTitle className="text-title">{service.title}</CardTitle>
+              <CardBody>{service.copy}</CardBody>
+              <TickList items={service.features} className="mt-6" />
+              <TrackedLink
+                href={service.href}
+                event={analyticsEvents.secondaryCtaClick}
+                location={`home-service-${service.slug}`}
+                variant="quiet"
+                className="mt-7 self-start px-0"
+                withArrow
+              >
+                {service.ctaLabel}
+              </TrackedLink>
             </Card>
           ))}
         </div>
-        <div className="mt-10">
+      </Section>
+
+      <Section tone="canvas" labelledBy="differentiation-heading">
+        <SectionHeading
+          id="differentiation-heading"
+          eyebrow={differentiation.label}
+          title={differentiation.headline}
+        />
+        <div className="mt-12 grid gap-x-10 gap-y-8 sm:grid-cols-2">
+          {differentiation.principles.map((principle) => (
+            <div key={principle.title} data-reveal className="rule-top pt-5">
+              <h3 className="text-subtitle font-medium text-ink">{principle.title}</h3>
+              <p className="mt-2.5 leading-relaxed text-graphite">{principle.body}</p>
+            </div>
+          ))}
+        </div>
+      </Section>
+
+      <Section tone="ink" id="demo" labelledBy="demo-heading">
+        <SectionHeading
+          id="demo-heading"
+          eyebrow={demo.label}
+          title={demo.headline}
+          tone="ink"
+          description="Follow a configured workflow from an opening question to a person receiving the conversation with context attached."
+        />
+        <div className="mt-12">
+          <AutomationDemo />
+        </div>
+      </Section>
+
+      <Section tone="paper" labelledBy="work-heading">
+        <SectionHeading
+          id="work-heading"
+          eyebrow={workPage.examplesLabel}
+          title={workPage.headline}
+          description={workPage.intro}
+        />
+        <div className="mt-6">
+          <IllustrativeLabel>Example engagements</IllustrativeLabel>
+        </div>
+        <div className="mt-8 grid gap-5 lg:grid-cols-3">
+          {exampleEngagements.map((example, index) => (
+            <Card
+              key={example.title}
+              as="article"
+              reveal
+              delay={index * 90}
+              className="bg-canvas"
+            >
+              <CardTitle>{example.title}</CardTitle>
+              <CardBody>{example.situation}</CardBody>
+              <TickList items={example.approach} className="mt-5" />
+            </Card>
+          ))}
+        </div>
+        <div className="mt-8 flex flex-col gap-6 sm:flex-row sm:items-center sm:justify-between">
+          <Note className="max-w-xl">{workPage.examplesNote}</Note>
           <TrackedLink
-            href={cta.audit.href}
-            event={analyticsEvents.productCtaClick}
-            location="offer"
-            size="lg"
+            href="/work"
+            event={analyticsEvents.secondaryCtaClick}
+            location="home-work"
+            variant="secondary"
+            withArrow
           >
-            {cta.audit.label}
+            See how we approach work
           </TrackedLink>
         </div>
       </Section>
 
-      <Section tone="light" labelledBy="pricing-heading">
+      <Section tone="canvas" labelledBy="process-heading">
         <SectionHeading
-          id="pricing-heading"
-          eyebrow="Pricing"
-          title="Premium because the handoff is managed"
-          description="Generic answering products compete on minutes. Alizane Labs is priced around implementation ownership, dispatch verification, monitoring, and fallback operations."
+          id="process-heading"
+          eyebrow={processSection.label}
+          title={processSection.headline}
         />
-        <div className="mt-6 mb-10 max-w-3xl text-lg font-medium text-navy">
-          One prevented missed job pays for 3–6 months of service. <br/>
-          At $599/month, the system pays for itself the moment it routes a single $5,000 job that would have gone to voicemail.
+        <ol className="mt-12 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+          {processSteps.map((step, index) => (
+            <li
+              key={step.number}
+              data-reveal
+              className="rule-top pt-5"
+              style={revealStyle(index * 80)}
+            >
+              <span className="font-mono text-[0.6875rem] tracking-[0.2em] text-cobalt">
+                {step.number}
+              </span>
+              <h3 className="mt-3 text-subtitle font-medium text-ink">{step.title}</h3>
+              <p className="mt-2.5 text-[0.9375rem] leading-relaxed text-graphite">{step.body}</p>
+            </li>
+          ))}
+        </ol>
+        <TrackedLink
+          href="/process"
+          event={analyticsEvents.secondaryCtaClick}
+          location="home-process"
+          variant="quiet"
+          className="mt-10 px-0"
+          withArrow
+        >
+          Read the full process
+        </TrackedLink>
+      </Section>
+
+      <Section tone="paper" labelledBy="engagement-heading">
+        <SectionHeading
+          id="engagement-heading"
+          eyebrow={engagement.label}
+          title={engagement.headline}
+        />
+        <div className="mt-12 grid gap-5 lg:grid-cols-3">
+          {engagement.options.map((option, index) => (
+            <Card
+              key={option.title}
+              reveal
+              delay={index * 90}
+              className="bg-canvas"
+            >
+              <CardTitle>{option.title}</CardTitle>
+              <CardBody>{option.body}</CardBody>
+              <TickList items={option.includes} className="mt-5" />
+            </Card>
+          ))}
         </div>
-        <PricingCards location="home" />
-        <p className="mt-5 text-sm text-steel-dark">{pricing.note}</p>
+        <Note className="mt-8 max-w-2xl">
+          Scope, timing, and price are confirmed in writing after an assessment. Nothing here is a
+          fixed package.
+        </Note>
       </Section>
 
-      <Section tone="muted" labelledBy="faq-heading">
-        <SectionHeading id="faq-heading" eyebrow="Questions" title="What owners ask first" />
-        <FaqList faqs={homeFaqs} location="home" />
+      <Section tone="canvas" labelledBy="faq-heading">
+        <SectionHeading id="faq-heading" eyebrow={faqSection.label} title={faqSection.headline} />
+        <FaqList faqs={homeFaqs} location="home" className="mt-10" />
       </Section>
 
-      <Section tone="dark" labelledBy="closing-heading">
-        <div className="grid gap-8 lg:grid-cols-[1.1fr_0.9fr] lg:items-center">
-          <SectionHeading
-            id="closing-heading"
-            tone="dark"
-            title="Put your own phone through the dispatch test."
-            description="No slides. You call the demo line as a homeowner. The Engine collects the incident, alerts your phone as the on-call technician, and records whether you accept."
-          />
-          <div className="flex flex-col gap-3 sm:flex-row lg:justify-end">
+      <Section tone="ink" labelledBy="final-cta-heading">
+        <div className="flex max-w-3xl flex-col gap-7">
+          <Eyebrow tone="ink">{finalCta.eyebrow}</Eyebrow>
+          <h2 id="final-cta-heading" className="display-face text-headline text-white">
+            {finalCta.headline}
+          </h2>
+          <p className="text-lead text-graphite-light">{finalCta.body}</p>
+          <div className="flex flex-col gap-3 sm:flex-row">
             <TrackedLink
               href={cta.primary.href}
-              event={analyticsEvents.heroDemoCtaClick}
-              location="closing"
+              event={analyticsEvents.primaryCtaClick}
+              location="final-cta"
+              variant="onInkSolid"
               size="lg"
+              withArrow
             >
-              Run the live demo on my phone
+              {cta.primary.label}
             </TrackedLink>
             <TrackedLink
-              href={cta.secondary.href}
-              event={analyticsEvents.productCtaClick}
-              location="closing-secondary"
-              variant="onDark"
+              href={cta.capabilities.href}
+              event={analyticsEvents.secondaryCtaClick}
+              location="final-cta"
+              variant="onInk"
               size="lg"
             >
-              See how the dispatch works first
+              {cta.capabilities.label}
             </TrackedLink>
           </div>
+          <p className="text-sm text-graphite-light">{finalCta.reassurance}</p>
+          <p className="text-sm text-graphite-light">
+            Prefer to read first?{" "}
+            <Link href="/process" className="text-white underline underline-offset-4">
+              See how a project runs
+            </Link>
+            .
+          </p>
         </div>
       </Section>
     </>

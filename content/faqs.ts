@@ -2,66 +2,43 @@ export type Faq = { question: string; answer: string };
 
 export const homeFaqs: Faq[] = [
   {
-    question: "Does this answer every call our company receives?",
+    question: "Do you work with a specific industry?",
     answer:
-      "Yes — as long as the call reaches our system via forwarding. We set up the forwarding rules during the readiness audit, so this is handled for you.",
+      "No. We work across industries and adapt the strategy, design language, and automation logic to each business. The common thread is a meaningful customer journey and a clear operational opportunity.",
   },
   {
-    question: "Is this an AI receptionist?",
+    question: "Do you use templates?",
     answer:
-      "It uses an automated voice assistant for intake, but the product is managed dispatch assurance: escalation, named acceptance, fallback, monitoring, and reporting.",
+      "We do not force businesses into a prepackaged visual identity. We may use proven engineering foundations where they improve reliability, but the strategy, copy, interface, and system design are created for the project.",
   },
   {
-    question: "What happens when nobody accepts?",
+    question: "Can you improve our existing website?",
     answer:
-      "The Engine continues through the approved escalation order. If no approved contact accepts, it reaches the contracted fallback and records an unconfirmed exception for immediate operational attention.",
+      "Yes. We can redesign and rebuild the full experience or focus on the pages and systems creating the greatest friction. The right approach depends on the current technology and business goal.",
   },
   {
-    question: "Does the system promise a technician will arrive?",
+    question: "Can AI hand a conversation to a person?",
     answer:
-      "No. It verifies that a named human accepted responsibility for the incident. The restoration company controls callback, crew availability, and arrival commitments.",
+      "Yes. Human handoff should be designed into the workflow. Automation handles the repeatable parts and routes exceptions, high-value opportunities, or sensitive conversations to the appropriate person.",
   },
   {
-    question: "Will callers know they are speaking with automation?",
+    question: "What can you integrate with?",
     answer:
-      "Yes. The opening discloses automated handling and recording or processing. The exact consent design is reviewed for each deployment.",
+      "Common projects connect calendars, CRMs, forms, messaging tools, email platforms, and internal systems. We confirm compatibility and data requirements before implementation.",
   },
   {
-    question: "Can it work with our current phone number?",
+    question: "How long does a project take?",
     answer:
-      "Usually through conditional forwarding. Final compatibility is confirmed during the readiness audit.",
+      "Timing depends on scope, content readiness, integrations, and review cycles. After the initial assessment, we provide a clear delivery plan with milestones and responsibilities.",
   },
   {
-    question: "What happens if there's a system outage?",
+    question: "Will we be able to update the website?",
     answer:
-      "Production deployments are built with redundant failover protocols. If the primary Engine experiences a disruption, calls automatically route to your designated secondary channel (like a live answering service or dedicated owner line) so no emergency is ever dropped.",
-  },
-  {
-    question: "Can you send confirmation texts?",
-    answer:
-      "Yes, but it requires a one-time carrier registration (A2P 10DLC). We guide you through it during setup — it's a paperwork step, not a technical one.",
-  },
-  {
-    question: "Do you guarantee recovered revenue?",
-    answer:
-      "No — and we'll be straight with you: what we guarantee is that the right person on your team was reached and accepted the job. Whether they show up is on your crew. We handle the dispatch chain so nothing falls through the cracks before that.",
+      "Yes. The content architecture makes routine updates straightforward. We also provide a documented handoff for the parts your team will manage.",
   },
 ];
 
-export const pricingFaqs: Faq[] = [
-  {
-    question: "Why is this priced above a per-minute answering product?",
-    answer:
-      "Per-minute products price the conversation. Alizane Labs prices the handoff: runbook design, escalation logic, acceptance evidence, monitoring, reconciliation, and fallback operation are delivered and maintained by us.",
-  },
-  {
-    question: "Is there a contract minimum?",
-    answer:
-      "Terms are confirmed in writing during the readiness audit before implementation begins.",
-  },
-  {
-    question: "What is not included in the launch price?",
-    answer:
-      "Contracted live-human fallback, additional locations, additional languages, new integrations, SMS workflows, and custom compliance requirements are scoped separately.",
-  },
-];
+export const faqSection = {
+  label: "Questions",
+  headline: "What people ask before starting.",
+} as const;

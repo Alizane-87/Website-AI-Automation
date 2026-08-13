@@ -1,24 +1,43 @@
 {
   "project_name": "alizanelabs-site",
-  "business_type": "Restoration Emergency Dispatch System Web App (alizanelabs.com)",
-  "last_updated": "2026-08-13T16:07:00+05:30",
-  "status": "stage_1_pushed_to_dedicated_github_repo",
+  "business_type": "Digital systems studio site — custom websites and AI automation",
+  "last_updated": "2026-08-13T11:40:00+00:00",
+  "status": "studio_redesign_on_feature_branch",
   "tech_stack": {
     "framework": "Next.js 16 (Turbopack)",
-    "styling": "Tailwind CSS",
+    "styling": "Tailwind CSS v4",
     "hosting": "Vercel ($0)",
-    "lead_capture": "n8n Webhook -> Telegram/Email/SMS Alert"
+    "lead_capture": "Server-side webhook adapter (LEAD_WEBHOOK_URL)"
   },
   "configurations": {
     "canonical_url": "https://alizanelabs.com",
-    "lead_webhook_url": "https://[your-n8n-instance].app.n8n.cloud/webhook/agency-lead-capture",
+    "canonical_url_open_question": "lib/lead-delivery.ts previously referenced alizanelabs.site; confirm one domain",
+    "lead_webhook_url": "unset — required in production",
     "github_repo": "https://github.com/Alizane-87/alizanelabs-site-website-ai-automation"
   },
+  "routes": [
+    "/",
+    "/work",
+    "/services/websites",
+    "/services/ai-automation",
+    "/process",
+    "/about",
+    "/contact",
+    "/ai-disclosure",
+    "/privacy",
+    "/terms",
+    "/thank-you"
+  ],
   "daily_thread_log": [
     {
       "date": "2026-08-13",
-      "summary": "Confirmed alizanelabs-site is the production Next.js site for alizanelabs.com / Restoration Emergency Engine.",
-      "next_step": "Plug LEAD_WEBHOOK_URL when n8n lead workflow is active."
+      "summary": "Rebuilt the site as a general digital systems studio: new design tokens, content architecture in content/, all studio routes, three-step /contact intake on the existing /api/lead adapter, permanent redirects from the restoration routes. No invented proof, pricing, or legal identity — open items tracked in docs/content-gaps.md.",
+      "next_step": "Confirm canonical domain and claims in content/claims.ts, then set LEAD_WEBHOOK_URL before launch."
+    },
+    {
+      "date": "2026-08-13",
+      "summary": "Confirmed alizanelabs-site is the production Next.js site and pushed it to a dedicated GitHub repo.",
+      "next_step": "Plug LEAD_WEBHOOK_URL when the lead workflow is active."
     }
   ]
 }

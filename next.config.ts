@@ -15,11 +15,23 @@ const securityHeaders = [
   },
 ];
 
+/** Routes from the previous restoration-specific site, kept crawlable. */
+const legacyRedirects = [
+  { source: "/restoration-emergency-engine", destination: "/services/ai-automation" },
+  { source: "/how-it-works", destination: "/process" },
+  { source: "/pricing", destination: "/contact" },
+  { source: "/dispatch-audit", destination: "/contact" },
+  { source: "/ai-call-disclosure", destination: "/ai-disclosure" },
+];
+
 const nextConfig: NextConfig = {
   poweredByHeader: false,
   reactStrictMode: true,
   async headers() {
     return [{ source: "/:path*", headers: securityHeaders }];
+  },
+  async redirects() {
+    return legacyRedirects.map((redirect) => ({ ...redirect, permanent: true }));
   },
 };
 

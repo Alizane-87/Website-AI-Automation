@@ -1,6 +1,13 @@
-import type { ReactNode } from "react";
+import type { CSSProperties, ReactNode } from "react";
 
 import { cn } from "@/components/ui/cn";
+
+export type Tone = "canvas" | "paper" | "ink";
+
+/** Stagger for `data-reveal` elements. */
+export function revealStyle(delay: number): CSSProperties {
+  return { "--reveal-delay": `${delay}ms` } as CSSProperties;
+}
 
 export function Container({
   children,
@@ -10,48 +17,64 @@ export function Container({
   className?: string;
 }) {
   return (
-    <div className={cn("mx-auto w-full max-w-6xl px-5 sm:px-8", className)}>{children}</div>
+    <div className={cn("mx-auto w-full max-w-[76rem] px-5 sm:px-8", className)}>{children}</div>
   );
 }
 
+const toneClasses: Record<Tone, string> = {
+  canvas: "bg-canvas text-ink",
+  paper: "bg-paper text-ink",
+  ink: "bg-abyss text-white",
+};
+
 export function Section({
   children,
-  tone = "light",
+  tone = "canvas",
   className,
   id,
   labelledBy,
 }: {
   children: ReactNode;
-  tone?: "light" | "dark" | "muted";
+  tone?: Tone;
   className?: string;
   id?: string;
   labelledBy?: string;
 }) {
-  const tones = {
-    light: "bg-white text-navy",
-    muted: "bg-offwhite text-navy",
-    dark: "bg-navy text-offwhite",
-  } as const;
-
   return (
     <section
       id={id}
       aria-labelledby={labelledBy}
-      className={cn("py-16 sm:py-20 lg:py-24", tones[tone], className)}
+      className={cn("py-18 sm:py-24 lg:py-28", toneClasses[tone], className)}
     >
       <Container>{children}</Container>
     </section>
   );
 }
 
-export function Eyebrow({ children, tone = "light" }: { children: ReactNode; tone?: "light" | "dark" }) {
+export function Eyebrow({
+  children,
+  tone = "canvas",
+  className,
+}: {
+  children: ReactNode;
+  tone?: Tone;
+  className?: string;
+}) {
   return (
     <p
       className={cn(
-        "font-mono text-xs font-medium uppercase tracking-[0.18em]",
-        tone === "dark" ? "text-steel" : "text-steel-dark",
+        "flex items-center gap-2.5 font-mono text-[0.6875rem] font-medium uppercase tracking-[0.22em]",
+        tone === "ink" ? "text-graphite-light" : "text-graphite",
+        className,
       )}
     >
+      <span
+        aria-hidden="true"
+        className={cn(
+          "h-px w-6",
+          tone === "ink" ? "bg-signal" : "bg-cobalt",
+        )}
+      />
       {children}
     </p>
   );
@@ -62,29 +85,32 @@ export function SectionHeading({
   title,
   description,
   id,
-  tone = "light",
+  tone = "canvas",
   align = "left",
+  className,
 }: {
   eyebrow?: string;
-  title: string;
+  title: ReactNode;
   description?: ReactNode;
   id?: string;
-  tone?: "light" | "dark";
+  tone?: Tone;
   align?: "left" | "center";
+  className?: string;
 }) {
   return (
     <header
       className={cn(
-        "flex max-w-3xl flex-col gap-3",
+        "flex max-w-3xl flex-col gap-5",
         align === "center" && "mx-auto items-center text-center",
+        className,
       )}
     >
       {eyebrow ? <Eyebrow tone={tone}>{eyebrow}</Eyebrow> : null}
       <h2
         id={id}
         className={cn(
-          "text-2xl font-semibold sm:text-3xl lg:text-4xl",
-          tone === "dark" ? "text-white" : "text-navy",
+          "display-face text-title sm:text-headline",
+          tone === "ink" ? "text-white" : "text-ink",
         )}
       >
         {title}
@@ -92,8 +118,8 @@ export function SectionHeading({
       {description ? (
         <div
           className={cn(
-            "text-base leading-relaxed sm:text-lg",
-            tone === "dark" ? "text-steel" : "text-steel-dark",
+            "text-lead",
+            tone === "ink" ? "text-graphite-light" : "text-graphite",
           )}
         >
           {description}
@@ -103,18 +129,22 @@ export function SectionHeading({
   );
 }
 
-export function ScopeNote({
+/** Small qualifying note. Used wherever a claim needs an explicit boundary. */
+export function Note({
   children,
-  tone = "light",
+  tone = "canvas",
+  className,
 }: {
   children: ReactNode;
-  tone?: "light" | "dark";
+  tone?: Tone;
+  className?: string;
 }) {
   return (
     <p
       className={cn(
-        "border-l-2 pl-3 text-sm leading-relaxed",
-        tone === "dark" ? "border-steel/50 text-steel" : "border-navy/15 text-steel-dark",
+        "border-l-2 pl-3.5 text-sm leading-relaxed",
+        tone === "ink" ? "border-white/25 text-graphite-light" : "border-ink/15 text-graphite",
+        className,
       )}
     >
       {children}

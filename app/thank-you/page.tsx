@@ -1,13 +1,14 @@
 import { TrackedLink } from "@/components/tracked-link";
 import { Card, CardBody, CardTitle } from "@/components/ui/card";
 import { Container, Eyebrow, Section, SectionHeading } from "@/components/ui/section";
+import { claims } from "@/content/claims";
 import { analyticsEvents } from "@/lib/analytics";
 import { pageMetadata } from "@/lib/metadata";
 
 export const metadata = {
   ...pageMetadata({
-    title: "Request received",
-    description: "Your after-hours dispatch audit request has been received.",
+    title: "Project details received",
+    description: "Your project details have reached Alizane Labs.",
     path: "/thank-you",
   }),
   robots: { index: false, follow: true },
@@ -15,74 +16,76 @@ export const metadata = {
 
 const nextSteps = [
   {
-    title: "We review your call path",
-    body: "Before we speak, we read what you told us about how after-hours calls are handled today.",
+    title: "We read what you sent",
+    body: "Before replying, we read the problem, the outcome you described, and the tools already in play.",
   },
   {
-    title: "We propose a time",
-    body: "You will hear from us by email to confirm a slot for the live phone test and audit.",
+    title: "We reply with a read on it",
+    body: "You receive our view of the problem, a recommended starting point, and anything we still need to know.",
   },
   {
-    title: "You run the test",
-    body: "On the call you play the homeowner, then the on-call technician, and watch acceptance get recorded.",
+    title: "We talk if it fits",
+    body: "If the work is a fit, we agree a time to go deeper. If it is not, we say so plainly.",
   },
 ];
 
 export default function ThankYouPage() {
   return (
     <>
-      <div className="bg-navy text-offwhite">
+      <div className="bg-abyss text-white">
         <Container className="py-16 sm:py-20">
           <div className="flex max-w-3xl flex-col gap-6">
-            <Eyebrow tone="dark">Request received</Eyebrow>
-            <h1 className="text-3xl font-semibold text-white sm:text-4xl lg:text-5xl">
-              Thank you — your dispatch audit request is in.
+            <Eyebrow tone="ink">Received</Eyebrow>
+            <h1 className="display-face text-headline text-white">
+              Thank you — your project details are in.
             </h1>
-            <p className="text-base leading-relaxed text-steel sm:text-lg">
-              A founder reads every request. Here is what happens next.
+            <p className="text-lead text-graphite-light">
+              {claims.responseTime
+                ? `We reply within ${claims.responseTime}. Here is what happens next.`
+                : "A person reads every inquiry. Here is what happens next."}
             </p>
           </div>
         </Container>
       </div>
 
-      <Section tone="light" labelledBy="next-heading">
-        <SectionHeading id="next-heading" title="What happens next" />
-        <ol className="mt-10 grid gap-4 md:grid-cols-3">
+      <Section tone="canvas" labelledBy="next-heading">
+        <SectionHeading id="next-heading" eyebrow="What happens next" title="Three steps, no chase." />
+        <ol className="mt-10 grid gap-5 md:grid-cols-3">
           {nextSteps.map((step, index) => (
-            <Card key={step.title} as="li">
-              <span className="font-mono text-xs tracking-[0.18em] text-steel-dark">
+            <Card key={step.title} as="li" reveal delay={index * 80}>
+              <span className="font-mono text-[0.6875rem] tracking-[0.2em] text-cobalt">
                 {String(index + 1).padStart(2, "0")}
               </span>
-              <CardTitle className="mt-2 text-base">{step.title}</CardTitle>
+              <CardTitle className="mt-3">{step.title}</CardTitle>
               <CardBody>{step.body}</CardBody>
             </Card>
           ))}
         </ol>
       </Section>
 
-      <Section tone="muted" labelledBy="wait-heading">
+      <Section tone="paper" labelledBy="wait-heading">
         <SectionHeading
           id="wait-heading"
-          title="While you wait"
-          description="The workflow explainer walks through the full sequence, including the voicemail, decline, duplicate, and fallback paths."
+          eyebrow="While you wait"
+          title="See how a project actually runs."
         />
         <div className="mt-8 flex flex-col gap-3 sm:flex-row">
           <TrackedLink
-            href="/how-it-works"
-            event={analyticsEvents.productCtaClick}
+            href="/process"
+            event={analyticsEvents.secondaryCtaClick}
             location="thank-you"
             size="lg"
           >
-            See the dispatch workflow
+            Read the process
           </TrackedLink>
           <TrackedLink
-            href="/restoration-emergency-engine"
-            event={analyticsEvents.productCtaClick}
+            href="/work"
+            event={analyticsEvents.secondaryCtaClick}
             location="thank-you-secondary"
             variant="secondary"
             size="lg"
           >
-            Read the product detail
+            See how we approach work
           </TrackedLink>
         </div>
       </Section>

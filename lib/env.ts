@@ -2,16 +2,11 @@ import { z } from "zod";
 
 const envSchema = z.object({
   NODE_ENV: z.enum(["development", "test", "production"]).default("development"),
-  /** Absolute public origin, e.g. https://alizanelabs.com. Used for canonicals, sitemap, OG. */
+  /** Absolute public origin. Used for canonicals, sitemap, and Open Graph URLs. */
   NEXT_PUBLIC_SITE_URL: z.string().url().default("https://alizanelabs.com"),
-  /** Optional external scheduling URL. When unset, CTAs fall back to /dispatch-audit. */
+  /** Optional external scheduling URL. When unset, CTAs fall back to /contact. */
   NEXT_PUBLIC_SCHEDULING_URL: z.string().url().optional(),
-  /** Optional demo phone number in E.164 form. Rendered only when set. */
-  NEXT_PUBLIC_DEMO_PHONE: z
-    .string()
-    .regex(/^\+[1-9]\d{7,14}$/, "NEXT_PUBLIC_DEMO_PHONE must be E.164, e.g. +15551234567")
-    .optional(),
-  /** Server-side webhook that receives qualified leads. Never exposed to the client. */
+  /** Server-side webhook that receives project inquiries. Never exposed to the client. */
   LEAD_WEBHOOK_URL: z.string().url().optional(),
   /** Optional bearer token sent with the lead webhook request. */
   LEAD_WEBHOOK_TOKEN: z.string().min(1).optional(),

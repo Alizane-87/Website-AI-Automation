@@ -1,4 +1,5 @@
 import { siteUrl } from "@/lib/env";
+import { claims } from "@/content/claims";
 import { site } from "@/content/site";
 import type { Faq } from "@/content/faqs";
 
@@ -8,25 +9,33 @@ export function organizationSchema() {
     "@type": "Organization",
     name: site.name,
     url: siteUrl,
-    description: site.defaultDescription,
-    slogan: site.category,
+    description: site.descriptor,
+    slogan: site.tagline,
+    ...(claims.contactEmail ? { email: claims.contactEmail } : {}),
+    ...(claims.social.length ? { sameAs: claims.social.map((profile) => profile.href) } : {}),
   };
 }
 
-export function serviceSchema() {
+export function serviceSchema({
+  name,
+  description,
+  path,
+  serviceType,
+}: {
+  name: string;
+  description: string;
+  path: string;
+  serviceType: string;
+}) {
   return {
     "@context": "https://schema.org",
     "@type": "Service",
-    name: site.product,
-    serviceType: site.category,
-    description: site.descriptor,
+    name,
+    serviceType,
+    description,
     provider: { "@type": "Organization", name: site.name, url: siteUrl },
-    areaServed: { "@type": "Country", name: "United States" },
-    audience: {
-      "@type": "BusinessAudience",
-      name: "Independent restoration companies",
-    },
-    url: `${siteUrl}/restoration-emergency-engine`,
+    areaServed: { "@type": "Place", name: "Worldwide" },
+    url: `${siteUrl}${path}`,
   };
 }
 
@@ -38,6 +47,20 @@ export function faqSchema(faqs: Faq[]) {
       "@type": "Question",
       name: faq.question,
       acceptedAnswer: { "@type": "Answer", text: faq.answer },
+    })),
+  };
+}
+
+/** Breadcrumbs for pages nested below the homepage. */
+export function breadcrumbSchema(trail: readonly { name: string; path: string }[]) {
+  return {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [{ name: "Home", path: "/" }, ...trail].map((item, index) => ({
+      "@type": "ListItem",
+      position: index + 1,
+      name: item.name,
+      item: `${siteUrl}${item.path === "/" ? "" : item.path}`,
     })),
   };
 }
