@@ -1,41 +1,39 @@
 @import "tailwindcss";
 
 @theme {
-  /* Editorial canvas */
-  --color-canvas: #f2f3f6;
+  /* Minimalist-UI Warm Editorial Canvas — Palette 2: Sovereign Emerald */
+  --color-canvas: #f9f9f7;
   --color-paper: #ffffff;
-  --color-ink: #0a0d14;
-  --color-graphite: #555f70;
-  --color-graphite-light: #8b94a5;
+  --color-surface: #f5f5f4;
+  --color-ink: #111827;
+  --color-graphite: #57534e;
+  --color-graphite-light: #78716c;
+  --color-border: #e7e5e4;
+  --color-border-strong: #d6d3d1;
 
-  /* Accents */
-  --color-cobalt: #2438e0;
-  --color-cobalt-deep: #1a29ae;
-  --color-cobalt-soft: #eaedff;
-  --color-signal: #c4f042;
-
-  /* Dark sections: deep blue-black, never pure black */
-  --color-abyss: #070b18;
-  --color-abyss-600: #141c31;
-  --color-abyss-700: #0e1526;
-
-  --color-alert: #c0362f;
+  /* Sovereign Emerald Accents */
+  --color-emerald-brand: #065f46;
+  --color-emerald-deep: #064e3b;
+  --color-emerald-hover: #047857;
+  --color-sage-tint: #ecfdf5;
+  --color-sage-border: #a7f3d0;
+  --color-amber-spark: #d97706;
 
   --font-sans: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
   --font-display: var(--font-display-serif), Georgia, "Times New Roman", serif;
   --font-mono: var(--font-geist-mono), ui-monospace, monospace;
 
   /* Fluid editorial type scale */
-  --text-display: clamp(2.65rem, 1.6rem + 4.4vw, 5.25rem);
-  --text-display--line-height: 1.02;
-  --text-headline: clamp(2rem, 1.35rem + 2.6vw, 3.5rem);
-  --text-headline--line-height: 1.06;
-  --text-title: clamp(1.5rem, 1.25rem + 1.1vw, 2.125rem);
-  --text-title--line-height: 1.15;
-  --text-subtitle: clamp(1.125rem, 1.05rem + 0.4vw, 1.375rem);
-  --text-subtitle--line-height: 1.3;
-  --text-lead: clamp(1.0625rem, 1rem + 0.35vw, 1.25rem);
-  --text-lead--line-height: 1.6;
+  --text-display: clamp(2.5rem, 1.5rem + 4.2vw, 5rem);
+  --text-display--line-height: 1.05;
+  --text-headline: clamp(1.85rem, 1.3rem + 2.4vw, 3.25rem);
+  --text-headline--line-height: 1.1;
+  --text-title: clamp(1.35rem, 1.15rem + 1vw, 2rem);
+  --text-title--line-height: 1.2;
+  --text-subtitle: clamp(1.05rem, 1rem + 0.3vw, 1.25rem);
+  --text-subtitle--line-height: 1.4;
+  --text-lead: clamp(1.05rem, 0.98rem + 0.3vw, 1.2rem);
+  --text-lead--line-height: 1.65;
 }
 
 @layer base {
@@ -60,14 +58,14 @@
   }
 
   :focus-visible {
-    outline: 2px solid var(--color-cobalt);
+    outline: 2px solid var(--color-emerald-brand);
     outline-offset: 3px;
-    border-radius: 3px;
+    border-radius: 4px;
   }
 
   ::selection {
-    background-color: var(--color-cobalt);
-    color: #ffffff;
+    background-color: var(--color-sage-border);
+    color: var(--color-emerald-deep);
   }
 }
 
@@ -77,20 +75,16 @@
   letter-spacing: -0.015em;
 }
 
-/* Hairline grid rules used to structure editorial sections. */
+/* Hairline grid rules used to structure editorial sections */
 @utility rule-top {
-  border-top: 1px solid color-mix(in srgb, var(--color-ink) 12%, transparent);
+  border-top: 1px solid #e7e5e4;
 }
 
 @utility rule-top-dark {
   border-top: 1px solid rgb(255 255 255 / 0.14);
 }
 
-/* --- Motion ---------------------------------------------------------------
-   Reveals animate transform/opacity only. Content is visible without
-   JavaScript (`[data-reveal]` without `data-reveal-ready`) and static for
-   anyone who prefers reduced motion.                                        */
-
+/* Motion Reveals */
 [data-reveal][data-reveal-ready="pending"] {
   opacity: 0;
   transform: translate3d(0, 14px, 0);
@@ -103,69 +97,6 @@
     opacity 0.65s cubic-bezier(0.22, 0.61, 0.36, 1),
     transform 0.65s cubic-bezier(0.22, 0.61, 0.36, 1);
   transition-delay: var(--reveal-delay, 0ms);
-}
-
-@keyframes signal-travel {
-  0% {
-    offset-distance: 0%;
-    opacity: 0;
-  }
-  8%,
-  92% {
-    opacity: 1;
-  }
-  100% {
-    offset-distance: 100%;
-    opacity: 0;
-  }
-}
-
-@keyframes signal-slide {
-  0% {
-    transform: translateX(0);
-    opacity: 0;
-  }
-  10%,
-  90% {
-    opacity: 1;
-  }
-  100% {
-    transform: translateX(var(--signal-distance, 100%));
-    opacity: 0;
-  }
-}
-
-@keyframes pulse-ring {
-  0%,
-  100% {
-    opacity: 0.9;
-    transform: scale(1);
-  }
-  50% {
-    opacity: 0.25;
-    transform: scale(1.75);
-  }
-}
-
-@keyframes dash-draw {
-  from {
-    stroke-dashoffset: var(--dash-length, 240);
-  }
-  to {
-    stroke-dashoffset: 0;
-  }
-}
-
-.animate-signal-slide {
-  animation: signal-slide 3.4s cubic-bezier(0.4, 0, 0.2, 1) infinite;
-}
-
-.animate-pulse-ring {
-  animation: pulse-ring 2.2s ease-in-out infinite;
-}
-
-.animate-dash-draw {
-  animation: dash-draw 2.6s ease-out both;
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -184,14 +115,5 @@
   [data-reveal] {
     opacity: 1 !important;
     transform: none !important;
-  }
-
-  .animate-signal-slide,
-  .animate-pulse-ring,
-  .animate-dash-draw {
-    animation: none !important;
-    opacity: 1 !important;
-    transform: none !important;
-    stroke-dashoffset: 0 !important;
   }
 }

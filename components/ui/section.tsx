@@ -2,7 +2,7 @@ import type { CSSProperties, ReactNode } from "react";
 
 import { cn } from "@/components/ui/cn";
 
-export type Tone = "canvas" | "paper" | "ink";
+export type Tone = "canvas" | "paper" | "surface" | "ink";
 
 /** Stagger for `data-reveal` elements. */
 export function revealStyle(delay: number): CSSProperties {
@@ -17,14 +17,15 @@ export function Container({
   className?: string;
 }) {
   return (
-    <div className={cn("mx-auto w-full max-w-[76rem] px-5 sm:px-8", className)}>{children}</div>
+    <div className={cn("mx-auto w-full max-w-5xl px-6 sm:px-8", className)}>{children}</div>
   );
 }
 
 const toneClasses: Record<Tone, string> = {
   canvas: "bg-canvas text-ink",
   paper: "bg-paper text-ink",
-  ink: "bg-abyss text-white",
+  surface: "bg-surface text-ink",
+  ink: "bg-surface text-ink border-y border-border",
 };
 
 export function Section({
@@ -44,7 +45,7 @@ export function Section({
     <section
       id={id}
       aria-labelledby={labelledBy}
-      className={cn("py-18 sm:py-24 lg:py-28", toneClasses[tone], className)}
+      className={cn("py-24 sm:py-32", toneClasses[tone], className)}
     >
       <Container>{children}</Container>
     </section>
@@ -63,17 +64,13 @@ export function Eyebrow({
   return (
     <p
       className={cn(
-        "flex items-center gap-2.5 font-mono text-[0.6875rem] font-medium uppercase tracking-[0.22em]",
-        tone === "ink" ? "text-graphite-light" : "text-graphite",
+        "flex items-center gap-2.5 font-mono text-[0.6875rem] font-medium uppercase tracking-[0.22em] text-graphite",
         className,
       )}
     >
       <span
         aria-hidden="true"
-        className={cn(
-          "h-px w-6",
-          tone === "ink" ? "bg-signal" : "bg-cobalt",
-        )}
+        className="h-px w-6 bg-ink"
       />
       {children}
     </p>

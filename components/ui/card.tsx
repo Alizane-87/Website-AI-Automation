@@ -25,10 +25,7 @@ export function Card({
       data-reveal={reveal ? "" : undefined}
       style={reveal && delay ? ({ "--reveal-delay": `${delay}ms` } as CSSProperties) : undefined}
       className={cn(
-        "flex flex-col rounded-xl border p-6 sm:p-7",
-        tone === "ink"
-          ? "border-white/12 bg-abyss-600/60 text-white"
-          : "border-ink/10 bg-paper text-ink",
+        "flex flex-col rounded-xl border border-border bg-paper p-6 sm:p-7 text-ink transition-shadow duration-200 hover:shadow-[0_2px_12px_rgba(0,0,0,0.04)]",
         className,
       )}
     >
