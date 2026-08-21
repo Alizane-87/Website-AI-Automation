@@ -95,7 +95,7 @@ export function HeroSection() {
               href="#start"
               className="inline-flex items-center rounded-md bg-[#065F46] px-6 py-3.5 text-sm font-medium text-white shadow-xs transition-all hover:bg-[#064E3B] hover:shadow-sm active:scale-98"
             >
-              Get your free website plan →
+              Get your build plan →
             </a>
             <a
               href="#price"

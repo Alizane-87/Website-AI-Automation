@@ -57,7 +57,7 @@ export function SiteHeader() {
             href="#start"
             className="rounded-md bg-[#065F46] px-4 py-2 text-sm font-medium text-white shadow-xs transition-colors hover:bg-[#064E3B]"
           >
-            Get your free plan
+            Get your build plan
           </a>
         </nav>
 
@@ -66,7 +66,7 @@ export function SiteHeader() {
             href="#start"
             className="rounded-md bg-[#065F46] px-3.5 py-1.5 text-xs font-medium text-white"
           >
-            Get a plan
+            Get build plan
           </a>
         </div>
       </div>

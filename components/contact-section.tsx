@@ -196,7 +196,7 @@ export function ContactSection() {
             <span className="uppercase tracking-widest text-[11px] font-semibold">Interactive Project Planner</span>
           </div>
           <h2 id="contact-heading" className="mt-4 font-serif text-3xl sm:text-5xl text-[#111827] leading-tight">
-            Get your tailored website &amp; automation plan.
+            Get your tailored build &amp; automation plan.
           </h2>
           <p className="mt-4 text-base sm:text-lg text-[#57534E] leading-relaxed">
             Answer 4 quick questions. We&apos;ll prepare a customized architecture blueprint, feature breakdown, and quote within 24 hours.
