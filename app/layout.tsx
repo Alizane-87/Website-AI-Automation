@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono, Instrument_Serif } from "next/font/google";
 import type { ReactNode } from "react";
+import { Analytics } from "@vercel/analytics/react";
 
 import { RevealProvider } from "@/components/reveal";
 import { SiteFooter } from "@/components/site-footer";
@@ -85,6 +86,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
         </main>
         <SiteFooter />
         <RevealProvider />
+        <Analytics />
       </body>
     </html>
   );
