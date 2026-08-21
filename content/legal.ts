@@ -14,7 +14,7 @@ export const legalIdentity = {
   /** Jurisdiction whose law governs the terms */
   governingLaw: "Republic of India & International Commercial Law",
   /** Last updated date string */
-  lastUpdated: "August 21, 2026",
+  lastUpdated: "August 22, 2026",
 };
 
 export const pendingValueLabel = "Available upon request";
@@ -29,23 +29,22 @@ export const privacyNotice = {
 export const privacySections: LegalSection[] = [
   {
     heading: "1. Information We Collect",
-    paragraphs: ["We collect the following types of information:"],
+    paragraphs: ["We collect the following types of information when you interact with our website:"],
     bullets: [
-      "Personal Information: Name, email address, phone number, physical address, payment information when you make a purchase or request a quote, and opt-in records and timestamps for all communication channels (automated calls, SMS, email, etc.).",
-      "Non-Personal Information: IP address, browser type, device information, website usage patterns and analytics, and cookies and similar technologies.",
-      "Customer Communication: Records of inquiries and service requests, appointment details and preferences, call transcripts, and service history and feedback.",
+      "Personal Information: Name, business name, work email address, phone number, website URL, and timestamped opt-in records for communications (automated calls, SMS, email). We DO NOT collect or store credit card, debit card, or bank account information on this website.",
+      "Non-Personal Information: IP address, browser type, device information, and anonymous website analytics to improve site performance.",
+      "Communication Records: Details of your project inquiries, requested feature scopes, call transcripts, and appointment details.",
     ],
   },
   {
     heading: "2. How We Use Your Information",
-    paragraphs: ["We use collected data for:"],
+    paragraphs: ["We use collected data solely for:"],
     bullets: [
-      "Providing and improving our bespoke web design and AI automation services",
-      "Processing transactions and payments",
-      "Communicating with you about your inquiries, automated appointments, and proposal updates via phone, AI voice, and SMS",
-      "Enhancing website functionality and user experience",
-      "Ensuring security and fraud prevention",
-      "Maintaining records of your communication preferences and consent",
+      "Preparing and delivering your custom website and automation build plan",
+      "Communicating with you regarding your inquiry, proposal discussions, and appointment scheduling via phone, AI voice, and SMS",
+      "Delivering project agreements, milestone scopes, and invoices payable via ACH bank transfer or wire to our designated U.S. bank account",
+      "Maintaining accurate records of your communication preferences and consent",
+      "Ensuring website security and preventing automated form spam",
     ],
   },
   {
@@ -63,66 +62,64 @@ export const privacySections: LegalSection[] = [
     ],
   },
   {
-    heading: "4. Information Sharing & Disclosure",
+    heading: "4. Information Sharing & Third-Party Service Providers",
     paragraphs: [
-      "We do not sell, rent, or trade personal information. We may share information with:",
+      "We do not sell, rent, or trade your personal information. We only share information with trusted infrastructure and service providers necessary to operate our studio:",
     ],
     bullets: [
-      "Service Providers: Third-party vendors who assist in our operations (e.g., payment processing, appointment scheduling, telephony/SMS delivery). All service providers are contractually obligated to maintain confidentiality and security.",
-      "Legal Compliance: If required by law, legal process, or to protect our rights, or in response to valid law enforcement requests or court orders.",
-      "Business Transfers: In case of mergers, acquisitions, or sale of assets. In such cases, your data remains protected under the terms of this policy.",
-      "Important Exclusion: All the above categories exclude text and voice messaging originator opt-in data and consent; this information will not be shared with any third parties, excluding aggregators and telephony providers delivering the requested communications.",
+      "Invoicing & Payments: All client billing, retainers, and project fees are invoiced directly and payable via ACH bank transfer or wire to our designated U.S. bank account. We do not collect, view, or store payment card numbers or banking credentials on our website.",
+      "Telephony & Messaging Providers: Telephony networks and SMS providers solely for the purpose of transmitting authorized text messages and voice calls you have requested.",
+      "Cloud Infrastructure: Secure edge hosting and database providers (Vercel) to maintain website availability and performance.",
+      "Legal Compliance: If required by law, legal process, or in response to valid court orders.",
+      "Important Exclusion: All text messaging and voice originator opt-in data and consent records are excluded from third-party sharing and are never shared for promotional purposes.",
     ],
   },
   {
     heading: "5. Data Security",
     paragraphs: [
-      "We implement and maintain reasonable security measures to protect your personal information, including encryption of sensitive data in transit and at rest, secure access controls and authentication mechanisms, regular security assessments, employee data protection training, breach notification protocols in accordance with applicable laws, and secure backup and disaster recovery procedures.",
-      "Despite these measures, no method of transmission over the Internet or electronic storage is 100% secure. We strive to use commercially acceptable means to protect your personal information but cannot guarantee absolute security.",
+      "We take data protection seriously and apply industry-standard technical measures to safeguard your information:",
+      "All traffic and form submissions are encrypted in transit using HTTPS / TLS 1.3 encryption. Administrative access to project data is secured with strong authentication and least-privilege credentials. We do not maintain unencrypted local copies of sensitive prospect data.",
+      "While no Internet transmission or digital storage method is 100% immune from risk, we follow rigorous security best practices to protect your data from unauthorized access, alteration, or disclosure.",
     ],
   },
   {
-    heading: "6. Cookies & Tracking Technologies",
+    heading: "6. Cookies & Analytics",
     paragraphs: [
-      "We use cookies and similar technologies to analyze site traffic and user behavior, remember your preferences, improve website functionality and user experience, and measure the effectiveness of our services.",
-      "You may control cookies through your browser settings. Disabling cookies may limit your ability to use certain features of our website.",
+      "We use privacy-friendly, cookieless web analytics (Vercel Web Analytics) to understand aggregate site traffic and page performance without tracking individual personal identities.",
+      "You may manage your browser cookie settings at any time.",
     ],
   },
   {
     heading: "7. Your Rights & Choices",
-    paragraphs: ["You have the right to:"],
+    paragraphs: ["You have full control over your data:"],
     bullets: [
-      "Access, update, or delete your personal information",
-      "Opt-out of marketing emails by clicking 'unsubscribe' in our emails",
-      "Opt-out of SMS messages by replying 'STOP'",
-      "Request information on how we process your data",
-      "Withdraw consent at any time for future communications",
-      "Lodge a complaint with a supervisory authority if you believe your rights have been violated",
-      "To exercise these rights, please contact us at hello@alizanelabs.site.",
+      "You may request access to, correction of, or complete deletion of your personal contact records at any time.",
+      "You can opt out of SMS communications at any time by replying 'STOP'.",
+      "To exercise any of these rights, contact us directly at hello@alizanelabs.site.",
     ],
   },
   {
     heading: "8. Third-Party Links",
     paragraphs: [
-      "Our website may contain links to third-party websites. We are not responsible for their privacy practices and encourage you to review their policies. This privacy policy applies only to information collected by Alizane Labs.",
+      "Our website may contain links to external sites. We are not responsible for the privacy practices of external platforms and encourage you to review their respective policies.",
     ],
   },
   {
     heading: "9. Changes to This Privacy Policy",
     paragraphs: [
-      "We may update this policy periodically. The latest version will always be available on our website with the effective date. For significant changes, we will notify you by email or through a notice on our website.",
+      "We may update this policy periodically to reflect operational changes. The latest version will always be posted here with the effective date.",
     ],
   },
   {
     heading: "10. Contact Us",
     paragraphs: [
-      "If you have questions about this Privacy Policy or how your information is handled, contact us at:",
+      "If you have questions about this Privacy Policy or how your data is handled, please contact:",
     ],
     bullets: [
-      "Entity: Alizane Labs",
+      "Studio: Alizane Labs",
       "Email: hello@alizanelabs.site",
       "Website: https://alizanelabs.site",
-      "By using our website and services, you consent to this Privacy Policy.",
+      "By using our website, you acknowledge this Privacy Policy.",
     ],
   },
 ];
@@ -174,39 +171,33 @@ export const termsSections: LegalSection[] = [
     ],
   },
   {
-    heading: "5. Online Commerce",
+    heading: "5. Invoicing & Commercial Terms",
     paragraphs: [
-      "Certain sections of the Site may allow you to purchase products and services from third-party vendors. We are not responsible for the quality, accuracy, timeliness, reliability, or any other aspect of these products and services. If you make a purchase from a third party linked through the Site, the information obtained during your visit, including payment information, may be collected by both the merchant and us.",
-      "Your participation in any dealings with third-party vendors is solely between you and the third party. Alizane Labs shall not be responsible for any loss or damage incurred as a result of such dealings.",
+      "All project retainers, build fees, and ongoing maintenance subscriptions are invoiced electronically and payable via ACH bank transfer or wire to our designated U.S. bank account. We do not collect or store credit card details directly on our website.",
+      "Project scopes, timelines, and payment milestone schedules are specified directly within your formal project agreement prior to kickoff.",
     ],
   },
   {
-    heading: "6. Registration & Passwords",
+    heading: "6. Termination",
     paragraphs: [
-      "To access certain features of the Site, you may be required to register and create an account. You agree to provide accurate, current, and complete information during the registration process. You are responsible for maintaining the confidentiality of your login credentials and for all activities conducted under your account.",
-      "If you suspect unauthorized use of your account, notify us immediately at hello@alizanelabs.site. We are not liable for any loss or damage arising from your failure to comply with this obligation.",
+      "All ongoing website maintenance and retainer plans are month-to-month unless otherwise agreed in writing. You may cancel your monthly maintenance retainer at any time with 30 days written notice.",
+      "Your domain name always remains your exclusive property and will be transferred or pointed wherever you direct upon conclusion of services.",
     ],
   },
   {
-    heading: "7. Termination",
+    heading: "7. Governing Law & Dispute Resolution",
     paragraphs: [
-      "We reserve the right to terminate or suspend your access to the Site, without notice, if we determine that you have violated these Terms of Service or engaged in conduct that we deem inappropriate or unlawful. Upon termination, you must cease all use of the Site and any content obtained from it.",
+      "These Terms of Service shall be governed by and construed in accordance with the laws of the jurisdiction in which Alizane Labs operates. Any dispute arising under these Terms shall be resolved in good faith through binding arbitration or commercial mediation.",
     ],
   },
   {
-    heading: "8. Governing Law & Dispute Resolution",
-    paragraphs: [
-      "These Terms of Service shall be governed by and construed in accordance with the laws of the state and jurisdiction in which Alizane Labs operates. Any dispute arising under these Terms shall be resolved exclusively through binding arbitration in that jurisdiction.",
-    ],
-  },
-  {
-    heading: "9. Changes to Terms of Service",
+    heading: "8. Changes to Terms of Service",
     paragraphs: [
       "We may update these Terms of Service from time to time. The latest version will always be available on our website with the effective date.",
     ],
   },
   {
-    heading: "10. Contact Us",
+    heading: "9. Contact Us",
     paragraphs: [
       "For any questions regarding these Terms of Service, please contact us at:",
     ],
