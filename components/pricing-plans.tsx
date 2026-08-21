@@ -171,7 +171,7 @@ export function PricingPlans() {
                 </span>
                 <span className="text-xs text-[#57534E]">to build</span>
               </div>
-              <p className="mt-1 text-sm text-[#57534E]">then $299/month + call charges</p>
+              <p className="mt-1 text-sm text-[#57534E]">then $299/month · 100 call mins included</p>
             </div>
 
             <ul className="mb-8 flex-1 space-y-3 text-sm text-[#44403C]">
@@ -179,7 +179,7 @@ export function PricingPlans() {
                 <svg className="mt-0.5 h-4 w-4 shrink-0 text-[#065F46]" viewBox="0 0 16 16" fill="currentColor">
                   <path d="M6.2 12.4 2.3 8.5l1.6-1.6 2.3 2.3 6-6 1.6 1.6z" />
                 </svg>
-                <span><strong>24/7 AI Phone Receptionist:</strong> Answers calls &amp; books appointments</span>
+                <span><strong>24/7 AI Phone Receptionist:</strong> Answers calls &amp; books appointments (100 mins/mo included, then ~$0.25/min)</span>
               </li>
               <li className="flex items-start gap-2.5">
                 <svg className="mt-0.5 h-4 w-4 shrink-0 text-[#065F46]" viewBox="0 0 16 16" fill="currentColor">

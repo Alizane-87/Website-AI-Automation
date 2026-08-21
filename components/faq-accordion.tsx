@@ -21,7 +21,7 @@ const FAQ_ITEMS = [
   },
   {
     q: "How does the 24/7 AI employee work?",
-    a: "Depending on your plan, our intelligent AI systems answer visitor chats on your website or answer phone calls 24/7. They answer common questions using your exact business knowledge, qualify the caller, and either book appointments onto your calendar or text you their details immediately.",
+    a: "Depending on your plan, our intelligent AI systems answer visitor chats on your website or answer phone calls 24/7. They answer common questions using your exact business knowledge, qualify the caller, and either book appointments onto your calendar or text you their details immediately. The phone plan includes 100 call minutes every month (~50 customer calls), with extra minutes billed at a simple ~25¢/min.",
   },
   {
     q: "Are you based overseas?",
