@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" fill="none">
+  <!-- Deep Navy Rounded Squircle Background with Transparent Canvas Outside -->
+  <rect width="512" height="512" rx="112" fill="#0F172A" />
+
+  <!-- The Interlocking 'A' and 'z' Mark -->
+  <g stroke-linecap="round" stroke-linejoin="round">
+    <!-- Left Leg of 'A' -->
+    <path
+      d="M 188 356 L 244 196 L 268 266"
+      stroke="#FFFFFF"
+      stroke-width="36"
+    />
+
+    <!-- Interlocking 'z' -->
+    <path
+      d="M 268 240 L 340 240 L 262 356 L 348 356"
+      stroke="#FFFFFF"
+      stroke-width="36"
+    />
+
+    <!-- Amber Crossbar across 'A' -->
+    <line
+      x1="202"
+      y1="300"
+      x2="278"
+      y2="300"
+      stroke="#EAB308"
+      stroke-width="32"
+    />
+  </g>
+</svg>

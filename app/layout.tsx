@@ -46,9 +46,9 @@ export const metadata: Metadata = {
     url: siteUrl,
     images: [
       {
-        url: "/alizane-logo-v5.png",
-        width: 400,
-        height: 100,
+        url: "/alizane-logo.png",
+        width: 1200,
+        height: 630,
         alt: site.name,
       },
     ],
@@ -57,7 +57,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: site.defaultTitle,
     description: site.defaultDescription,
-    images: ["/alizane-logo-v5.png"],
+    images: ["/alizane-logo.png"],
   },
   robots: { index: true, follow: true },
 };

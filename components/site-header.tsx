@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import Link from "next/link";
 import React from "react";
 
@@ -7,7 +8,15 @@ export function SiteHeader() {
   return (
     <header className="sticky top-0 z-40 w-full border-b border-[#E7E5E4] bg-[#F9F9F7]/85 backdrop-blur-md">
       <div className="mx-auto flex h-16 max-w-5xl items-center justify-between px-6">
-        <Link href="/" className="flex items-center gap-2 group">
+        <Link href="/" className="flex items-center gap-2.5 group">
+          <Image
+            src="/alizane-mark.svg"
+            alt="Alizane Labs Logo"
+            width={32}
+            height={32}
+            className="h-8 w-8 object-contain transition-transform duration-200 group-hover:scale-105"
+            priority
+          />
           <span className="font-serif text-xl font-medium tracking-tight text-[#111827] transition-colors group-hover:text-[#065F46]">
             Alizane Labs
           </span>
