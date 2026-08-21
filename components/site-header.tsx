@@ -45,19 +45,19 @@ export function SiteHeader() {
             FAQ
           </a>
           <a
-            href="#price"
+            href="#start"
             className="rounded-md bg-[#065F46] px-4 py-2 text-sm font-medium text-white shadow-xs transition-colors hover:bg-[#064E3B]"
           >
-            See the plans
+            Get your free plan
           </a>
         </nav>
 
         <div className="flex items-center gap-3 sm:hidden">
           <a
-            href="#price"
+            href="#start"
             className="rounded-md bg-[#065F46] px-3.5 py-1.5 text-xs font-medium text-white"
           >
-            Plans
+            Get a plan
           </a>
         </div>
       </div>

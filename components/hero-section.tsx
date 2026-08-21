@@ -92,16 +92,16 @@ export function HeroSection() {
 
           <div className="mt-10 flex flex-wrap items-center gap-4">
             <a
-              href="#price"
+              href="#start"
               className="inline-flex items-center rounded-md bg-[#065F46] px-6 py-3.5 text-sm font-medium text-white shadow-xs transition-all hover:bg-[#064E3B] hover:shadow-sm active:scale-98"
             >
-              See the plans →
+              Get your free website plan →
             </a>
             <a
-              href="#why"
+              href="#price"
               className="inline-flex items-center rounded-md border border-[#D6D3D1] bg-white px-5 py-3.5 text-sm font-medium text-[#111827] transition-colors hover:border-[#111827]"
             >
-              Why us
+              See the plans
             </a>
           </div>
 

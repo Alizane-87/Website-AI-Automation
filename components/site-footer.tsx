@@ -1,21 +1,49 @@
 import React from "react";
+import Link from "next/link";
 
 export function SiteFooter() {
   return (
-    <footer className="border-t border-[#E7E5E4] bg-[#F9F9F7] py-10">
-      <div className="mx-auto flex max-w-5xl flex-col items-center justify-between gap-4 px-6 sm:flex-row text-xs text-[#78716C]">
+    <footer className="border-t border-[#E7E5E4] bg-[#F9F9F7] py-12">
+      <div className="mx-auto flex max-w-5xl flex-col items-center justify-between gap-6 px-6 sm:flex-row text-xs text-[#78716C]">
+        {/* Brand identity */}
         <div className="flex items-center gap-3">
-          <span className="font-serif text-sm font-medium text-[#111827]">Alizane Labs</span>
+          <Link href="/" className="font-serif text-sm font-medium text-[#111827] hover:text-[#065F46] transition-colors">
+            Alizane Labs
+          </Link>
           <span>·</span>
           <span>Websites &amp; AI Systems Studio</span>
         </div>
-        <div className="flex items-center gap-6">
+
+        {/* Legal & Navigation Links */}
+        <div className="flex flex-wrap items-center justify-center gap-6">
+          <Link
+            href="/privacy"
+            className="hover:text-[#111827] transition-colors underline underline-offset-4"
+          >
+            Privacy Policy
+          </Link>
+          <Link
+            href="/terms"
+            className="hover:text-[#111827] transition-colors underline underline-offset-4"
+          >
+            Terms of Service
+          </Link>
+          <Link
+            href="/ai-disclosure"
+            className="hover:text-[#111827] transition-colors underline underline-offset-4"
+          >
+            AI Disclosure
+          </Link>
           <a
             href="mailto:hello@alizanelabs.site"
-            className="hover:text-[#065F46] transition-colors underline underline-offset-4"
+            className="hover:text-[#065F46] transition-colors font-medium"
           >
             hello@alizanelabs.site
           </a>
+        </div>
+
+        {/* Copyright */}
+        <div>
           <span>© {new Date().getFullYear()} All rights reserved.</span>
         </div>
       </div>

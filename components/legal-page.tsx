@@ -1,57 +1,78 @@
-import { Container, Eyebrow, Note, Section } from "@/components/ui/section";
-import { legalIdentity, pendingValueLabel, type LegalSection } from "@/content/legal";
+import React from "react";
+import Link from "next/link";
+import { legalIdentity, type LegalSection } from "@/content/legal";
 
 export function LegalPage({
   eyebrow,
   title,
   intro,
   sections,
-  showContact = true,
+  bannerNotice,
 }: {
   eyebrow: string;
   title: string;
   intro: string;
   sections: LegalSection[];
-  showContact?: boolean;
+  bannerNotice?: { title: string; body: string };
 }) {
   return (
-    <>
-      <div className="bg-abyss text-white">
-        <Container className="py-16 sm:py-20">
-          <div className="flex max-w-3xl flex-col gap-5">
-            <Eyebrow tone="ink">{eyebrow}</Eyebrow>
-            <h1 className="display-face text-headline text-white">{title}</h1>
-            <p className="text-lead text-graphite-light">{intro}</p>
-            <p className="font-mono text-[0.6875rem] uppercase tracking-[0.16em] text-graphite-light">
-              Last updated: {legalIdentity.lastUpdated}
+    <article className="min-h-screen bg-[#F9F9F7] text-[#111827]">
+      {/* Header Banner */}
+      <header className="border-b border-[#E7E5E4] bg-white py-16 sm:py-20">
+        <div className="mx-auto max-w-4xl px-6">
+          <div className="flex max-w-2xl flex-col gap-4">
+            <span className="font-mono text-xs uppercase tracking-widest text-[#065F46] font-semibold">
+              {eyebrow}
+            </span>
+            <h1 className="font-serif text-4xl sm:text-5xl font-normal tracking-tight text-[#111827]">
+              {title}
+            </h1>
+            <p className="text-base sm:text-lg text-[#57534E] leading-relaxed">
+              {intro}
+            </p>
+            <p className="font-mono text-[11px] uppercase tracking-wider text-[#78716C]">
+              Effective Date: {legalIdentity.lastUpdated}
             </p>
           </div>
-        </Container>
-      </div>
+        </div>
+      </header>
 
-      <Section tone="canvas">
-        <div className="flex max-w-3xl flex-col gap-10">
-          <Note>
-            This is a draft prepared for review. It is not legal advice and must be confirmed
-            before launch.
-          </Note>
+      {/* Main Body */}
+      <main className="mx-auto max-w-4xl px-6 py-16 sm:py-20">
+        <div className="flex flex-col gap-12">
+          {/* Optional Prominent Banner Notice (e.g. SMS Compliance Notice) */}
+          {bannerNotice ? (
+            <div className="rounded-xl border border-[#A7F3D0] bg-[#ECFDF5] p-6 sm:p-8 shadow-xs">
+              <h2 className="font-mono text-xs font-bold uppercase tracking-wider text-[#065F46]">
+                {bannerNotice.title}
+              </h2>
+              <p className="mt-3 text-sm sm:text-base leading-relaxed text-[#111827] font-medium">
+                {bannerNotice.body}
+              </p>
+            </div>
+          ) : null}
 
           {sections.map((section) => (
-            <section key={section.heading} className="flex flex-col gap-3">
-              <h2 className="text-title font-medium text-ink">{section.heading}</h2>
-              {section.paragraphs.map((paragraph) => (
-                <p key={paragraph} className="leading-relaxed text-graphite">
+            <section key={section.heading} className="flex flex-col gap-4">
+              <h2 className="font-serif text-2xl text-[#111827] font-medium tracking-tight">
+                {section.heading}
+              </h2>
+              {section.paragraphs.map((paragraph, idx) => (
+                <p key={idx} className="text-base leading-relaxed text-[#57534E]">
                   {paragraph}
                 </p>
               ))}
               {section.bullets ? (
-                <ul className="mt-1 flex flex-col gap-2.5">
-                  {section.bullets.map((bullet) => (
+                <ul className="mt-2 flex flex-col gap-3">
+                  {section.bullets.map((bullet, idx) => (
                     <li
-                      key={bullet}
-                      className="grid grid-cols-[auto_1fr] gap-3 leading-relaxed text-graphite"
+                      key={idx}
+                      className="grid grid-cols-[auto_1fr] gap-3 text-base leading-relaxed text-[#57534E]"
                     >
-                      <span aria-hidden="true" className="mt-2.5 h-1.5 w-1.5 rounded-full bg-cobalt" />
+                      <span
+                        aria-hidden="true"
+                        className="mt-2.5 h-1.5 w-1.5 rounded-full bg-[#065F46]"
+                      />
                       <span>{bullet}</span>
                     </li>
                   ))}
@@ -60,28 +81,17 @@ export function LegalPage({
             </section>
           ))}
 
-          {showContact ? (
-            <section className="flex flex-col gap-4 border-t border-ink/10 pt-8">
-              <h2 className="text-title font-medium text-ink">Contact</h2>
-              <dl className="grid gap-5 sm:grid-cols-2">
-                {[
-                  { label: "Legal entity", value: legalIdentity.entityName },
-                  { label: "Registered address", value: legalIdentity.address },
-                  { label: "Privacy contact", value: legalIdentity.privacyEmail },
-                  { label: "Governing law", value: legalIdentity.governingLaw },
-                ].map((item) => (
-                  <div key={item.label}>
-                    <dt className="font-mono text-[0.6875rem] uppercase tracking-[0.16em] text-graphite">
-                      {item.label}
-                    </dt>
-                    <dd className="mt-1.5 text-ink">{item.value ?? pendingValueLabel}</dd>
-                  </div>
-                ))}
-              </dl>
-            </section>
-          ) : null}
+          <div className="mt-8 border-t border-[#E7E5E4] pt-8 flex items-center justify-between text-xs font-mono text-[#78716C]">
+            <Link
+              href="/"
+              className="text-[#065F46] font-medium hover:underline inline-flex items-center gap-1"
+            >
+              ← Return to Alizane Labs Homepage
+            </Link>
+            <span>© {new Date().getFullYear()} Alizane Labs</span>
+          </div>
         </div>
-      </Section>
-    </>
+      </main>
+    </article>
   );
 }

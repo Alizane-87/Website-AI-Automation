@@ -20,7 +20,6 @@ export default function AiDisclosurePage() {
       title="How we use automation"
       intro="The constraints we design into every automated workflow we build."
       sections={aiDisclosureSections}
-      showContact={false}
     />
   );
 }

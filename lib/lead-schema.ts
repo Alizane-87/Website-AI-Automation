@@ -22,39 +22,31 @@ export const timingOptions = [
   { value: "exploring", label: "Exploring options" },
 ] as const;
 
-const optionValues = <T extends readonly { value: string }[]>(options: T) =>
-  options.map((option) => option.value) as [string, ...string[]];
-
 export const leadSchema = z.object({
-  name: z.string().trim().min(1, "Enter your name").max(80),
+  name: z.string().trim().min(1, "Enter your name").max(100),
   email: z
     .string()
     .trim()
-    .min(1, "Enter your work email")
+    .min(1, "Enter your email")
     .max(160)
-    .email("Enter a valid work email"),
-  company: z.string().trim().min(1, "Enter your company name").max(120),
+    .email("Enter a valid email address"),
+  company: z.string().trim().max(160).optional(),
+  businessName: z.string().trim().max(160).optional(),
+  phone: z.string().trim().max(50).optional(),
   websiteUrl: z.string().trim().max(200).optional(),
-  primaryNeed: z.enum(optionValues(primaryNeedOptions), {
-    errorMap: () => ({ message: "Select what you need help with" }),
-  }),
-  problem: z
-    .string()
-    .trim()
-    .min(10, "Tell us what is not working today, in a sentence or two")
-    .max(2000),
-  desiredOutcome: z
-    .string()
-    .trim()
-    .min(10, "Describe what should be different after the project")
-    .max(2000),
-  budgetRange: z.enum(optionValues(budgetRangeOptions)).optional(),
-  timing: z.enum(optionValues(timingOptions)).optional(),
-  tools: z.string().trim().max(300).optional(),
-  context: z.string().trim().max(2000).optional(),
-  consent: z.literal(true, {
-    errorMap: () => ({ message: "Please confirm we may contact you about this inquiry" }),
-  }),
+  businessType: z.string().trim().max(100).optional(),
+  challenge: z.string().trim().max(500).optional(),
+  customNotes: z.string().trim().max(2000).optional(),
+  selectedFeatures: z.array(z.string()).optional(),
+  smsConsent: z.boolean().optional(),
+  consent: z.boolean().optional(),
+  primaryNeed: z.string().optional(),
+  problem: z.string().optional(),
+  desiredOutcome: z.string().optional(),
+  budgetRange: z.string().optional(),
+  timing: z.string().optional(),
+  tools: z.string().optional(),
+  context: z.string().optional(),
   /** Honeypot. Must stay empty. */
   nickname: z.string().max(0).optional(),
 });
@@ -65,7 +57,26 @@ export type LeadField = keyof LeadInput;
 
 export type LeadFieldErrors = Partial<Record<LeadField, string>>;
 
-/** Fields validated on each step of the intake form, in order. */
+export const optionalLeadFields: readonly LeadField[] = [
+  "company",
+  "businessName",
+  "phone",
+  "websiteUrl",
+  "businessType",
+  "challenge",
+  "customNotes",
+  "selectedFeatures",
+  "smsConsent",
+  "consent",
+  "primaryNeed",
+  "problem",
+  "desiredOutcome",
+  "budgetRange",
+  "timing",
+  "tools",
+  "context",
+];
+
 export const leadSteps: readonly {
   title: string;
   description: string;
@@ -88,16 +99,6 @@ export const leadSteps: readonly {
   },
 ];
 
-/** Fields the browser submits as "" when left blank. */
-export const optionalLeadFields: readonly LeadField[] = [
-  "websiteUrl",
-  "budgetRange",
-  "timing",
-  "tools",
-  "context",
-];
-
-/** Blank optional fields are absent, not empty strings, before validation. */
 export function normalizeLeadInput(values: Record<string, unknown>): Record<string, unknown> {
   const normalized = { ...values };
   for (const field of optionalLeadFields) {
@@ -119,7 +120,6 @@ export function toFieldErrors(error: z.ZodError): LeadFieldErrors {
   return errors;
 }
 
-/** Validates one step client-side so a visitor never advances into an error. */
 export function validateStep(
   fields: readonly LeadField[],
   values: Record<string, unknown>,

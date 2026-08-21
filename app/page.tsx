@@ -49,7 +49,7 @@ export default function HomePage() {
                 Changes get made, not queued
               </h3>
               <p className="text-sm leading-relaxed text-[#57534E]">
-                Two content changes a month, done by a person who answers. Not a login and a manual.
+                Two routine content changes every month, with hosting, security, and urgent fixes handled continuously. Done by a person who answers, not a login and a manual.
               </p>
             </article>
 

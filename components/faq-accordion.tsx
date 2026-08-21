@@ -4,28 +4,28 @@ import React, { useState } from "react";
 
 const FAQ_ITEMS = [
   {
-    q: "What does the $99 a month cover?",
-    a: "Hosting, keeping the site online and up to date, and two content changes a month — a new service, new photos, an updated phone number. Someone who answers when you need something changed, rather than a login and a manual.",
+    q: "What does the monthly retainer cover?",
+    a: "Hosting on high-speed edge infrastructure, domain security/SSL, keeping the site updated, and two routine content changes every month — a new service, new job photos, or updated phone numbers. A real person who answers when you need something changed, rather than a ticket queue.",
   },
   {
-    q: "Why is there a build cost and a monthly?",
-    a: "The build is the site. The monthly is us running it — hosting, updates, and changes when you need them. Most places charge you for the build and then leave you to work out the rest on your own.",
+    q: "Why is there a build cost and a monthly fee?",
+    a: "The build cost covers the custom design, editorial copywriting, and development of your site. The monthly fee covers us actively managing it — hosting, security, and making changes when you need them. Most agencies charge thousands upfront and then leave you to manage hosting and updates alone.",
   },
   {
-    q: "What if I stop paying the monthly?",
-    a: "The site pauses until the invoice clears, then it goes straight back up. Your domain stays in your name throughout — that part never changes.",
+    q: "What if I ever want to leave or stop paying?",
+    a: "Every plan is month-to-month with no lock-in contracts. Your domain remains 100% in your name from day one and stays with you wherever you go.",
   },
   {
-    q: "I already have someone who does this.",
-    a: "Then you're ahead of most. Worth asking one thing: how long does it take to get a phone number changed? The complaint we hear isn't about quality, it's about waiting three weeks.",
+    q: "I already have someone who manages our website.",
+    a: "Then you are ahead of most. It is always worth asking one simple question: how long does it take them to make a quick update? The most common complaint we hear from business owners isn't about design quality — it's waiting three weeks for a simple phone number update.",
   },
   {
-    q: "What's the chatbot actually do?",
-    a: "It talks to people who land on your site, answers the usual questions, and takes their name, number and what they need. You get the details straight away, even when you can't get to your phone.",
+    q: "How does the 24/7 AI employee work?",
+    a: "Depending on your plan, our intelligent AI systems answer visitor chats on your website or answer phone calls 24/7. They answer common questions using your exact business knowledge, qualify the caller, and either book appointments onto your calendar or text you their details immediately.",
   },
   {
-    q: "Are you overseas?",
-    a: "Yes — we're based in India, working with businesses in the U.S. You deal with a person and get answers the same day, not a ticket number.",
+    q: "Are you based overseas?",
+    a: "Yes — we are based in India and work with businesses internationally (across the US, UK, UAE, and beyond). You work directly with a dedicated person with direct same-day communication.",
   },
 ];
 
