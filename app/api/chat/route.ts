@@ -43,8 +43,20 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    const apiKey = process.env.OPENROUTER_API_KEY?.trim();
-    const model = process.env.AI_CHAT_MODEL?.trim() || "openrouter/free";
+    let apiKey = process.env.OPENROUTER_API_KEY?.trim() || "";
+    if (apiKey.includes("=")) {
+      apiKey = apiKey.split("=")[1].trim();
+    }
+    apiKey = apiKey.replace(/['"]/g, "");
+
+    let model = process.env.AI_CHAT_MODEL?.trim() || "openrouter/free";
+    if (model.includes("=")) {
+      model = model.split("=")[1].trim();
+    }
+    model = model.replace(/['"]/g, "");
+    if (!model || model === "undefined" || model === "null") {
+      model = "openrouter/free";
+    }
 
     if (!apiKey || apiKey === "your_openrouter_api_key_here") {
       return NextResponse.json(
