@@ -44,7 +44,7 @@ export async function POST(req: NextRequest) {
     }
 
     const apiKey = process.env.OPENROUTER_API_KEY;
-    const model = process.env.AI_CHAT_MODEL || "google/gemini-2.0-flash:free";
+    const model = process.env.AI_CHAT_MODEL || "openrouter/free";
 
     if (!apiKey || apiKey === "your_openrouter_api_key_here") {
       return NextResponse.json(
