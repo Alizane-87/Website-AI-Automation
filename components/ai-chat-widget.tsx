@@ -94,7 +94,7 @@ export function AiChatWidget() {
                   Alizane Assistant
                 </h4>
                 <p className="text-[11px] font-mono text-[#065F46]">
-                  ● Active · Sub-second AI
+                  ● Live Assistant · Online
                 </p>
               </div>
             </div>
