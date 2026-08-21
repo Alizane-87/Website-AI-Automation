@@ -11,14 +11,14 @@ const INITIAL_MESSAGES: Message[] = [
   {
     role: "assistant",
     content:
-      "Hi there! 👋 I'm the Alizane Labs AI assistant. Ask me anything about our custom Next.js builds, 24/7 AI phone receptionists, or pricing!",
+      "Hi there! 👋 I'm the Alizane Labs AI assistant. Ask me anything about websites, 24/7 call answering, lead follow-up, or which plan fits your business.",
   },
 ];
 
 const SUGGESTIONS = [
-  "What's included in The Works?",
-  "How does the 24/7 AI Receptionist work?",
-  "How long does a build take?",
+  "Which plan fits my business?",
+  "How does 24/7 call answering work?",
+  "What is the build timeline?",
 ];
 
 export function AiChatWidget() {
@@ -26,7 +26,23 @@ export function AiChatWidget() {
   const [messages, setMessages] = useState<Message[]>(INITIAL_MESSAGES);
   const [input, setInput] = useState<string>("");
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [isPlannerInView, setIsPlannerInView] = useState<boolean>(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const target = document.getElementById("start");
+    if (!target) return;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        setIsPlannerInView(entry.isIntersecting);
+      },
+      { rootMargin: "0px", threshold: 0.08 }
+    );
+
+    observer.observe(target);
+    return () => observer.disconnect();
+  }, []);
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -192,12 +208,17 @@ export function AiChatWidget() {
         </div>
       )}
 
-      {/* Floating Trigger Pill */}
+      {/* Floating Trigger Pill (Hides gracefully when user is completing the project planner) */}
       {!isOpen && (
         <button
           type="button"
           onClick={() => setIsOpen(true)}
-          className="group flex items-center gap-2.5 rounded-full border border-[#064E3B] bg-[#065F46] py-2.5 px-4 text-xs font-medium text-white shadow-xl hover:bg-[#064E3B] hover:shadow-2xl transition-all duration-200 active:scale-95"
+          className={`group flex items-center gap-2.5 rounded-full border border-[#064E3B] bg-[#065F46] py-2.5 px-4 text-xs font-medium text-white shadow-xl hover:bg-[#064E3B] hover:shadow-2xl transition-all duration-300 active:scale-95 ${
+            isPlannerInView
+              ? "opacity-0 pointer-events-none translate-y-8 scale-90"
+              : "opacity-100 translate-y-0 scale-100"
+          }`}
+          aria-label="Open AI Assistant"
         >
           <span className="relative flex h-2 w-2">
             <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-[#34D399] opacity-75" />
