@@ -2,13 +2,64 @@
 
 import React, { useState } from "react";
 
+function HvacIcon({ className }: { className?: string }) {
+  return (
+    <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M12 3v18M3 12h18M5.6 5.6l12.8 12.8M18.4 5.6L5.6 18.4" />
+      <path d="m9 3 3 3 3-3M9 21l3-3 3 3M3 9l3 3-3 3M21 9l-3 3 3 3" />
+    </svg>
+  );
+}
+
+function PlumbingIcon({ className }: { className?: string }) {
+  return (
+    <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z" />
+    </svg>
+  );
+}
+
+function RoofingIcon({ className }: { className?: string }) {
+  return (
+    <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round">
+      <path d="m3 10 9-7 9 7" />
+      <path d="M5 9v11a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V9" />
+      <path d="M9 21v-6a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v6" />
+    </svg>
+  );
+}
+
+function ElectricalIcon({ className }: { className?: string }) {
+  return (
+    <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M13 2 3 14h9l-1 8 10-12h-9l1-8z" />
+    </svg>
+  );
+}
+
+function RestorationIcon({ className }: { className?: string }) {
+  return (
+    <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round">
+      <path d="m12 3-1.9 5.8a2 2 0 0 1-1.3 1.3L3 12l5.8 1.9a2 2 0 0 1 1.3 1.3L12 21l1.9-5.8a2 2 0 0 1 1.3-1.3L21 12l-5.8-1.9a2 2 0 0 1-1.3-1.3z" />
+    </svg>
+  );
+}
+
+function OtherTradeIcon({ className }: { className?: string }) {
+  return (
+    <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z" />
+    </svg>
+  );
+}
+
 const BUSINESS_TYPES = [
-  { id: "hvac", label: "HVAC & Cooling", icon: "❄️" },
-  { id: "plumbing", label: "Plumbing & Drains", icon: "🚰" },
-  { id: "roofing", label: "Roofing, Siding & Solar", icon: "🏠" },
-  { id: "electrical", label: "Electrical & Contracting", icon: "⚡" },
-  { id: "restoration", label: "Restoration & Cleaning", icon: "🧹" },
-  { id: "other", label: "Other Trade / Service", icon: "🛠️" },
+  { id: "hvac", label: "HVAC & Cooling", icon: HvacIcon },
+  { id: "plumbing", label: "Plumbing & Drains", icon: PlumbingIcon },
+  { id: "roofing", label: "Roofing, Siding & Solar", icon: RoofingIcon },
+  { id: "electrical", label: "Electrical & Contracting", icon: ElectricalIcon },
+  { id: "restoration", label: "Restoration & Cleaning", icon: RestorationIcon },
+  { id: "other", label: "Other Trade / Service", icon: OtherTradeIcon },
 ];
 
 const COMMON_CHALLENGES = [
@@ -55,27 +106,16 @@ const FEATURE_CATEGORIES = [
 ];
 
 export function ContactSection() {
-  const [currentStep, setCurrentStep] = useState(1);
-  const [submitted, setSubmitted] = useState(false);
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const [submitError, setSubmitError] = useState<string | null>(null);
+  const [currentStep, setCurrentStep] = useState<number>(1);
+  const [businessType, setBusinessType] = useState<string>("hvac");
+  const [selectedChallenge, setSelectedChallenge] = useState<string>("dated_site");
+  const [customChallenge, setCustomChallenge] = useState<string>("");
+  
+  const allInitialFeatures = FEATURE_CATEGORIES.flatMap(cat => 
+    cat.features.filter(f => f.defaultChecked).map(f => f.label)
+  );
+  const [selectedFeatures, setSelectedFeatures] = useState<string[]>(allInitialFeatures);
 
-  // Form State
-  const [businessType, setBusinessType] = useState("hvac");
-  const [challenge, setChallenge] = useState("dated_site");
-  const [customNotes, setCustomNotes] = useState("");
-  const [selectedFeatures, setSelectedFeatures] = useState<string[]>([
-    "custom_design",
-    "mobile_first",
-    "before_after",
-    "google_reviews",
-    "service_pages",
-    "town_pages",
-    "local_schema",
-    "sms_alerts",
-    "customer_auto_sms",
-    "quote_funnel",
-  ]);
   const [contactData, setContactData] = useState({
     name: "",
     businessName: "",
@@ -83,21 +123,27 @@ export function ContactSection() {
     phone: "",
     websiteUrl: "",
     smsConsent: true,
-    nickname: "", // honeypot
+    nickname: "", // Honeypot
   });
 
-  const toggleFeature = (id: string) => {
-    setSelectedFeatures((prev) =>
-      prev.includes(id) ? prev.filter((f) => f !== id) : [...prev, id]
+  const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
+  const [submitError, setSubmitError] = useState<string | null>(null);
+  const [submitted, setSubmitted] = useState<boolean>(false);
+
+  const toggleFeature = (featureLabel: string) => {
+    setSelectedFeatures(prev => 
+      prev.includes(featureLabel)
+        ? prev.filter(f => f !== featureLabel)
+        : [...prev, featureLabel]
     );
   };
 
   const handleNext = () => {
-    setCurrentStep((prev) => Math.min(prev + 1, 4));
+    if (currentStep < 4) setCurrentStep(currentStep + 1);
   };
 
   const handleBack = () => {
-    setCurrentStep((prev) => Math.max(prev - 1, 1));
+    if (currentStep > 1) setCurrentStep(currentStep - 1);
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -107,17 +153,15 @@ export function ContactSection() {
 
     const payload = {
       name: contactData.name,
-      company: contactData.businessName,
-      businessName: contactData.businessName,
       email: contactData.email,
+      businessName: contactData.businessName,
       phone: contactData.phone,
       websiteUrl: contactData.websiteUrl,
-      businessType,
-      challenge,
-      customNotes,
+      businessType: BUSINESS_TYPES.find(b => b.id === businessType)?.label || businessType,
+      challenge: selectedChallenge === "custom" ? customChallenge : (COMMON_CHALLENGES.find(c => c.id === selectedChallenge)?.label || selectedChallenge),
+      customNotes: customChallenge,
       selectedFeatures,
       smsConsent: contactData.smsConsent,
-      consent: true,
       nickname: contactData.nickname,
     };
 
@@ -129,33 +173,27 @@ export function ContactSection() {
       });
 
       if (!res.ok) {
-        const errorData = await res.json().catch(() => ({}));
-        throw new Error(errorData.message || "Failed to submit. Please try again.");
+        const errData = await res.json().catch(() => ({}));
+        throw new Error(errData.message || "Failed to submit request. Please check your information.");
       }
 
       setSubmitted(true);
     } catch (err: unknown) {
-      console.warn("API lead submission error, proceeding with confirmation:", err);
-      // Ensure positive user experience even during network blips or dev mode
-      setSubmitted(true);
+      setSubmitError(err instanceof Error ? err.message : "Something went wrong. Please try again.");
     } finally {
       setIsSubmitting(false);
     }
   };
 
-  const selectedBusinessLabel =
-    BUSINESS_TYPES.find((b) => b.id === businessType)?.label || "Local Business";
+  const selectedBusinessLabel = BUSINESS_TYPES.find(b => b.id === businessType)?.label || "Local Business";
 
   return (
     <section id="start" aria-labelledby="contact-heading" className="border-t border-[#E7E5E4] py-20 sm:py-28 bg-[#F9F9F7]">
       <div className="mx-auto max-w-5xl px-6">
-        {/* Section Header */}
         <div className="max-w-2xl mb-12">
           <div className="inline-flex items-center gap-2 rounded-full border border-[#A7F3D0] bg-[#ECFDF5] px-3.5 py-1 text-xs font-mono text-[#065F46] shadow-xs">
             <span className="h-1.5 w-1.5 rounded-full bg-[#059669] animate-pulse" />
-            <span className="uppercase tracking-widest text-[11px] font-semibold">
-              Interactive Project Planner
-            </span>
+            <span className="uppercase tracking-widest text-[11px] font-semibold">Interactive Project Planner</span>
           </div>
           <h2 id="contact-heading" className="mt-4 font-serif text-3xl sm:text-5xl text-[#111827] leading-tight">
             Get your tailored website &amp; automation plan.
@@ -165,18 +203,16 @@ export function ContactSection() {
           </p>
         </div>
 
-        {/* Funnel Card */}
         <div className="rounded-2xl border border-[#E7E5E4] bg-white p-6 sm:p-10 shadow-sm">
           {submitted ? (
-            /* Thank You Confirmation View */
-            <div className="py-8 text-center max-w-xl mx-auto" role="status" aria-live="polite">
-              <div className="inline-flex h-16 w-16 items-center justify-center rounded-full bg-[#ECFDF5] border border-[#A7F3D0] text-[#065F46] mb-6">
-                <svg className="h-8 w-8" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+            <div className="text-center py-10 max-w-lg mx-auto">
+              <div className="mx-auto mb-6 flex h-14 w-14 items-center justify-center rounded-full bg-[#ECFDF5] text-[#065F46] border border-[#A7F3D0]">
+                <svg className="h-7 w-7" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                   <polyline points="20 6 9 17 4 12" />
                 </svg>
               </div>
 
-              <span className="block font-mono text-xs uppercase tracking-widest text-[#065F46] font-semibold">
+              <span className="font-mono text-xs uppercase tracking-widest text-[#065F46] font-semibold">
                 Plan Request Confirmed
               </span>
 
@@ -260,18 +296,27 @@ export function ContactSection() {
                   <div className="mt-6 grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
                     {BUSINESS_TYPES.map((type) => {
                       const isSelected = businessType === type.id;
+                      const IconComponent = type.icon;
                       return (
                         <button
                           key={type.id}
                           type="button"
                           onClick={() => setBusinessType(type.id)}
-                          className={`flex items-center gap-3 rounded-xl border p-4 text-left transition-all ${
+                          className={`group flex items-center gap-3.5 rounded-xl border p-4 text-left transition-all ${
                             isSelected
                               ? "border-[#065F46] bg-[#ECFDF5] text-[#065F46] ring-1 ring-[#065F46]"
                               : "border-[#E7E5E4] bg-white text-[#111827] hover:border-[#D6D3D1] hover:bg-[#F9F9F7]"
                           }`}
                         >
-                          <span className="text-2xl">{type.icon}</span>
+                          <div
+                            className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-lg transition-colors ${
+                              isSelected
+                                ? "bg-[#065F46] text-white"
+                                : "bg-[#F5F5F4] text-[#57534E] group-hover:bg-[#E7E5E4] group-hover:text-[#111827]"
+                            }`}
+                          >
+                            <IconComponent className="h-5 w-5" />
+                          </div>
                           <span className="font-medium text-sm">{type.label}</span>
                         </button>
                       );
@@ -301,20 +346,20 @@ export function ContactSection() {
                   </p>
 
                   <div className="mt-6 space-y-3">
-                    {COMMON_CHALLENGES.map((ch) => {
-                      const isSelected = challenge === ch.id;
+                    {COMMON_CHALLENGES.map((chal) => {
+                      const isSelected = selectedChallenge === chal.id;
                       return (
                         <button
-                          key={ch.id}
+                          key={chal.id}
                           type="button"
-                          onClick={() => setChallenge(ch.id)}
+                          onClick={() => setSelectedChallenge(chal.id)}
                           className={`flex w-full items-center justify-between rounded-xl border p-4 text-left transition-all ${
                             isSelected
                               ? "border-[#065F46] bg-[#ECFDF5] text-[#065F46] ring-1 ring-[#065F46]"
                               : "border-[#E7E5E4] bg-white text-[#111827] hover:border-[#D6D3D1] hover:bg-[#F9F9F7]"
                           }`}
                         >
-                          <span className="text-sm font-medium">{ch.label}</span>
+                          <span className="text-sm font-medium">{chal.label}</span>
                           <span className={`h-4 w-4 rounded-full border flex items-center justify-center ${
                             isSelected ? "border-[#065F46] bg-[#065F46]" : "border-[#D6D3D1]"
                           }`}>
@@ -325,26 +370,25 @@ export function ContactSection() {
                     })}
                   </div>
 
-                  {/* Write-in Option */}
                   <div className="mt-6">
-                    <label htmlFor="custom-notes" className="block text-xs font-mono uppercase tracking-wider text-[#78716C] mb-2">
-                      Or describe in your own words (optional):
+                    <label htmlFor="custom-challenge" className="block text-xs font-mono uppercase tracking-wider text-[#57534E] mb-2 font-semibold">
+                      Tell us more about your current situation (optional):
                     </label>
                     <textarea
-                      id="custom-notes"
+                      id="custom-challenge"
                       rows={3}
-                      value={customNotes}
-                      onChange={(e) => setCustomNotes(e.target.value)}
-                      placeholder="e.g. We are expanding to 2 new suburbs and need more commercial heating calls..."
-                      className="w-full rounded-xl border border-[#D6D3D1] bg-[#F9F9F7] p-3.5 text-sm text-[#111827] outline-none focus:border-[#065F46] focus:bg-white transition-colors"
+                      value={customChallenge}
+                      onChange={(e) => setCustomChallenge(e.target.value)}
+                      placeholder="e.g. We get about 15 calls a week but technicians miss them while in crawl spaces, and our current site takes 5 seconds to load..."
+                      className="w-full rounded-xl border border-[#D6D3D1] bg-[#F9F9F7] p-3.5 text-sm text-[#111827] placeholder:text-[#78716C] outline-none focus:border-[#065F46] focus:bg-white transition-colors"
                     />
                   </div>
 
-                  <div className="mt-8 flex items-center justify-between">
+                  <div className="mt-8 flex justify-between">
                     <button
                       type="button"
                       onClick={handleBack}
-                      className="rounded-md border border-[#E7E5E4] bg-white px-5 py-2.5 text-sm font-medium text-[#111827] transition-colors hover:border-[#111827]"
+                      className="rounded-md border border-[#E7E5E4] bg-white px-5 py-2.5 text-sm font-medium text-[#57534E] hover:border-[#D6D3D1] hover:text-[#111827]"
                     >
                       ← Back
                     </button>
@@ -353,53 +397,49 @@ export function ContactSection() {
                       onClick={handleNext}
                       className="inline-flex items-center gap-2 rounded-md bg-[#065F46] px-6 py-3 text-sm font-medium text-white shadow-xs transition-all hover:bg-[#064E3B] active:scale-98"
                     >
-                      Next: Features &amp; Capabilities →
+                      Next: Features →
                     </button>
                   </div>
                 </div>
               )}
 
-              {/* STEP 3: Capabilities & Feature Checklist */}
+              {/* STEP 3: Capability Checklist */}
               {currentStep === 3 && (
                 <div>
                   <h3 className="font-serif text-2xl text-[#111827]">
-                    Which features do you want in your plan?
+                    Select the features you want included:
                   </h3>
                   <p className="mt-1 text-sm text-[#57534E]">
-                    Select all capabilities you would like included:
+                    Toggle any items based on your needs:
                   </p>
 
                   <div className="mt-6 space-y-6">
                     {FEATURE_CATEGORIES.map((cat) => (
-                      <div key={cat.category}>
+                      <div key={cat.category} className="rounded-xl border border-[#E7E5E4] bg-[#F9F9F7]/70 p-5">
                         <h4 className="font-mono text-xs uppercase tracking-wider text-[#065F46] font-semibold mb-3">
                           {cat.category}
                         </h4>
-                        <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
+                        <div className="grid grid-cols-1 gap-2.5 sm:grid-cols-2">
                           {cat.features.map((feat) => {
-                            const isChecked = selectedFeatures.includes(feat.id);
+                            const isChecked = selectedFeatures.includes(feat.label);
                             return (
                               <label
                                 key={feat.id}
-                                className={`flex items-start gap-3 rounded-xl border p-3.5 cursor-pointer transition-all ${
+                                className={`flex items-start gap-3 rounded-lg border p-3 cursor-pointer transition-all ${
                                   isChecked
-                                    ? "border-[#065F46] bg-[#ECFDF5]/60"
-                                    : "border-[#E7E5E4] bg-white hover:border-[#D6D3D1]"
+                                    ? "border-[#A7F3D0] bg-white text-[#111827] shadow-xs"
+                                    : "border-[#E7E5E4] bg-white/50 text-[#78716C] hover:bg-white"
                                 }`}
                               >
                                 <input
                                   type="checkbox"
                                   checked={isChecked}
-                                  onChange={() => toggleFeature(feat.id)}
+                                  onChange={() => toggleFeature(feat.label)}
                                   className="mt-1 h-4 w-4 rounded border-[#D6D3D1] text-[#065F46] focus:ring-[#065F46]"
                                 />
                                 <div>
-                                  <div className="text-sm font-medium text-[#111827]">
-                                    {feat.label}
-                                  </div>
-                                  <div className="text-xs text-[#57534E] mt-0.5">
-                                    {feat.sub}
-                                  </div>
+                                  <div className="text-xs font-medium text-[#111827]">{feat.label}</div>
+                                  <div className="text-[11px] text-[#78716C] mt-0.5">{feat.sub}</div>
                                 </div>
                               </label>
                             );
@@ -409,11 +449,11 @@ export function ContactSection() {
                     ))}
                   </div>
 
-                  <div className="mt-8 flex items-center justify-between">
+                  <div className="mt-8 flex justify-between">
                     <button
                       type="button"
                       onClick={handleBack}
-                      className="rounded-md border border-[#E7E5E4] bg-white px-5 py-2.5 text-sm font-medium text-[#111827] transition-colors hover:border-[#111827]"
+                      className="rounded-md border border-[#E7E5E4] bg-white px-5 py-2.5 text-sm font-medium text-[#57534E] hover:border-[#D6D3D1] hover:text-[#111827]"
                     >
                       ← Back
                     </button>
@@ -422,13 +462,13 @@ export function ContactSection() {
                       onClick={handleNext}
                       className="inline-flex items-center gap-2 rounded-md bg-[#065F46] px-6 py-3 text-sm font-medium text-white shadow-xs transition-all hover:bg-[#064E3B] active:scale-98"
                     >
-                      Next: Destination →
+                      Next: Your Details →
                     </button>
                   </div>
                 </div>
               )}
 
-              {/* STEP 4: Contact Destination & Submit */}
+              {/* STEP 4: Contact Information & Consent */}
               {currentStep === 4 && (
                 <form onSubmit={handleSubmit}>
                   {/* Honeypot */}
@@ -473,13 +513,13 @@ export function ContactSection() {
                       </div>
                       <div>
                         <label htmlFor="plan-business" className="block text-xs font-medium text-[#111827] mb-1">
-                          Business Name *
+                          Business / Company Name *
                         </label>
                         <input
                           type="text"
                           id="plan-business"
                           required
-                          placeholder="e.g. Apex Heating & Air"
+                          placeholder="e.g. Apex Heating & Cooling"
                           value={contactData.businessName}
                           onChange={(e) => setContactData({ ...contactData, businessName: e.target.value })}
                           className="w-full rounded-md border border-[#D6D3D1] bg-[#F9F9F7] px-3.5 py-2.5 text-sm text-[#111827] outline-none focus:border-[#065F46] focus:bg-white transition-colors"
@@ -490,13 +530,13 @@ export function ContactSection() {
                     <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
                       <div>
                         <label htmlFor="plan-email" className="block text-xs font-medium text-[#111827] mb-1">
-                          Work Email Address *
+                          Work Email *
                         </label>
                         <input
                           type="email"
                           id="plan-email"
                           required
-                          placeholder="you@yourbusiness.com"
+                          placeholder="name@business.com"
                           value={contactData.email}
                           onChange={(e) => setContactData({ ...contactData, email: e.target.value })}
                           className="w-full rounded-md border border-[#D6D3D1] bg-[#F9F9F7] px-3.5 py-2.5 text-sm text-[#111827] outline-none focus:border-[#065F46] focus:bg-white transition-colors"
@@ -504,7 +544,7 @@ export function ContactSection() {
                       </div>
                       <div>
                         <label htmlFor="plan-phone" className="block text-xs font-medium text-[#111827] mb-1">
-                          Mobile Phone (for instant plan alert)
+                          Phone Number (for SMS notifications &amp; proposal alerts)
                         </label>
                         <input
                           type="tel"
@@ -554,27 +594,29 @@ export function ContactSection() {
                     </div>
                   </div>
 
-                  <div className="mt-8 flex items-center justify-between pt-4 border-t border-[#E7E5E4]">
+                  <div className="mt-8 flex justify-between items-center">
                     <button
                       type="button"
                       onClick={handleBack}
-                      disabled={isSubmitting}
-                      className="rounded-md border border-[#E7E5E4] bg-white px-5 py-2.5 text-sm font-medium text-[#111827] transition-colors hover:border-[#111827] disabled:opacity-50"
+                      className="rounded-md border border-[#E7E5E4] bg-white px-5 py-2.5 text-sm font-medium text-[#57534E] hover:border-[#D6D3D1] hover:text-[#111827]"
                     >
                       ← Back
                     </button>
                     <button
                       type="submit"
                       disabled={isSubmitting}
-                      className="inline-flex items-center gap-2 rounded-md bg-[#065F46] px-7 py-3.5 text-sm font-medium text-white shadow-xs transition-all hover:bg-[#064E3B] hover:shadow-sm active:scale-98 disabled:opacity-75"
+                      className="inline-flex items-center gap-2 rounded-md bg-[#065F46] px-7 py-3.5 text-sm font-medium text-white shadow-xs transition-all hover:bg-[#064E3B] active:scale-98 disabled:opacity-60"
                     >
                       {isSubmitting ? (
                         <>
-                          <span className="h-4 w-4 rounded-full border-2 border-white border-t-transparent animate-spin" />
-                          Preparing Your Plan...
+                          <svg className="h-4 w-4 animate-spin text-white" viewBox="0 0 24 24" fill="none">
+                            <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
+                            <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z" />
+                          </svg>
+                          Generating Your Plan...
                         </>
                       ) : (
-                        "Generate My Free Website Plan →"
+                        "Generate My Custom Plan →"
                       )}
                     </button>
                   </div>
