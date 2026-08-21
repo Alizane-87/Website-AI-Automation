@@ -14,7 +14,7 @@ export const legalIdentity = {
   /** Jurisdiction whose law governs the terms */
   governingLaw: "Republic of India & International Commercial Law",
   /** Last updated date string */
-  lastUpdated: "August 20, 2026",
+  lastUpdated: "August 21, 2026",
 };
 
 export const pendingValueLabel = "Available upon request";
@@ -22,8 +22,8 @@ export const pendingValueLabel = "Available upon request";
 export type LegalSection = { heading: string; paragraphs: string[]; bullets?: string[] };
 
 export const privacyNotice = {
-  title: "IMPORTANT NOTICE REGARDING TEXT MESSAGING DATA",
-  body: "Alizane Labs (\"we,\" \"us,\" or \"our\") DOES NOT share customer opt-in information, including phone numbers and consent records, with any affiliates or third parties for marketing, promotional, or any other purposes unrelated to providing our direct services. All text messaging originator opt-in data is kept strictly confidential.",
+  title: "IMPORTANT NOTICE REGARDING TELEPHONY & TEXT MESSAGING DATA",
+  body: "Alizane Labs (\"we,\" \"us,\" or \"our\") DOES NOT share customer opt-in information, including phone numbers and consent records, with any affiliates or third parties for marketing, promotional, or any other purposes unrelated to providing our direct services. All text messaging and voice originator opt-in data is kept strictly confidential.",
 };
 
 export const privacySections: LegalSection[] = [
@@ -31,35 +31,35 @@ export const privacySections: LegalSection[] = [
     heading: "1. Information We Collect",
     paragraphs: ["We collect the following types of information:"],
     bullets: [
-      "Personal Information: Name, email address, phone number, physical address, payment information when you make a purchase or request a quote, and opt-in records and timestamps for all communication channels (SMS, email, etc.).",
+      "Personal Information: Name, email address, phone number, physical address, payment information when you make a purchase or request a quote, and opt-in records and timestamps for all communication channels (automated calls, SMS, email, etc.).",
       "Non-Personal Information: IP address, browser type, device information, website usage patterns and analytics, and cookies and similar technologies.",
-      "Customer Communication: Records of inquiries and service requests, appointment details and preferences, and service history and feedback.",
+      "Customer Communication: Records of inquiries and service requests, appointment details and preferences, call transcripts, and service history and feedback.",
     ],
   },
   {
     heading: "2. How We Use Your Information",
     paragraphs: ["We use collected data for:"],
     bullets: [
-      "Providing and improving our services",
+      "Providing and improving our bespoke web design and AI automation services",
       "Processing transactions and payments",
-      "Communicating with you about your inquiries, appointments, and promotions",
+      "Communicating with you about your inquiries, automated appointments, and proposal updates via phone, AI voice, and SMS",
       "Enhancing website functionality and user experience",
       "Ensuring security and fraud prevention",
       "Maintaining records of your communication preferences and consent",
     ],
   },
   {
-    heading: "3. SMS Messaging & Compliance",
+    heading: "3. Automated Calls, Voice AI & SMS Messaging Compliance",
     paragraphs: [
-      "Text Message Program Terms & Conditions: By opting into our SMS messaging services, you agree to receive text messages related to our services, including appointment reminders, customer support, and important updates.",
+      "Communications Program Terms & Conditions: By opting into our communication services, you agree to receive automated phone calls, AI voice interactions, and text messages related to our services, including proposal discussions, scheduling confirmations, appointment reminders, and customer support.",
     ],
     bullets: [
-      "Opt-In & Consent: You will only receive messages if you have explicitly opted in. We maintain timestamped records of all opt-in actions and comply with the Telephone Consumer Protection Act (TCPA) and all applicable laws.",
+      "Opt-In & Consent: You will only receive automated calls or text messages if you have explicitly opted in via our website form. Consent is not a condition of purchase. We maintain timestamped records of all opt-in actions and comply with the Telephone Consumer Protection Act (TCPA) and all applicable laws.",
       "Opt-Out Instructions: You can cancel SMS notifications at any time by replying 'STOP'. You will receive a final confirmation message, and no further messages will be sent unless you re-opt in. All opt-out requests are processed immediately.",
-      "Message Frequency & Content: Message frequency varies based on your interactions with our business. Messages will be directly related to the services you have requested. We do not send promotional content without specific consent.",
+      "Message Frequency & Content: Message and call frequency varies based on your interactions with our business. Communications will be directly related to the services you have requested. We do not send promotional content without specific consent.",
       "Help & Support: Reply 'HELP' for assistance or contact us at hello@alizanelabs.site. Customer support is available during regular business hours.",
       "Carrier Information: Standard message and data rates may apply. Carriers are not liable for delayed or undelivered messages. Supported carriers include AT&T, Verizon, T-Mobile, Sprint, and most regional carriers.",
-      "SMS Data Protection Statement: No mobile information will be shared with third parties/affiliates for marketing/promotional purposes. Information sharing to subcontractors in support services, such as customer service is permitted. All other use case categories exclude text messaging originator opt-in data and consent; this information will not be shared with any third parties. We implement strict data protection measures to safeguard your SMS opt-in information and consent records.",
+      "Data Protection Statement: No mobile or telephony information will be shared with third parties/affiliates for marketing/promotional purposes. Information sharing to subcontractors in support services, such as customer service is permitted. All other use case categories exclude voice and text messaging originator opt-in data and consent; this information will not be shared with any third parties.",
     ],
   },
   {
@@ -68,10 +68,10 @@ export const privacySections: LegalSection[] = [
       "We do not sell, rent, or trade personal information. We may share information with:",
     ],
     bullets: [
-      "Service Providers: Third-party vendors who assist in our operations (e.g., payment processing, appointment scheduling), and SMS aggregators and providers solely for the purpose of delivering messages you've consented to receive. All service providers are contractually obligated to maintain confidentiality and security.",
+      "Service Providers: Third-party vendors who assist in our operations (e.g., payment processing, appointment scheduling, telephony/SMS delivery). All service providers are contractually obligated to maintain confidentiality and security.",
       "Legal Compliance: If required by law, legal process, or to protect our rights, or in response to valid law enforcement requests or court orders.",
       "Business Transfers: In case of mergers, acquisitions, or sale of assets. In such cases, your data remains protected under the terms of this policy.",
-      "Important Exclusion: All the above categories exclude text messaging originator opt-in data and consent; this information will not be shared with any third parties, excluding aggregators and providers of the Text Message services.",
+      "Important Exclusion: All the above categories exclude text and voice messaging originator opt-in data and consent; this information will not be shared with any third parties, excluding aggregators and telephony providers delivering the requested communications.",
     ],
   },
   {
@@ -128,24 +128,24 @@ export const privacySections: LegalSection[] = [
 ];
 
 export const termsNotice = {
-  title: "SMS MESSAGING TERMS & COMPLIANCE (TCPA / CTIA)",
-  body: "This messaging program sends appointment confirmations and reminder messages to customers who have booked an appointment with Alizane Labs through https://alizanelabs.site and have explicitly opted in via our dedicated consent checkbox. Text 'STOP' to cancel at any time, or text 'HELP' for support.",
+  title: "AUTOMATED CALLS & SMS MESSAGING TERMS (TCPA / CTIA)",
+  body: "This communications program sends automated calls, AI voice interactions, and appointment confirmations to customers who have requested a website plan from Alizane Labs through https://alizanelabs.site and have explicitly opted in via our dedicated consent checkbox. Text 'STOP' to cancel SMS at any time, or text 'HELP' for support.",
 };
 
 export const termsSections: LegalSection[] = [
   {
-    heading: "1. SMS Messaging Terms & Compliance",
+    heading: "1. Automated Calls, Voice AI & SMS Terms",
     paragraphs: [
-      "We comply with all applicable laws and regulations, including the Telephone Consumer Protection Act (TCPA) and CTIA guidelines, regarding the use of SMS communications.",
+      "We comply with all applicable laws and regulations, including the Telephone Consumer Protection Act (TCPA) and CTIA guidelines, regarding the use of automated voice and SMS communications.",
     ],
     bullets: [
-      "Program Description: This messaging program sends appointment confirmation and reminder messages to customers who have booked an appointment with Alizane Labs through our website at https://alizanelabs.site, or via our scheduling forms, and have explicitly opted in to receive SMS notifications. Opt-in is collected via web forms with a dedicated checkbox for SMS consent. Messages include scheduling confirmations, appointment reminders, rescheduling updates, and customer support communications.",
-      "Cancellation Instructions: You can cancel the SMS service at any time. Simply text 'STOP' to the same number that sent you messages. Upon sending 'STOP,' we will confirm your unsubscribe status via SMS. Following this confirmation, you will no longer receive SMS messages from us. To rejoin, sign up as you did initially, and we will resume sending SMS messages to you.",
+      "Program Description: This communication program sends automated calls, AI voice interactions, and appointment confirmation and reminder messages to customers who have requested a proposal or booked an appointment with Alizane Labs through our website at https://alizanelabs.site, and have explicitly opted in to receive telephony and SMS communications. Consent is not a condition of purchase.",
+      "Cancellation Instructions: You can cancel SMS notifications at any time by texting 'STOP' to the same number that sent you messages. Following this confirmation, you will no longer receive SMS messages from us. To rejoin, sign up as you did initially, and we will resume communications.",
       "Support Information: If you experience issues with the messaging program, reply with the keyword 'HELP' for more assistance, or reach out directly to hello@alizanelabs.site during business hours.",
       "Carrier Liability: Carriers are not liable for delayed or undelivered messages.",
-      "Message & Data Rates: Message and data rates may apply for messages sent to you from us and to us from you. Message frequency varies based on your service usage and appointment schedule. For questions about your text plan or data plan, contact your wireless provider.",
-      "Supported Carriers: Our SMS program works with all major U.S. wireless carriers, including AT&T, T-Mobile, Verizon, Sprint, and most regional carriers.",
-      "Age Restriction: You must be 18 years or older to participate in our SMS program.",
+      "Message & Data Rates: Message and data rates may apply for calls and messages sent to you from us. Communication frequency varies based on your service usage and proposal request.",
+      "Supported Carriers: Our program works with all major U.S. wireless carriers, including AT&T, T-Mobile, Verizon, Sprint, and most regional carriers.",
+      "Age Restriction: You must be 18 years or older to participate in our communications program.",
       "Privacy Policy: For privacy-related inquiries, please refer to our Privacy Policy at https://alizanelabs.site/privacy.",
     ],
   },

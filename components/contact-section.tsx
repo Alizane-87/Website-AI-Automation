@@ -531,19 +531,23 @@ export function ContactSection() {
                       />
                     </div>
 
-                    {/* SMS Consent Checkbox */}
+                    {/* Automated Calls & SMS Consent Checkbox */}
                     <div className="pt-2">
-                      <label className="flex items-start gap-2.5 cursor-pointer text-xs text-[#57534E]">
+                      <label className="flex items-start gap-2.5 cursor-pointer text-xs text-[#57534E] leading-relaxed">
                         <input
                           type="checkbox"
                           checked={contactData.smsConsent}
                           onChange={(e) => setContactData({ ...contactData, smsConsent: e.target.checked })}
-                          className="mt-0.5 h-4 w-4 rounded border-[#D6D3D1] text-[#065F46] focus:ring-[#065F46]"
+                          className="mt-1 h-4 w-4 shrink-0 rounded border-[#D6D3D1] text-[#065F46] focus:ring-[#065F46]"
                         />
                         <span>
-                          I agree to receive SMS text notifications regarding my website plan from Alizane Labs. Reply STOP to cancel at any time. View our{" "}
-                          <a href="/privacy" className="text-[#065F46] underline">
+                          I consent to receive automated phone calls, AI voice communications, and SMS text messages from Alizane Labs regarding my website &amp; automation plan at the phone number provided. Consent is not a condition of purchase. Message and data rates may apply. Reply STOP to cancel at any time. View our{" "}
+                          <a href="/privacy" target="_blank" className="text-[#065F46] underline font-medium hover:text-[#064E3B]">
                             Privacy Policy
+                          </a>{" "}
+                          and{" "}
+                          <a href="/terms" target="_blank" className="text-[#065F46] underline font-medium hover:text-[#064E3B]">
+                            Terms of Service
                           </a>.
                         </span>
                       </label>
