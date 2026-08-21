@@ -80,11 +80,14 @@ export async function POST(req: NextRequest) {
     if (!response.ok) {
       const errData = await response.json().catch(() => ({}));
       console.error("OpenRouter Error:", errData);
+      const errorMsg =
+        errData?.error?.message ||
+        errData?.message ||
+        `OpenRouter status ${response.status}: ${response.statusText}`;
       return NextResponse.json(
         {
           role: "assistant",
-          content:
-            "I'm experiencing a brief connection delay. Feel free to explore our plans below or fill out the project planner to get your tailored build plan!",
+          content: `AI Connection Notice: ${errorMsg}. Please check our plans below or fill out the project planner!`,
         },
         { status: 200 }
       );
