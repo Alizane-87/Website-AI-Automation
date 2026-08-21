@@ -43,15 +43,15 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    const apiKey = process.env.OPENROUTER_API_KEY;
-    const model = process.env.AI_CHAT_MODEL || "openrouter/free";
+    const apiKey = process.env.OPENROUTER_API_KEY?.trim();
+    const model = process.env.AI_CHAT_MODEL?.trim() || "openrouter/free";
 
     if (!apiKey || apiKey === "your_openrouter_api_key_here") {
       return NextResponse.json(
         {
           role: "assistant",
           content:
-            "Hello! I am the Alizane Labs AI assistant. To enable live AI chat on localhost, please add your OPENROUTER_API_KEY to .env.local.",
+            "Hello! I am the Alizane Labs AI assistant. To enable live AI chat, please configure OPENROUTER_API_KEY in your environment variables.",
         },
         { status: 200 }
       );
@@ -63,7 +63,7 @@ export async function POST(req: NextRequest) {
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${apiKey}`,
-        "HTTP-Referer": "https://alizanelabs.site",
+        "HTTP-Referer": "https://www.alizanelabs.site",
         "X-Title": "Alizane Labs Website Assistant",
       },
       body: JSON.stringify({
