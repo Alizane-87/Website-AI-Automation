@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import React, { useRef, useState, useEffect, useCallback } from "react";
 
 export function BeforeAfterSlider() {
@@ -133,11 +134,12 @@ export function BeforeAfterSlider() {
         style={{ userSelect: "none", WebkitUserSelect: "none" }}
       >
         {/* 1. AFTER IMAGE (Right / Background Layer) */}
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img
+        <Image
           src="/images/after-hero.jpg"
           alt="After: Modern Alizane Labs Website"
-          draggable={false}
+          fill
+          sizes="(max-width: 768px) 100vw, 1024px"
+          quality={75}
           className="pointer-events-none absolute inset-0 h-full w-full object-cover object-top select-none"
         />
 
@@ -150,11 +152,12 @@ export function BeforeAfterSlider() {
             transition: isDragging || !isNudging ? "none" : "clip-path 450ms cubic-bezier(.16,1,.3,1)",
           }}
         >
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img
+          <Image
             src="/images/before-hero.jpg"
             alt="Before: Generic Local Business Website"
-            draggable={false}
+            fill
+            sizes="(max-width: 768px) 100vw, 1024px"
+            quality={75}
             className="pointer-events-none absolute inset-0 h-full w-full object-cover object-top select-none"
           />
         </div>
