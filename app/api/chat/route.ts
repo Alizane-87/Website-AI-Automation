@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { checkChatRateLimit, chatClientKeyFromHeaders } from "@/lib/rate-limit";
+import { getClientChatbotConfig } from "@/lib/supabase-chat";
 
 // Alizane Labs AI Website Assistant Controller (Powered by Google Gemini 2.0 Flash)
 const SYSTEM_PROMPT = `You are the Alizane Assistant for Alizane Labs (https://alizanelabs.site).
@@ -70,7 +71,7 @@ export async function POST(req: NextRequest) {
   }
 
   try {
-    const { messages } = await req.json();
+    const { messages, clientId } = await req.json();
 
     const MAX_MESSAGES_PER_CONVERSATION = 40; // ~20 back-and-forths
 
@@ -102,6 +103,11 @@ export async function POST(req: NextRequest) {
         { status: 200 }
       );
     }
+
+    // Dynamic Multi-Tenant Client Configuration (Supabase with edge cache & local fallback)
+    const clientConfig = await getClientChatbotConfig(clientId);
+    const activeSystemPrompt = clientConfig?.systemPrompt || SYSTEM_PROMPT;
+    const targetWebhookUrl = clientConfig?.leadWebhookUrl || process.env.LEAD_WEBHOOK_URL;
 
     // Input Sanitization & Clamping (Anti-Token-Drain Guardrail)
     const sanitizedMessages = messages
@@ -174,7 +180,7 @@ export async function POST(req: NextRequest) {
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({
                   systemInstruction: {
-                    parts: [{ text: SYSTEM_PROMPT }],
+                    parts: [{ text: activeSystemPrompt }],
                   },
                   contents: geminiContents,
                   generationConfig: {
@@ -228,7 +234,7 @@ export async function POST(req: NextRequest) {
           body: JSON.stringify({
             model: openRouterModel,
             messages: [
-              { role: "system", content: SYSTEM_PROMPT },
+              { role: "system", content: activeSystemPrompt },
               ...sanitizedMessages,
             ],
             temperature: 0.2,
@@ -277,18 +283,20 @@ export async function POST(req: NextRequest) {
     const isNewLead =
       CONTACT_RE.test(String(latestUserMsg)) && !CONTACT_RE.test(priorUserText);
 
-    if (process.env.LEAD_WEBHOOK_URL && isNewLead) {
+    if (targetWebhookUrl && isNewLead) {
       const transcript = messages
         .map((m: { role: string; content: string }) => `${m.role === "user" ? "Visitor" : "Assistant"}: ${m.content}`)
         .join("\n")
         .slice(-3500); // Safe length for Telegram / Slack / webhook payload limits
 
       try {
-        await fetch(process.env.LEAD_WEBHOOK_URL, {
+        await fetch(targetWebhookUrl, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
-            source: "site-chatbot",
+            source: clientConfig ? `site_ai_chat_${clientConfig.clientId}` : "site_ai_chat",
+            client_id: clientConfig?.clientId || "alizane-agency",
+            business_name: clientConfig?.businessName || "Alizane Labs",
             message: latestUserMsg,
             transcript,
             timestamp: new Date().toISOString(),
@@ -315,7 +323,7 @@ export async function POST(req: NextRequest) {
       : {};
 
     // Always log the trace server-side so you keep it in production.
-    console.log(`[chat] provider=${activeProvider} trace=${diagnosticTrace}`);
+    console.log(`[chat] client=${clientConfig?.clientId || "default"} provider=${activeProvider} trace=${diagnosticTrace}`);
 
     return NextResponse.json(
       {
