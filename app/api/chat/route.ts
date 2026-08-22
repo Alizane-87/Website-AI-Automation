@@ -308,12 +308,13 @@ export async function POST(req: NextRequest) {
         },
       }
     );
-  } catch (error) {
+  } catch (error: any) {
     console.error("Chat API Error:", error);
     return NextResponse.json(
       {
         role: "assistant",
         content: "Sorry, I ran into an error. Please try again or reach out at hello@alizanelabs.site.",
+        error: error?.message || String(error),
       },
       { status: 500 }
     );
