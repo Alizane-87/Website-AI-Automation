@@ -3,12 +3,14 @@
 import React, { useState } from "react";
 import Link from "next/link";
 import { AIChatWidget } from "@/components/ai-chat-widget";
-import { ContractorService, ContractorReview } from "@/lib/supabase-chat";
+import { ContractorService, ContractorReview, ContractorLeader } from "@/lib/supabase-chat";
 
 interface DemoShowcaseProps {
   clientId: string;
   businessName: string;
   phone: string;
+  tollFree?: string;
+  address?: string;
   serviceCity: string;
   tagline: string;
   subheadline: string;
@@ -17,6 +19,8 @@ interface DemoShowcaseProps {
   services: ContractorService[];
   serviceAreas: string[];
   reviews: ContractorReview[];
+  leadership?: ContractorLeader[];
+  foundationMission?: string;
   themeAccent: string;
   themePulse: string;
   themeBorder: string;
@@ -27,6 +31,8 @@ export function DemoShowcase({
   clientId,
   businessName,
   phone,
+  tollFree = "(866) 344-4WET",
+  address = "4191 Inca St, Denver, CO 80211",
   serviceCity,
   tagline,
   subheadline,
@@ -35,6 +41,8 @@ export function DemoShowcase({
   services,
   serviceAreas,
   reviews,
+  leadership = [],
+  foundationMission,
   themeAccent,
   themePulse,
   themeBorder,
@@ -43,7 +51,7 @@ export function DemoShowcase({
   const [activeServiceIdx, setActiveServiceIdx] = useState(0);
 
   // Quote & Dispatch Console State
-  const defaultServiceTitle = services[0]?.title || "24/7 Emergency Water Mitigation";
+  const defaultServiceTitle = services[0]?.title || "Water Extraction & Structural Drying";
   const [selectedService, setSelectedService] = useState(defaultServiceTitle);
   const [damageCategory, setDamageCategory] = useState("Category 1: Clean Water (Supply Pipe / Heater)");
   const [insuranceCarrier, setInsuranceCarrier] = useState("State Farm Insurance");
@@ -94,7 +102,7 @@ export function DemoShowcase({
   };
 
   const currentService = services[activeServiceIdx] || services[0];
-  const initialGreeting = `Hi there! 👋 Welcome to ${businessName}. I'm your 24/7 AI Emergency Dispatch Assistant for ${serviceCity}. How can I assist with your emergency water extraction, fire restoration, mold remediation, or insurance claim today?`;
+  const initialGreeting = `Hi there! 👋 Welcome to ${businessName} (Corporate Office: 4191 Inca St, Denver). I'm your 24/7 AI Emergency Dispatch Assistant for ${serviceCity}. How can I assist with your emergency water extraction, fire restoration, mold remediation, or insurance claim today?`;
 
   return (
     <div
@@ -109,7 +117,7 @@ export function DemoShowcase({
         } as React.CSSProperties
       }
     >
-      {/* 1. TOP AGENCY PROTOTYPE BANNER */}
+      {/* 1. TOP AGENCY PROTOTYPE STATUS BAR */}
       <div className="bg-[#040A12] border-b border-white/10 py-2 px-4 text-xs font-medium text-[#94A3B8] flex flex-wrap items-center justify-between gap-3">
         <div className="flex items-center gap-2.5">
           <span className="flex h-2 w-2 relative">
@@ -117,7 +125,7 @@ export function DemoShowcase({
             <span className="relative inline-flex rounded-full h-2 w-2 bg-cyan-500" />
           </span>
           <span>
-            Live Interactive Architecture Prototype for <strong className="text-white">{businessName}</strong> · Next.js 16 Edge (380ms Sub-Second Speed)
+            Live Redesign Build for <strong className="text-white">{businessName}</strong> · Direct Scraped Authentic Assets · Next.js 16 Edge (380ms Speed)
           </span>
         </div>
         <Link
@@ -128,11 +136,14 @@ export function DemoShowcase({
         </Link>
       </div>
 
-      {/* 2. REAL WEATHER / EMERGENCY ADVISORY BAR */}
-      <div className="bg-[#0C2340] border-b border-cyan-500/30 py-2.5 px-4 text-center text-xs font-semibold text-cyan-200 flex items-center justify-center gap-2">
-        <span className="animate-pulse text-amber-400">⚠️</span>
+      {/* 2. EMERGENCY ADVISORY & REAL CORPORATE ADDRESS BAR */}
+      <div className="bg-[#0C2340] border-b border-cyan-500/30 py-2.5 px-4 text-center text-xs font-semibold text-cyan-200 flex flex-wrap items-center justify-center gap-x-4 gap-y-1">
         <span>
-          <strong>{serviceCity} Emergency Advisory:</strong> Rapid-Response Extraction Trucks &amp; Certified Dispatchers On 24/7/365 Standby.
+          📍 <strong>Corporate Office:</strong> {address}
+        </span>
+        <span className="text-white/30 hidden sm:inline">|</span>
+        <span>
+          📞 <strong>24/7 Hotline:</strong> {phone} · <strong>Toll-Free:</strong> {tollFree}
         </span>
       </div>
 
@@ -160,11 +171,11 @@ export function DemoShowcase({
           {/* Desktop Navigation Links */}
           <nav className="hidden lg:flex items-center gap-6 text-xs font-bold text-[#CBD5E1]">
             <a href="#overview" className="hover:text-cyan-400 transition-colors">Overview</a>
-            <a href="#protocols" className="hover:text-cyan-400 transition-colors">Protocols &amp; Fleet</a>
+            <a href="#protocols" className="hover:text-cyan-400 transition-colors">Capabilities &amp; Fleet</a>
+            <a href="#leadership" className="hover:text-cyan-400 transition-colors">Leadership Team</a>
             <a href="#emergency-guide" className="hover:text-cyan-400 transition-colors">Homeowner Guide</a>
             <a href="#insurance-desk" className="hover:text-cyan-400 transition-colors">Insurance Desk</a>
-            <a href="#reviews" className="hover:text-cyan-400 transition-colors">Verified Reviews</a>
-            <a href="#service-areas" className="hover:text-cyan-400 transition-colors">Service Radius</a>
+            <a href="#reviews" className="hover:text-cyan-400 transition-colors">Client Reviews</a>
           </nav>
 
           {/* 24/7 Hotline CTA */}
@@ -196,9 +207,9 @@ export function DemoShowcase({
             <div className="lg:col-span-7 text-left space-y-6">
               <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full text-xs font-semibold uppercase tracking-wider bg-white/5 border border-white/15 backdrop-blur-md">
                 <span className="text-amber-400">★★★★★</span>
-                <span className="text-white">4.9 Rating (180+ Reviews)</span>
+                <span className="text-white">Over 3 Decades of Excellence</span>
                 <span className="text-white/30">|</span>
-                <span className="text-cyan-400 font-bold">WOSB &amp; IICRC Master Certified</span>
+                <span className="text-cyan-400 font-bold">SBA Certified WOSB &amp; IICRC</span>
               </div>
 
               <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight text-white leading-[1.1]">
@@ -311,11 +322,12 @@ export function DemoShowcase({
                         onChange={(e) => setDamageCategory(e.target.value)}
                         className="w-full px-3.5 py-2.5 text-xs bg-[#08121E] border border-white/20 rounded-xl text-white focus:outline-none focus:border-cyan-400"
                       >
-                        <option>Category 1: Clean Water (Supply Line / Heater / Ice Maker)</option>
-                        <option>Category 2: Gray Water (Washing Machine / Dishwasher / Sump)</option>
-                        <option>Category 3: Black Water / Sewage / River Flooding</option>
-                        <option>Fire Damage: Structural Soot &amp; Smoke Residue</option>
-                        <option>Microbial: Active Mold Colony &amp; Odor</option>
+                        <option>Category 1: Clean Water (Supply Line / Water Main / Heater)</option>
+                        <option>Category 2: Gray Water (Washing Machine / Sump Overflow)</option>
+                        <option>Category 3: Black Water / Sewage Backup</option>
+                        <option>Fire Damage: Structural Soot &amp; Protein Smoke</option>
+                        <option>Microbial: Hazardous Mold Colony</option>
+                        <option>Asbestos Abatement Inspection</option>
                       </select>
                     </div>
 
@@ -332,7 +344,8 @@ export function DemoShowcase({
                         <option>Allstate Insurance</option>
                         <option>USAA Insurance</option>
                         <option>Travelers / Liberty Mutual / Farmers</option>
-                        <option>Self-Pay / Commercial Property Account</option>
+                        <option>HOA Commercial Property Account</option>
+                        <option>Self-Pay Account</option>
                       </select>
                     </div>
 
@@ -373,7 +386,7 @@ export function DemoShowcase({
                         type="text"
                         value={formAddress}
                         onChange={(e) => setFormAddress(e.target.value)}
-                        placeholder="1420 Washington St, Denver, CO"
+                        placeholder="4191 Inca St, Denver, CO"
                         className="w-full px-3 py-2 text-xs bg-[#08121E] border border-white/20 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:border-cyan-400"
                       />
                     </div>
@@ -398,8 +411,8 @@ export function DemoShowcase({
       <section className="bg-[#040A12] border-b border-white/10 py-10">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
           <div>
-            <div className="text-3xl sm:text-4xl font-extrabold text-white">24/7/365</div>
-            <div className="text-xs uppercase font-semibold text-cyan-400 mt-1 tracking-wider">Live Denver Hotline</div>
+            <div className="text-3xl sm:text-4xl font-extrabold text-white">30+ Yrs</div>
+            <div className="text-xs uppercase font-semibold text-cyan-400 mt-1 tracking-wider">Denver Industry Leadership</div>
           </div>
           <div>
             <div className="text-3xl sm:text-4xl font-extrabold text-white">&lt; 60 Min</div>
@@ -410,8 +423,8 @@ export function DemoShowcase({
             <div className="text-xs uppercase font-semibold text-cyan-400 mt-1 tracking-wider">Direct Insurance Billing</div>
           </div>
           <div>
-            <div className="text-3xl sm:text-4xl font-extrabold text-white">IICRC</div>
-            <div className="text-xs uppercase font-semibold text-cyan-400 mt-1 tracking-wider">Master Certified Techs</div>
+            <div className="text-3xl sm:text-4xl font-extrabold text-white">WOSB</div>
+            <div className="text-xs uppercase font-semibold text-cyan-400 mt-1 tracking-wider">SBA Certified Enterprise</div>
           </div>
         </div>
       </section>
@@ -420,13 +433,13 @@ export function DemoShowcase({
       <section id="protocols" className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 border-b border-white/10">
         <div className="text-center max-w-3xl mx-auto mb-16">
           <span className="text-xs font-bold uppercase tracking-widest text-cyan-400">
-            Technical Excellence
+            {trade}
           </span>
           <h2 className="text-3xl sm:text-4xl font-bold tracking-tight text-white mt-2">
-            4-Phase Structural Mitigation Protocol
+            Engineered Capabilities &amp; Fleet Equipment
           </h2>
           <p className="text-sm text-[#94A3B8] mt-3">
-            We execute standardized IICRC S500 certified restoration workflows to prevent secondary structural rot, mold colonies, and insurance claim denials.
+            Committed to taking on the toughest residential and commercial jobs with pride across Denver and the Front Range.
           </p>
         </div>
 
@@ -538,7 +551,59 @@ export function DemoShowcase({
         )}
       </section>
 
-      {/* 7. HOMEOWNER EMERGENCY SAFETY GUIDE */}
+      {/* 7. AUTHENTIC LEADERSHIP TEAM SECTION */}
+      {leadership.length > 0 && (
+        <section id="leadership" className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-20 border-b border-white/10">
+          <div className="text-center max-w-3xl mx-auto mb-16">
+            <span className="text-xs font-bold uppercase tracking-widest text-cyan-400">
+              Empowering Associates
+            </span>
+            <h2 className="text-3xl sm:text-4xl font-bold tracking-tight text-white mt-2">
+              Leadership Team at {businessName}
+            </h2>
+            <p className="text-sm text-[#94A3B8] mt-3">
+              &quot;Great leaders are almost always great simplifiers, who can cut through argument, debate, and doubt to offer a solution everybody can understand.&quot;
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 text-left">
+            {leadership.map((leader, idx) => (
+              <div key={idx} className="bg-[#0C1A2E] border border-white/10 rounded-2xl p-6 shadow-xl space-y-3">
+                <div className="w-12 h-12 rounded-xl bg-cyan-500/20 text-cyan-300 font-extrabold flex items-center justify-center text-lg border border-cyan-500/30">
+                  {leader.name.split(" ").map((n) => n[0]).join("")}
+                </div>
+                <h3 className="text-lg font-bold text-white">{leader.name}</h3>
+                <div className="text-xs font-bold text-cyan-400">{leader.role}</div>
+                <p className="text-xs text-[#94A3B8] leading-relaxed pt-2 border-t border-white/10">
+                  {leader.bio}
+                </p>
+              </div>
+            ))}
+          </div>
+        </section>
+      )}
+
+      {/* 8. FOUNDATION 1023 PARTNERSHIP SECTION */}
+      {foundationMission && (
+        <section className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-16 border-b border-white/10">
+          <div className="p-8 sm:p-10 rounded-3xl bg-gradient-to-r from-blue-950/60 via-[#0C1A2E] to-cyan-950/60 border border-cyan-500/40 text-left space-y-4 shadow-2xl">
+            <div className="inline-block text-[10px] uppercase font-extrabold px-3 py-1 rounded-full bg-cyan-500/20 text-cyan-300 border border-cyan-500/30">
+              Community Impact Partnership
+            </div>
+            <h3 className="text-2xl sm:text-3xl font-black text-white">
+              Proud Supporter of Foundation 1023
+            </h3>
+            <p className="text-xs sm:text-sm text-[#CBD5E1] leading-relaxed max-w-3xl">
+              {foundationMission}
+            </p>
+            <div className="pt-2 text-xs font-bold text-cyan-400">
+              🎗️ 5% of property loss jobs donated to Colorado First Responder mental health wellness.
+            </div>
+          </div>
+        </section>
+      )}
+
+      {/* 9. HOMEOWNER EMERGENCY SAFETY GUIDE */}
       <section id="emergency-guide" className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-20 border-b border-white/10">
         <div className="text-center max-w-2xl mx-auto mb-12">
           <span className="text-xs font-bold uppercase tracking-widest text-cyan-400">
@@ -628,7 +693,7 @@ export function DemoShowcase({
         </div>
       </section>
 
-      {/* 8. DIRECT INSURANCE CARRIER BILLING DESK */}
+      {/* 10. DIRECT INSURANCE CARRIER BILLING DESK */}
       <section id="insurance-desk" className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-20 border-b border-white/10">
         <div className="text-center max-w-3xl mx-auto mb-16">
           <span className="text-xs font-bold uppercase tracking-widest text-cyan-400">
@@ -745,14 +810,14 @@ export function DemoShowcase({
         </div>
       </section>
 
-      {/* 9. VERIFIED REVIEWS WALL */}
+      {/* 11. VERIFIED REVIEWS WALL (AUTHENTIC COPIED TESTIMONIALS) */}
       <section id="reviews" className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-20 border-b border-white/10">
         <div className="text-center max-w-2xl mx-auto mb-16">
           <span className="text-xs font-bold uppercase tracking-widest text-cyan-400">
-            Proven Local Reputation
+            Real Customer Praise
           </span>
           <h2 className="text-3xl sm:text-4xl font-bold tracking-tight text-white mt-2">
-            Verified {serviceCity} Testimonials
+            Verified {businessName} Testimonials
           </h2>
         </div>
 
@@ -779,7 +844,7 @@ export function DemoShowcase({
         </div>
       </section>
 
-      {/* 10. REGIONAL TERRITORY GRID */}
+      {/* 12. REGIONAL TERRITORY GRID */}
       <section id="service-areas" className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-16 border-b border-white/10">
         <div className="text-center max-w-2xl mx-auto mb-8">
           <span className="text-xs font-bold uppercase tracking-widest text-cyan-400">
@@ -802,14 +867,14 @@ export function DemoShowcase({
         </div>
       </section>
 
-      {/* 11. 4-PILLAR WHY CHOOSE US */}
+      {/* 13. 4-PILLAR WHY CHOOSE US */}
       <section className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
         <div className="text-center max-w-2xl mx-auto mb-12">
           <span className="text-xs font-bold uppercase tracking-widest text-cyan-400">
             The Colorado Standard
           </span>
           <h2 className="text-3xl font-bold tracking-tight text-white mt-2">
-            Why {serviceCity} Chooses {businessName}
+            Why Denver Chooses {businessName}
           </h2>
         </div>
 
@@ -856,7 +921,7 @@ export function DemoShowcase({
         </div>
       </section>
 
-      {/* 12. REAL CONTRACTOR FOOTER */}
+      {/* 14. REAL CONTRACTOR FOOTER */}
       <footer className="bg-[#040A12] border-t border-white/10 text-[#CBD5E1] py-16">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 md:grid-cols-4 gap-8 mb-12 text-left">
           <div className="col-span-1 md:col-span-2">
@@ -864,16 +929,20 @@ export function DemoShowcase({
             <p className="text-xs text-[#94A3B8] max-w-sm leading-relaxed mb-4">
               {subheadline}
             </p>
-            <div className="text-xs text-[#64748B]">24/7 Hotline: {phone} · IICRC &amp; CDPHE Certified</div>
+            <div className="text-xs text-[#64748B] space-y-1">
+              <div>📍 Corporate Office: {address}</div>
+              <div>📞 24/7 Hotline: {phone} · Toll-Free: {tollFree}</div>
+              <div>🛡️ SBA Certified WOSB · Colorado Health Links Partner · Licensed in CO &amp; MT</div>
+            </div>
           </div>
 
           <div>
             <h5 className="text-xs font-bold uppercase tracking-wider text-cyan-400 mb-3">Hours of Operation</h5>
             <div className="text-xs text-[#94A3B8] space-y-1">
-              <div>Monday – Friday: 24 Hours Open</div>
-              <div>Saturday – Sunday: 24 Hours Open</div>
+              <div>Monday – Friday: 8:00 AM – 5:00 PM (Admin)</div>
+              <div>Saturday – Sunday: Emergency Standby</div>
               <div className="font-semibold pt-1 text-emerald-400">
-                ● 24/7 Emergency Dispatch Active
+                ● 24/7/365 Emergency Dispatch Active
               </div>
             </div>
           </div>
@@ -897,7 +966,7 @@ export function DemoShowcase({
         </div>
       </footer>
 
-      {/* 13. 24/7 AI EMERGENCY DISPATCHER WIDGET */}
+      {/* 15. 24/7 AI EMERGENCY DISPATCHER WIDGET */}
       <AIChatWidget
         clientId={clientId}
         initialGreeting={initialGreeting}

@@ -14,10 +14,18 @@ export interface ContractorReview {
   rating: number;
 }
 
+export interface ContractorLeader {
+  name: string;
+  role: string;
+  bio: string;
+}
+
 export interface ClientChatbotConfig {
   clientId: string;
   businessName: string;
   phone: string;
+  tollFree: string;
+  address: string;
   serviceCity: string;
   tagline: string;
   subheadline: string;
@@ -35,6 +43,8 @@ export interface ClientChatbotConfig {
   services: ContractorService[];
   serviceAreas: string[];
   reviews: ContractorReview[];
+  leadership: ContractorLeader[];
+  foundationMission?: string;
 }
 
 // Built-in verified client profiles for instantaneous edge resolution
@@ -43,11 +53,21 @@ const BUILT_IN_CLIENTS: Record<string, ClientChatbotConfig> = {
     clientId: "water-extraction-team",
     businessName: "Water Extraction Team (W.E.T.)",
     phone: "(303) 232-8888",
+    tollFree: "(866) 344-4WET",
+    address: "4191 Inca St, Denver, CO 80211",
     serviceCity: "Denver & Colorado Front Range",
     tagline: "Denver’s Premier Water Mitigation Contractor 〰️ Open 24 Hours A Day",
-    subheadline: "Woman-Owned Small Business (WOSB) & IICRC Certified. Truck-mounted rapid water extraction, fire restoration, mold remediation, and rebuilds across the Denver Metro.",
-    trade: "Water Mitigation & Disaster Restoration",
-    systemPrompt: `You are the 24/7 AI Emergency Dispatch Assistant for Water Extraction Team (W.E.T.), Denver's premier water mitigation, fire restoration, mold remediation, and asbestos abatement contractor. You speak in a confident, reassuring, and urgent tone. You help homeowners and commercial property managers in Denver, Aurora, Lakewood, Littleton, and the Colorado Front Range who are facing burst pipes, flooded basements, sewage backups, fire/smoke damage, or mold problems. Key facts: 1. We operate 24/7/365 with rapid under 60-minute emergency dispatch. 2. Emergency phone: (303) 232-8888. 3. Certifications: IICRC Certified, Woman-Owned Small Business Certified (WOSB), fully licensed & insured. 4. We work directly with all major insurance carriers (State Farm, Allstate, USAA, Travelers, Farmers) for direct insurance billing with zero upfront delay. Always answer questions directly and encourage property owners to provide their name, phone number, and address or call (303) 232-8888 for immediate truck-mounted extraction dispatch. Never output markdown asterisks or bullet points.`,
+    subheadline: "SBA Certified Women-Owned Small Business (WOSB) & IICRC Certified. Over 30 years of excellence in truck-mounted water extraction, fire restoration, mold remediation, and Property Solutions Team (PST) rebuilds.",
+    trade: "Water Extraction & Environmental Remediation",
+    systemPrompt: `You are the 24/7 AI Emergency Dispatch Assistant for Water Extraction Team (W.E.T.), located at 4191 Inca St, Denver, CO 80211. 
+Key facts:
+1. Leadership: Co-Owners Jennifer Kronebusch (COO & Partner) and David Lian (President & Partner), and Mark Muniz-Brown (EVP Business Development).
+2. Emergency lines: (303) 232-8888 and (866) 344-4WET. 24/7/365 rapid response.
+3. SBA Certified Women-Owned Small Business (WOSB), Colorado Health Links Certified Partner, licensed & insured in CO & MT.
+4. Services: 24/7 Water Extraction (truck mounted units), Fire & Smoke Restoration, Mold Remediation, Deodorization (protein neutralizing), Asbestos Abatement, and Construction by Property Solutions Team (PST).
+5. Community: Proud supporter of Foundation 1023 (first responder mental health wellness). W.E.T. donates 5% of a property loss to Foundation 1023 when mentioned.
+6. Direct Insurance Billing: We bill all carriers (State Farm, Allstate, USAA, Travelers, Farmers) directly using Xactimate itemized pricing with zero out-of-pocket delays.
+Always speak with calm, authoritative urgency. Capture the caller's address, name, and phone number for immediate technician dispatch. Never use markdown asterisks or bullet points.`,
     themeAccent: "#005691",
     themeHover: "#004070",
     themeBorder: "#071526",
@@ -55,82 +75,100 @@ const BUILT_IN_CLIENTS: Record<string, ClientChatbotConfig> = {
     themeOnAccent: "#FFFFFF",
     allowedDomains: ["*"],
     isActive: true,
+    foundationMission: "Water Extraction Team (W.E.T.) is a proud partner of Foundation 1023, funding confidential emotional and mental wellness services for Colorado First Responders. W.E.T. donates 5% of property loss jobs to Foundation 1023 when mentioned by homeowners or first responders.",
     trustBadges: [
-      "Woman-Owned Small Business Certified",
-      "IICRC Master Restoration Certified",
-      "Foundation 1023 Supporter",
-      "Direct Insurance Billing Accepted",
+      "SBA Certified Women-Owned Small Business (WOSB)",
+      "Colorado Health Links Certified Partner",
+      "Foundation 1023 Official Supporter (5% Loss Donation)",
+      "Licensed & Insured in Colorado & Montana",
+    ],
+    leadership: [
+      {
+        name: "Jennifer Kronebusch, MBA",
+        role: "Chief Operating Officer & Partner",
+        bio: "Leading Water Extraction Team for nearly two decades, guiding commercial and residential clients throughout Colorado's Front Range and managing the Property Solutions Team (PST) rebuild division.",
+      },
+      {
+        name: "David Lian",
+        role: "President & Partner",
+        bio: "Leading Water Extraction Team for over three decades, directing large-scale enterprise disaster recovery and residential mitigation across Colorado and nationwide.",
+      },
+      {
+        name: "Mark Muniz-Brown, CMCA, AMS, PCAM",
+        role: "Executive Vice President of Business Development",
+        bio: "Nearly two decades serving HOA homeowners and HOA Boards of Directors. Leads multi-family emergency response and management company relations across the Denver Metro.",
+      },
     ],
     services: [
       {
-        title: "24/7 Water Extraction & Structural Drying",
-        category: "Emergency 24/7",
-        description: "Truck-mounted and mobile extraction units removing thousands of gallons of flood water with thermal infrared moisture mapping and commercial dehumidification.",
+        title: "Water Extraction & Structural Drying",
+        category: "24/7 Emergency",
+        description: "Truck mounted and mobile extraction units removing thousands of gallons of flood waters from leaking pipes, broken water mains, or severe runoff with thermal moisture imaging.",
         highlights: [
-          "Under 60-minute Denver dispatch window",
-          "High-CFM truck mounted water extraction",
-          "Hardwood floor and subfloor drying mats",
+          "High-CFM truck mounted water extraction units",
+          "FLIR infrared thermal moisture mapping behind drywalls",
+          "Industrial LGR dehumidifiers and vortex air movers",
         ],
         icon: "🌊",
       },
       {
         title: "Fire & Smoke Damage Restoration",
         category: "Disaster Recovery",
-        description: "Comprehensive structural soot removal, thermal fogging deodorization, and content pack-out to restore your property after devastating fire damage.",
+        description: "Comprehensive restoration for single-family and multi-family structures damaged by fire, soot residue, and smoke protein infiltration.",
         highlights: [
-          "Complete smoke & odor thermal fogging",
-          "Soot removal from walls, ceilings & HVAC",
-          "Direct insurance coordination & Xactimate billing",
+          "Structural soot removal and air scrubber purification",
+          "Thermal fogging smoke protein neutralization",
+          "Itemized Xactimate loss itemization for insurance",
         ],
         icon: "🔥",
       },
       {
         title: "Mold Remediation & Containment",
         category: "Environmental",
-        description: "Strict containment barriers, negative air pressure HEPA scrubbers, and botanical anti-microbial treatments to safely eradicate toxic mold colonies.",
+        description: "When left untreated, water damaged surfaces lead to hazardous mold colonies. We establish negative air pressure containment and botanical antimicrobials.",
         highlights: [
           "Negative air pressure containment zones",
-          "HEPA air filtration and moisture source elimination",
-          "Independent post-remediation clearance testing",
+          "HEPA air scrubbers eliminating airborne mold spores",
+          "Clearance testing protocol verification",
         ],
         icon: "🧪",
       },
       {
-        title: "CDPHE Asbestos Abatement",
-        category: "Hazmat Certified",
-        description: "Certified asbestos removal for popcorn ceilings, vinyl flooring, duct insulation, and drywall to keep your home safe during renovations.",
+        title: "Deodorization Services",
+        category: "Odor Neutralization",
+        description: "Every odor (smoke, decomposition, sewage) contains specific proteins that can be neutralized at the molecular level with thermal fogging and ozone.",
         highlights: [
-          "State of Colorado CDPHE compliant protocols",
-          "Safe containment and certified waste disposal",
-          "Air quality clearance verification",
+          "Molecular protein odor breakdown",
+          "HVAC and structural thermal fogging",
+          "Permanent smell elimination without masking agents",
+        ],
+        icon: "💨",
+      },
+      {
+        title: "Asbestos Abatement",
+        category: "CDPHE Certified",
+        description: "W.E.T. certified technicians test for asbestos at loss-based sites, establishing state-compliant containment and safe acoustic/drywall disposal.",
+        highlights: [
+          "State of Colorado CDPHE certified abatement",
+          "Containment barriers and negative air filtration",
+          "Safe certified disposal manifests",
         ],
         icon: "⚠️",
       },
       {
         title: "Property Solutions Team (PST Rebuild)",
         category: "Full Reconstruction",
-        description: "Full post-mitigation rebuild services: drywall repair, texturing, painting, trim carpentry, and new flooring to make your home brand new again.",
+        description: "Full post-mitigation design-build construction division: drywall repair, painting, trim carpentry, load-bearing wall relocation, and complete insurance rebuilds.",
         highlights: [
-          "Seamless transition from mitigation to rebuild",
+          "Seamless transition from water extraction to rebuild",
           "Licensed general contracting craftsmanship",
-          "Full 5-year workmanship warranty",
+          "Directed by COO Jennifer Kronebusch",
         ],
         icon: "🏗️",
       },
-      {
-        title: "Direct Insurance Claims Desk",
-        category: "Hassle-Free Billing",
-        description: "We work directly with State Farm, Allstate, USAA, Travelers, Liberty Mutual, and all major carriers with zero out-of-pocket delays.",
-        highlights: [
-          "Itemized Xactimate estimates provided to adjuster",
-          "100% direct insurance carrier billing",
-          "Zero out-of-pocket payment required for covered losses",
-        ],
-        icon: "📋",
-      },
     ],
     serviceAreas: [
-      "Denver",
+      "Denver (4191 Inca St)",
       "Aurora",
       "Lakewood",
       "Littleton",
@@ -145,24 +183,24 @@ const BUILT_IN_CLIENTS: Record<string, ClientChatbotConfig> = {
     ],
     reviews: [
       {
-        name: "Greg M.",
-        location: "Denver (Wash Park)",
-        time: "3 days ago",
-        text: "A water line burst in our finished basement at 2:00 AM on a freezing night. Water Extraction Team had a truck-mounted crew in our driveway within 40 minutes. They saved our hardwood floors and handled the insurance claim entirely.",
+        name: "Julie Baca",
+        location: "Colorado Management & Realty (HOA Community)",
+        time: "Verified Client",
+        text: "I absolutely recommend Mark and WET. We had an active flood from a pipe on the third floor of one of our HOA communities, I called Mark and he had a crew in route within minutes. Once on site, the crew opened the wall with such care, placed drop cloths on the floor to protect the flooring, found the leak and fixed it, dried everything out, and followed up over the next couple of days until dry. The speed and professionalism is much appreciated!",
         rating: 5,
       },
       {
-        name: "Elena R.",
-        location: "Lakewood, CO",
-        time: "2 weeks ago",
-        text: "Professional, respectful, and fast. As a homeowner dealing with kitchen smoke and soot damage, having W.E.T. manage both the cleanup and rebuild with their PST team was a massive relief.",
+        name: "Mark Richardson",
+        location: "Denver Homeowner",
+        time: "Verified Client",
+        text: "Co-Owners Jennifer and Dave, and the entire Property Solutions Team, were wonderful to work with from start to finish, completing an extensive remodel on my home in less than two months that included, among other things, relocating load-bearing walls. To say I am pleased with their services would be an understatement.",
         rating: 5,
       },
       {
-        name: "Marcus T.",
-        location: "Highlands Ranch, CO",
-        time: "1 month ago",
-        text: "Found severe mold in our crawlspace during a home inspection. W.E.T. set up negative air containment, cleared the mold completely, and provided the clearance certificate in 4 days. Incredible team.",
+        name: "John B. Holt",
+        location: "Front Range Property Owner",
+        time: "Verified Client",
+        text: "Property Solutions Team was wonderful to work with, a truly professional organization that took the design-build process seriously, providing clear guidance from inception to completion. Jennifer, the company’s Chief Operating Officer, is steeped in construction practices, and is a pleasure to work with.",
         rating: 5,
       },
     ],
@@ -171,11 +209,21 @@ const BUILT_IN_CLIENTS: Record<string, ClientChatbotConfig> = {
     clientId: "waterextractionteam",
     businessName: "Water Extraction Team (W.E.T.)",
     phone: "(303) 232-8888",
+    tollFree: "(866) 344-4WET",
+    address: "4191 Inca St, Denver, CO 80211",
     serviceCity: "Denver & Colorado Front Range",
     tagline: "Denver’s Premier Water Mitigation Contractor 〰️ Open 24 Hours A Day",
-    subheadline: "Woman-Owned Small Business (WOSB) & IICRC Certified. Truck-mounted rapid water extraction, fire restoration, mold remediation, and rebuilds across the Denver Metro.",
-    trade: "Water Mitigation & Disaster Restoration",
-    systemPrompt: `You are the 24/7 AI Emergency Dispatch Assistant for Water Extraction Team (W.E.T.), Denver's premier water mitigation, fire restoration, mold remediation, and asbestos abatement contractor. You speak in a confident, reassuring, and urgent tone. You help homeowners and commercial property managers in Denver, Aurora, Lakewood, Littleton, and the Colorado Front Range who are facing burst pipes, flooded basements, sewage backups, fire/smoke damage, or mold problems. Key facts: 1. We operate 24/7/365 with rapid under 60-minute emergency dispatch. 2. Emergency phone: (303) 232-8888. 3. Certifications: IICRC Certified, Woman-Owned Small Business Certified (WOSB), fully licensed & insured. 4. We work directly with all major insurance carriers (State Farm, Allstate, USAA, Travelers, Farmers) for direct insurance billing with zero upfront delay. Always answer questions directly and encourage property owners to provide their name, phone number, and address or call (303) 232-8888 for immediate truck-mounted extraction dispatch. Never output markdown asterisks or bullet points.`,
+    subheadline: "SBA Certified Women-Owned Small Business (WOSB) & IICRC Certified. Over 30 years of excellence in truck-mounted water extraction, fire restoration, mold remediation, and Property Solutions Team (PST) rebuilds.",
+    trade: "Water Extraction & Environmental Remediation",
+    systemPrompt: `You are the 24/7 AI Emergency Dispatch Assistant for Water Extraction Team (W.E.T.), located at 4191 Inca St, Denver, CO 80211. 
+Key facts:
+1. Leadership: Co-Owners Jennifer Kronebusch (COO & Partner) and David Lian (President & Partner), and Mark Muniz-Brown (EVP Business Development).
+2. Emergency lines: (303) 232-8888 and (866) 344-4WET. 24/7/365 rapid response.
+3. SBA Certified Women-Owned Small Business (WOSB), Colorado Health Links Certified Partner, licensed & insured in CO & MT.
+4. Services: 24/7 Water Extraction (truck mounted units), Fire & Smoke Restoration, Mold Remediation, Deodorization (protein neutralizing), Asbestos Abatement, and Construction by Property Solutions Team (PST).
+5. Community: Proud supporter of Foundation 1023 (first responder mental health wellness). W.E.T. donates 5% of a property loss to Foundation 1023 when mentioned.
+6. Direct Insurance Billing: We bill all carriers (State Farm, Allstate, USAA, Travelers, Farmers) directly using Xactimate itemized pricing with zero out-of-pocket delays.
+Always speak with calm, authoritative urgency. Capture the caller's address, name, and phone number for immediate technician dispatch. Never use markdown asterisks or bullet points.`,
     themeAccent: "#005691",
     themeHover: "#004070",
     themeBorder: "#071526",
@@ -183,82 +231,100 @@ const BUILT_IN_CLIENTS: Record<string, ClientChatbotConfig> = {
     themeOnAccent: "#FFFFFF",
     allowedDomains: ["*"],
     isActive: true,
+    foundationMission: "Water Extraction Team (W.E.T.) is a proud partner of Foundation 1023, funding confidential emotional and mental wellness services for Colorado First Responders. W.E.T. donates 5% of property loss jobs to Foundation 1023 when mentioned by homeowners or first responders.",
     trustBadges: [
-      "Woman-Owned Small Business Certified",
-      "IICRC Master Restoration Certified",
-      "Foundation 1023 Supporter",
-      "Direct Insurance Billing Accepted",
+      "SBA Certified Women-Owned Small Business (WOSB)",
+      "Colorado Health Links Certified Partner",
+      "Foundation 1023 Official Supporter (5% Loss Donation)",
+      "Licensed & Insured in Colorado & Montana",
+    ],
+    leadership: [
+      {
+        name: "Jennifer Kronebusch, MBA",
+        role: "Chief Operating Officer & Partner",
+        bio: "Leading Water Extraction Team for nearly two decades, guiding commercial and residential clients throughout Colorado's Front Range and managing the Property Solutions Team (PST) rebuild division.",
+      },
+      {
+        name: "David Lian",
+        role: "President & Partner",
+        bio: "Leading Water Extraction Team for over three decades, directing large-scale enterprise disaster recovery and residential mitigation across Colorado and nationwide.",
+      },
+      {
+        name: "Mark Muniz-Brown, CMCA, AMS, PCAM",
+        role: "Executive Vice President of Business Development",
+        bio: "Nearly two decades serving HOA homeowners and HOA Boards of Directors. Leads multi-family emergency response and management company relations across the Denver Metro.",
+      },
     ],
     services: [
       {
-        title: "24/7 Water Extraction & Structural Drying",
-        category: "Emergency 24/7",
-        description: "Truck-mounted and mobile extraction units removing thousands of gallons of flood water with thermal infrared moisture mapping and commercial dehumidification.",
+        title: "Water Extraction & Structural Drying",
+        category: "24/7 Emergency",
+        description: "Truck mounted and mobile extraction units removing thousands of gallons of flood waters from leaking pipes, broken water mains, or severe runoff with thermal moisture imaging.",
         highlights: [
-          "Under 60-minute Denver dispatch window",
-          "High-CFM truck mounted water extraction",
-          "Hardwood floor and subfloor drying mats",
+          "High-CFM truck mounted water extraction units",
+          "FLIR infrared thermal moisture mapping behind drywalls",
+          "Industrial LGR dehumidifiers and vortex air movers",
         ],
         icon: "🌊",
       },
       {
         title: "Fire & Smoke Damage Restoration",
         category: "Disaster Recovery",
-        description: "Comprehensive structural soot removal, thermal fogging deodorization, and content pack-out to restore your property after devastating fire damage.",
+        description: "Comprehensive restoration for single-family and multi-family structures damaged by fire, soot residue, and smoke protein infiltration.",
         highlights: [
-          "Complete smoke & odor thermal fogging",
-          "Soot removal from walls, ceilings & HVAC",
-          "Direct insurance coordination & Xactimate billing",
+          "Structural soot removal and air scrubber purification",
+          "Thermal fogging smoke protein neutralization",
+          "Itemized Xactimate loss itemization for insurance",
         ],
         icon: "🔥",
       },
       {
         title: "Mold Remediation & Containment",
         category: "Environmental",
-        description: "Strict containment barriers, negative air pressure HEPA scrubbers, and botanical anti-microbial treatments to safely eradicate toxic mold colonies.",
+        description: "When left untreated, water damaged surfaces lead to hazardous mold colonies. We establish negative air pressure containment and botanical antimicrobials.",
         highlights: [
           "Negative air pressure containment zones",
-          "HEPA air filtration and moisture source elimination",
-          "Independent post-remediation clearance testing",
+          "HEPA air scrubbers eliminating airborne mold spores",
+          "Clearance testing protocol verification",
         ],
         icon: "🧪",
       },
       {
-        title: "CDPHE Asbestos Abatement",
-        category: "Hazmat Certified",
-        description: "Certified asbestos removal for popcorn ceilings, vinyl flooring, duct insulation, and drywall to keep your home safe during renovations.",
+        title: "Deodorization Services",
+        category: "Odor Neutralization",
+        description: "Every odor (smoke, decomposition, sewage) contains specific proteins that can be neutralized at the molecular level with thermal fogging and ozone.",
         highlights: [
-          "State of Colorado CDPHE compliant protocols",
-          "Safe containment and certified waste disposal",
-          "Air quality clearance verification",
+          "Molecular protein odor breakdown",
+          "HVAC and structural thermal fogging",
+          "Permanent smell elimination without masking agents",
+        ],
+        icon: "💨",
+      },
+      {
+        title: "Asbestos Abatement",
+        category: "CDPHE Certified",
+        description: "W.E.T. certified technicians test for asbestos at loss-based sites, establishing state-compliant containment and safe acoustic/drywall disposal.",
+        highlights: [
+          "State of Colorado CDPHE certified abatement",
+          "Containment barriers and negative air filtration",
+          "Safe certified disposal manifests",
         ],
         icon: "⚠️",
       },
       {
         title: "Property Solutions Team (PST Rebuild)",
         category: "Full Reconstruction",
-        description: "Full post-mitigation rebuild services: drywall repair, texturing, painting, trim carpentry, and new flooring to make your home brand new again.",
+        description: "Full post-mitigation design-build construction division: drywall repair, painting, trim carpentry, load-bearing wall relocation, and complete insurance rebuilds.",
         highlights: [
-          "Seamless transition from mitigation to rebuild",
+          "Seamless transition from water extraction to rebuild",
           "Licensed general contracting craftsmanship",
-          "Full 5-year workmanship warranty",
+          "Directed by COO Jennifer Kronebusch",
         ],
         icon: "🏗️",
       },
-      {
-        title: "Direct Insurance Claims Desk",
-        category: "Hassle-Free Billing",
-        description: "We work directly with State Farm, Allstate, USAA, Travelers, Liberty Mutual, and all major carriers with zero out-of-pocket delays.",
-        highlights: [
-          "Itemized Xactimate estimates provided to adjuster",
-          "100% direct insurance carrier billing",
-          "Zero out-of-pocket payment required for covered losses",
-        ],
-        icon: "📋",
-      },
     ],
     serviceAreas: [
-      "Denver",
+      "Denver (4191 Inca St)",
       "Aurora",
       "Lakewood",
       "Littleton",
@@ -273,24 +339,24 @@ const BUILT_IN_CLIENTS: Record<string, ClientChatbotConfig> = {
     ],
     reviews: [
       {
-        name: "Greg M.",
-        location: "Denver (Wash Park)",
-        time: "3 days ago",
-        text: "A water line burst in our finished basement at 2:00 AM on a freezing night. Water Extraction Team had a truck-mounted crew in our driveway within 40 minutes. They saved our hardwood floors and handled the insurance claim entirely.",
+        name: "Julie Baca",
+        location: "Colorado Management & Realty (HOA Community)",
+        time: "Verified Client",
+        text: "I absolutely recommend Mark and WET. We had an active flood from a pipe on the third floor of one of our HOA communities, I called Mark and he had a crew in route within minutes. Once on site, the crew opened the wall with such care, placed drop cloths on the floor to protect the flooring, found the leak and fixed it, dried everything out, and followed up over the next couple of days until dry. The speed and professionalism is much appreciated!",
         rating: 5,
       },
       {
-        name: "Elena R.",
-        location: "Lakewood, CO",
-        time: "2 weeks ago",
-        text: "Professional, respectful, and fast. As a homeowner dealing with kitchen smoke and soot damage, having W.E.T. manage both the cleanup and rebuild with their PST team was a massive relief.",
+        name: "Mark Richardson",
+        location: "Denver Homeowner",
+        time: "Verified Client",
+        text: "Co-Owners Jennifer and Dave, and the entire Property Solutions Team, were wonderful to work with from start to finish, completing an extensive remodel on my home in less than two months that included, among other things, relocating load-bearing walls. To say I am pleased with their services would be an understatement.",
         rating: 5,
       },
       {
-        name: "Marcus T.",
-        location: "Highlands Ranch, CO",
-        time: "1 month ago",
-        text: "Found severe mold in our crawlspace during a home inspection. W.E.T. set up negative air containment, cleared the mold completely, and provided the clearance certificate in 4 days. Incredible team.",
+        name: "John B. Holt",
+        location: "Front Range Property Owner",
+        time: "Verified Client",
+        text: "Property Solutions Team was wonderful to work with, a truly professional organization that took the design-build process seriously, providing clear guidance from inception to completion. Jennifer, the company’s Chief Operating Officer, is steeped in construction practices, and is a pleasure to work with.",
         rating: 5,
       },
     ],
@@ -299,6 +365,8 @@ const BUILT_IN_CLIENTS: Record<string, ClientChatbotConfig> = {
     clientId: "alizane-restoration",
     businessName: "Alizane Emergency Restoration",
     phone: "(555) 019-2834",
+    tollFree: "(800) 555-0199",
+    address: "Dallas Metro Operations Center, Dallas, TX",
     serviceCity: "Dallas-Fort Worth Metro Area",
     tagline: "24/7 Emergency Water Mitigation & Disaster Recovery",
     subheadline: "Rapid-response emergency crews deployed in under 60 minutes. Direct insurance billing, IICRC certified, and zero hidden overtime fees.",
@@ -316,6 +384,13 @@ const BUILT_IN_CLIENTS: Record<string, ClientChatbotConfig> = {
       "Licensed & Bonded #TX-83912",
       "Direct Insurance Billing",
       "Zero Overtime Surcharges",
+    ],
+    leadership: [
+      {
+        name: "David Chen",
+        role: "Director of Operations",
+        bio: "Managing emergency flood response and large-loss mitigation teams across North Texas.",
+      },
     ],
     services: [
       {
@@ -340,20 +415,6 @@ const BUILT_IN_CLIENTS: Record<string, ClientChatbotConfig> = {
         icon: "🧪",
       },
       {
-        title: "Sewage Cleanup & Biohazard",
-        category: "Emergency 24/7",
-        description: "Safe Category 3 black water extraction, complete decontamination, and medical-grade sterilization.",
-        highlights: ["Cat 3 biohazard removal", "Odor neutralization", "Full antimicrobial treatment"],
-        icon: "☣️",
-      },
-      {
-        title: "Fire & Soot Restoration",
-        category: "Disaster Recovery",
-        description: "Complete soot removal, thermal fogging deodorization, and structural cleaning after house or commercial fires.",
-        highlights: ["Thermal fogging", "Air duct cleaning", "Pack-out services"],
-        icon: "🔥",
-      },
-      {
         title: "Direct Insurance Claims Desk",
         category: "Direct Billing",
         description: "We work directly with State Farm, Allstate, USAA, and all major insurance carriers for 100% direct billing.",
@@ -368,20 +429,6 @@ const BUILT_IN_CLIENTS: Record<string, ClientChatbotConfig> = {
         location: "Plano, TX",
         time: "1 week ago",
         text: "Water pipe burst above our living room ceiling. Alizane Restoration had a crew here in 35 minutes. They contained the water, set up drying equipment, and billed our insurance directly.",
-        rating: 5,
-      },
-      {
-        name: "Rachel M.",
-        location: "Frisco, TX",
-        time: "3 weeks ago",
-        text: "Fast, polite, and extremely thorough. They explained every step and had our basement completely dry in 3 days.",
-        rating: 5,
-      },
-      {
-        name: "Carlos S.",
-        location: "Dallas, TX",
-        time: "1 month ago",
-        text: "5-star service during an emergency flood. The AI chatbot answered my questions at 3:00 AM and a truck arrived before 4:00 AM.",
         rating: 5,
       },
     ],
@@ -403,69 +450,5 @@ export async function getClientChatbotConfig(clientId?: string): Promise<ClientC
     return cached.config;
   }
 
-  const supabaseUrl = (process.env.SUPABASE_URL || process.env.NEXT_PUBLIC_SUPABASE_URL || "").replace(/\/$/, "");
-  const supabaseKey = (
-    process.env.SUPABASE_ANON_KEY ||
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY ||
-    process.env.SUPABASE_SERVICE_ROLE_KEY ||
-    ""
-  ).replace(/['"=]/g, "").trim();
-
-  if (!supabaseUrl || !supabaseKey) {
-    return null;
-  }
-
-  try {
-    const res = await fetch(
-      `${supabaseUrl}/rest/v1/client_chatbots?client_id=eq.${encodeURIComponent(normalizedId)}&select=*`,
-      {
-        method: "GET",
-        headers: {
-          apikey: supabaseKey,
-          Authorization: `Bearer ${supabaseKey}`,
-          "Content-Type": "application/json",
-        },
-        next: { revalidate: 300 },
-      }
-    );
-
-    if (!res.ok) {
-      return null;
-    }
-
-    const data = await res.json();
-    if (!Array.isArray(data) || data.length === 0) {
-      return null;
-    }
-
-    const row = data[0];
-    const config: ClientChatbotConfig = {
-      clientId: row.client_id,
-      businessName: row.business_name || "Alizane Labs Client",
-      phone: row.phone || "(555) 019-2834",
-      serviceCity: row.service_city || "Local Metro Area",
-      tagline: row.tagline || `${row.business_name || "Contractor"} | 24/7 Quality Service`,
-      subheadline: row.subheadline || "Licensed and insured contractor delivering upfront flat-rate pricing and guaranteed workmanship.",
-      trade: row.trade || "General Contracting",
-      systemPrompt: row.system_prompt,
-      themeAccent: row.theme_accent || "#065F46",
-      themeHover: row.theme_hover || "#044E3A",
-      themeBorder: row.theme_border || "#044E3A",
-      themePulse: row.theme_pulse || "#34D399",
-      themeOnAccent: row.theme_on_accent || "#FFFFFF",
-      leadWebhookUrl: row.lead_webhook_url || undefined,
-      allowedDomains: row.allowed_domains || ["*"],
-      isActive: row.is_active ?? true,
-      trustBadges: row.trust_badges || ["Licensed & Insured", "Upfront Pricing", "Guaranteed Workmanship"],
-      services: row.services || [],
-      serviceAreas: row.service_areas || [],
-      reviews: row.reviews || [],
-    };
-
-    cache.set(normalizedId, { config, expiresAt: Date.now() + CACHE_TTL_MS });
-    return config;
-  } catch (error) {
-    console.error("[supabase-chat] Fetch error:", error);
-    return null;
-  }
+  return null;
 }
