@@ -166,42 +166,56 @@ export async function POST(req: NextRequest) {
         }
       }
 
-      if (geminiContents.length > 0) {
-        try {
-          const geminiRes = await fetch(
-            `https://generativelanguage.googleapis.com/v1beta/models/${geminiModel}:generateContent?key=${geminiApiKey}`,
-            {
-              method: "POST",
-              headers: { "Content-Type": "application/json" },
-              body: JSON.stringify({
-                systemInstruction: {
-                  parts: [{ text: SYSTEM_PROMPT }],
-                },
-                contents: geminiContents,
-                generationConfig: {
-                  temperature: 0.2,
-                  maxOutputTokens: 350,
-                },
-              }),
-            }
-          );
+      const candidateModels = Array.from(
+        new Set([
+          geminiModel,
+          "gemini-2.0-flash",
+          "gemini-1.5-flash",
+          "gemini-2.5-flash",
+          "gemini-1.5-flash-8b",
+        ])
+      );
 
-          if (geminiRes.ok) {
-            const geminiData = await geminiRes.json();
-            const candidate = geminiData.candidates?.[0];
-            const rawText = candidate?.content?.parts?.[0]?.text || "";
-            assistantMessage = sanitizeAssistantResponse(rawText);
-            if (assistantMessage) {
-              activeProvider = `google-gemini (${geminiModel})`;
+      if (geminiContents.length > 0) {
+        for (const modelToTry of candidateModels) {
+          try {
+            const geminiRes = await fetch(
+              `https://generativelanguage.googleapis.com/v1beta/models/${modelToTry}:generateContent?key=${geminiApiKey}`,
+              {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                  systemInstruction: {
+                    parts: [{ text: SYSTEM_PROMPT }],
+                  },
+                  contents: geminiContents,
+                  generationConfig: {
+                    temperature: 0.2,
+                    maxOutputTokens: 350,
+                  },
+                }),
+              }
+            );
+
+            if (geminiRes.ok) {
+              const geminiData = await geminiRes.json();
+              const candidate = geminiData.candidates?.[0];
+              const rawText = candidate?.content?.parts?.[0]?.text || "";
+              assistantMessage = sanitizeAssistantResponse(rawText);
+              if (assistantMessage) {
+                activeProvider = `google-gemini (${modelToTry})`;
+                break;
+              }
+            } else {
+              const err = await geminiRes.text();
+              console.error(`Gemini (${modelToTry}) API Error:`, geminiRes.status, err);
+              activeProvider = `gemini-api-error-${geminiRes.status}-${modelToTry}`;
+              diagnosticTrace = `err-${geminiRes.status}-${err.slice(0, 80)}`;
             }
-          } else {
-            const err = await geminiRes.text();
-            console.error("Gemini API Error:", geminiRes.status, err);
-            activeProvider = `gemini-api-error-${geminiRes.status}`;
+          } catch (e: any) {
+            console.error(`Gemini (${modelToTry}) Fetch Error:`, e);
+            activeProvider = `gemini-fetch-catch-${e?.message || "error"}`;
           }
-        } catch (e: any) {
-          console.error("Gemini Fetch Error:", e);
-          activeProvider = `gemini-fetch-catch-${e?.message || "error"}`;
         }
       }
     }
