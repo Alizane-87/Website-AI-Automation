@@ -51,23 +51,30 @@ function sanitizeAssistantResponse(rawText: string): string {
   text = text.replace(/<thought>[\s\S]*?<\/thought>/gi, "");
   text = text.replace(/<reasoning>[\s\S]*?<\/reasoning>/gi, "");
 
-  // 2. Strip plaintext chain-of-thought preambles
+  // 2. Strip plaintext chain-of-thought preambles & drafting notes
   text = text.replace(/^Here('s| is) a thinking process:?[\s\S]*?(?=(?:Hello|Hi|Our|The Site|The Works|We |That's|For |At Alizane|\n\n[A-Z]))/i, "");
   text = text.replace(/^Thinking Process:?[\s\S]*?(?=(?:Hello|Hi|Our|The Site|The Works|We |That's|For |At Alizane|\n\n[A-Z]))/i, "");
 
-  // 3. Catch raw CoT breakdown if remaining
-  const isRawCoT = /^\s*(Here('s| is) a thinking process|Thinking Process|\*\*Analyze User Input:\*\*|\*\*Identify Core Task:\*\*|\*\*Check Constraints)/i.test(text);
+  // 3. Strip model drafting monologues (e.g. * Draft 1: ... * Draft 2:)
+  if (/\*?\s*(Draft \d+|Refining for Tone|User:|Identity:)/i.test(text)) {
+    const draftParts = text.split(/\*?\s*(?:Draft \d+:|Refining for Tone and Constraints:?|Final:?)\s*/i);
+    if (draftParts.length > 1) {
+      text = draftParts.pop() || "";
+    }
+  }
+
+  // 4. Catch raw CoT breakdown if remaining
+  const isRawCoT = /^\s*(Here('s| is) a thinking process|Thinking Process|\*\*Analyze User Input:\*\*|\*\*Identify Core Task:\*\*|\*\*Check Constraints|\*\s*User:|\*\s*Question:)/i.test(text);
   if (isRawCoT) {
     const splitMatch = text.split(/\n\s*(?:Response|Final Response|Answer|Output):\s*/i);
     if (splitMatch.length > 1) {
       text = splitMatch.pop() || "";
     } else {
-      // Safe, grounded default response if model only outputted internal CoT
-      return "Our monthly packages include hosting, SSL security, and routine updates: The Site ($1,500 + $99/mo with 2 updates/mo), The Works ($2,800 + $149/mo with 5 updates/mo), and The Site That Answers ($4,500 + $299/mo with 5 updates/mo + 24/7 AI Receptionist). How can I help you choose the right fit?";
+      return "We offer 3 straightforward packages for contractors: The Site ($1,500 + $99/mo), The Works ($2,800 + $149/mo with 20 SEO pages & lead auto-text), and The Site That Answers ($4,500 + $299/mo with 24/7 AI Receptionist). What trade are you in?";
     }
   }
 
-  // 4. Strip model safety/assistant prefixes
+  // 5. Strip model safety/assistant prefixes
   text = text.replace(/^User Safety:\s*\w+\s*/i, "");
   text = text.replace(/^(Assistant|Alizane Assistant):\s*/i, "");
 
@@ -133,19 +140,16 @@ export async function POST(req: NextRequest) {
 
     // 3A. PRIMARY: Official Google Gemini API (Ultra-fast, zero-CoT leaks, 100% free)
     if (geminiApiKey && geminiApiKey !== "your_gemini_api_key_here") {
-      let geminiModel = (process.env.AI_CHAT_MODEL || "gemini-2.0-flash")
+      let geminiModel = (process.env.AI_CHAT_MODEL || "gemini-1.5-flash-latest")
         .replace(/['"=]/g, "")
         .trim()
         .replace(/^models\//, "");
 
       if (geminiModel.includes("/")) {
-        geminiModel = geminiModel.split("/").pop() || "gemini-2.0-flash";
-      }
-      if (geminiModel.includes("001")) {
-        geminiModel = geminiModel.replace("-001", "");
+        geminiModel = geminiModel.split("/").pop() || "gemini-1.5-flash-latest";
       }
       if (!geminiModel.startsWith("gemini-")) {
-        geminiModel = "gemini-2.0-flash";
+        geminiModel = "gemini-1.5-flash-latest";
       }
 
       // Gemini requires first message to be "user" and alternating roles
@@ -169,12 +173,15 @@ export async function POST(req: NextRequest) {
       const candidateModels = Array.from(
         new Set([
           geminiModel,
-          "gemini-2.0-flash",
-          "gemini-2.0-flash-exp",
-          "gemini-1.5-flash",
           "gemini-1.5-flash-latest",
+          "gemini-1.5-flash-002",
+          "gemini-1.5-flash-001",
+          "gemini-1.5-flash",
+          "gemini-2.0-flash-exp",
+          "gemini-1.5-pro-latest",
+          "gemini-1.5-pro-002",
+          "gemini-1.5-pro-001",
           "gemini-1.5-pro",
-          "gemini-pro",
         ])
       );
 
@@ -212,12 +219,10 @@ export async function POST(req: NextRequest) {
             } else {
               const err = await geminiRes.text();
               console.error(`Gemini (${cleanName}) API Error:`, geminiRes.status, err);
-              activeProvider = `gemini-api-error-${geminiRes.status}-${cleanName}`;
-              diagnosticTrace = `err-${geminiRes.status}-${err.replace(/[\r\n\t]/g, " ").slice(0, 80)}`;
+              diagnosticTrace = `err-${geminiRes.status}-${cleanName}`;
             }
           } catch (e: any) {
             console.error(`Gemini (${modelToTry}) Fetch Error:`, e);
-            activeProvider = `gemini-fetch-catch-${e?.message || "error"}`;
           }
         }
 
@@ -229,9 +234,12 @@ export async function POST(req: NextRequest) {
             );
             if (listRes.ok) {
               const listData = await listRes.json();
+              // Strictly filter for official Gemini generateContent models
               const available = (listData.models || [])
                 .filter((m: any) =>
-                  m.supportedGenerationMethods?.includes("generateContent")
+                  m.supportedGenerationMethods?.includes("generateContent") &&
+                  m.name?.toLowerCase().includes("gemini") &&
+                  !m.name?.toLowerCase().includes("gemma")
                 )
                 .map((m: any) => m.name.replace(/^models\//, ""));
 
