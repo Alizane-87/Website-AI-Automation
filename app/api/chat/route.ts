@@ -122,6 +122,8 @@ export async function POST(req: NextRequest) {
     ).replace(/['"=]/g, "").trim();
     const openRouterApiKey = (process.env.OPENROUTER_API_KEY || "").replace(/['"=]/g, "").trim();
 
+    let assistantMessage = "";
+    let activeProvider = "fallback";
     let diagnosticTrace = "init";
     if (!geminiApiKey) {
       diagnosticTrace = "no-gemini-key-in-env";
