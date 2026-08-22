@@ -18,7 +18,7 @@ const INITIAL_MESSAGES: Message[] = [
 const SUGGESTIONS = [
   "Which plan fits my business?",
   "How does 24/7 call answering work?",
-  "What is the build timeline?",
+  "How does lead follow-up work?",
 ];
 
 export function AiChatWidget() {

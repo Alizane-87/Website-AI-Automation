@@ -145,7 +145,7 @@ export function PricingPlans() {
                 <svg className="mt-0.5 h-4 w-4 shrink-0 text-[#34D399]" viewBox="0 0 16 16" fill="currentColor">
                   <path d="M6.2 12.4 2.3 8.5l1.6-1.6 2.3 2.3 6-6 1.6 1.6z" />
                 </svg>
-                <span>Hosting, SSL &amp; priority content updates included</span>
+                <span>Hosting, SSL &amp; <strong>5 routine content updates/month</strong> (priority turnaround)</span>
               </li>
             </ul>
 
@@ -203,7 +203,7 @@ export function PricingPlans() {
                 <svg className="mt-0.5 h-4 w-4 shrink-0 text-[#065F46]" viewBox="0 0 16 16" fill="currentColor">
                   <path d="M6.2 12.4 2.3 8.5l1.6-1.6 2.3 2.3 6-6 1.6 1.6z" />
                 </svg>
-                <span>Continuous AI tuning, prompt updates &amp; telephone line management</span>
+                <span>Hosting, SSL, <strong>5 content updates/month</strong> &amp; continuous AI prompt tuning</span>
               </li>
             </ul>
 

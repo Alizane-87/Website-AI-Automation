@@ -5,7 +5,7 @@ import React, { useState } from "react";
 const FAQ_ITEMS = [
   {
     q: "What does the monthly retainer cover?",
-    a: "Hosting on high-speed edge infrastructure, domain security/SSL, keeping the site updated, and two routine content changes every month — a new service, new job photos, or updated phone numbers. A real person who answers when you need something changed, rather than a ticket queue.",
+    a: "Hosting on high-speed edge infrastructure, domain security/SSL, keeping the site updated, and your monthly content changes — two on The Site, five on The Works and The Site That Answers — for a new service, new job photos, or updated phone numbers. A real person who answers when you need something changed, rather than a ticket queue.",
   },
   {
     q: "Why is there a build cost and a monthly fee?",
