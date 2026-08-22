@@ -3,7 +3,6 @@
 import React, { useState } from "react";
 import Link from "next/link";
 import { AIChatWidget } from "@/components/ai-chat-widget";
-import { BeforeAfterSlider } from "@/components/before-after-slider";
 
 interface DemoShowcaseProps {
   clientId: string;
@@ -124,7 +123,7 @@ export function DemoShowcase({
           {/* Desktop Nav Links */}
           <div className="hidden lg:flex items-center gap-8 text-sm font-medium text-[#444444]">
             <a href="#services" className="hover:text-[#111111] transition-colors">Services</a>
-            <a href="#projects" className="hover:text-[#111111] transition-colors">Projects</a>
+            <a href="#why-us" className="hover:text-[#111111] transition-colors">Why Choose Us</a>
             <a href="#quote-calculator" className="hover:text-[#111111] transition-colors">Quote Estimator</a>
             <a href="#reviews" className="hover:text-[#111111] transition-colors">Reviews</a>
             <a href="#service-areas" className="hover:text-[#111111] transition-colors">Service Areas</a>
@@ -317,27 +316,62 @@ export function DemoShowcase({
         </div>
       </section>
 
-      {/* 6. BEFORE & AFTER SHOWCASE */}
-      <section id="projects" className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-16 border-t border-[#EAEAEA]">
+      {/* 6. WHY CHOOSE US (4-PILLAR TRUST SECTION) */}
+      <section id="why-us" className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-16 border-t border-[#EAEAEA]">
         <div className="text-center max-w-2xl mx-auto mb-12">
           <span className="text-xs font-bold uppercase tracking-widest text-[#777777]">
-            Proven Results
+            The Standard of Excellence
           </span>
           <h2 className="text-3xl font-bold tracking-tight text-[#111111] mt-2">
-            Before & After Project Transformation
+            Why Homeowners & Businesses Choose {businessName}
           </h2>
-          <p className="text-sm text-[#666666] mt-2">
-            Slide horizontally to see the quality of our field installations and restorative craftsmanship.
-          </p>
         </div>
 
-        <div className="bg-[#FFFFFF] border border-[#EAEAEA] rounded-2xl p-4 sm:p-8 shadow-sm">
-          <BeforeAfterSlider />
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+          <div className="bg-[#FFFFFF] border border-[#EAEAEA] rounded-xl p-6 text-center shadow-xs">
+            <div className="w-12 h-12 rounded-xl bg-emerald-50 text-emerald-700 flex items-center justify-center mx-auto mb-4 text-xl font-bold">
+              💰
+            </div>
+            <h3 className="font-bold text-sm text-[#111111] mb-1">Upfront Pricing</h3>
+            <p className="text-xs text-[#666666] leading-relaxed">
+              No hidden travel fees, no overtime surcharges, and no surprise line items on your invoice.
+            </p>
+          </div>
+
+          <div className="bg-[#FFFFFF] border border-[#EAEAEA] rounded-xl p-6 text-center shadow-xs">
+            <div className="w-12 h-12 rounded-xl bg-blue-50 text-blue-700 flex items-center justify-center mx-auto mb-4 text-xl font-bold">
+              🛠️
+            </div>
+            <h3 className="font-bold text-sm text-[#111111] mb-1">Master Technicians</h3>
+            <p className="text-xs text-[#666666] leading-relaxed">
+              Every technician is licensed, drug-tested, background-checked, and manufacturer-certified.
+            </p>
+          </div>
+
+          <div className="bg-[#FFFFFF] border border-[#EAEAEA] rounded-xl p-6 text-center shadow-xs">
+            <div className="w-12 h-12 rounded-xl bg-purple-50 text-purple-700 flex items-center justify-center mx-auto mb-4 text-xl font-bold">
+              ⚡
+            </div>
+            <h3 className="font-bold text-sm text-[#111111] mb-1">Rapid Dispatch</h3>
+            <p className="text-xs text-[#666666] leading-relaxed">
+              Fully stocked warehouse trucks ready to deploy across all local zones within 60 minutes.
+            </p>
+          </div>
+
+          <div className="bg-[#FFFFFF] border border-[#EAEAEA] rounded-xl p-6 text-center shadow-xs">
+            <div className="w-12 h-12 rounded-xl bg-amber-50 text-amber-700 flex items-center justify-center mx-auto mb-4 text-xl font-bold">
+              🛡️
+            </div>
+            <h3 className="font-bold text-sm text-[#111111] mb-1">100% Guaranteed</h3>
+            <p className="text-xs text-[#666666] leading-relaxed">
+              Complete peace of mind with our ironclad parts & workmanship warranty on every project.
+            </p>
+          </div>
         </div>
       </section>
 
       {/* 7. INTERACTIVE QUOTE ESTIMATOR FUNNEL */}
-      <section id="quote-calculator" className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
+      <section id="quote-calculator" className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-20 border-t border-[#EAEAEA]">
         <div className="text-center max-w-2xl mx-auto mb-12">
           <span className="text-xs font-bold uppercase tracking-widest text-[#777777]">
             Instant Speed-to-Lead
