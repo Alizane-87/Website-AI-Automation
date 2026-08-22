@@ -36,6 +36,14 @@
   --text-lead--line-height: 1.65;
 }
 
+:root {
+  --chat-accent: #065f46;
+  --chat-accent-hover: #064e3b;
+  --chat-accent-border: #064e3b;
+  --chat-pulse: #34d399;
+  --chat-on-accent: #ffffff;
+}
+
 @layer base {
   html {
     scroll-behavior: smooth;

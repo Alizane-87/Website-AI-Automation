@@ -71,14 +71,38 @@ export async function POST(req: NextRequest) {
   try {
     const { messages } = await req.json();
 
-    if (!Array.isArray(messages) || messages.length === 0) {
+    const MAX_MESSAGES_PER_CONVERSATION = 40; // ~20 back-and-forths
+
+    if (!Array.isArray(messages)) {
+      return NextResponse.json({ message: "Bad request." }, { status: 400 });
+    }
+
+    if (messages.length === 0) {
+      return NextResponse.json({ message: "Empty message payload." }, { status: 400 });
+    }
+
+    if (messages.length > MAX_MESSAGES_PER_CONVERSATION) {
       return NextResponse.json(
-        { message: "Invalid chat payload." },
-        { status: 400 }
+        {
+          role: "assistant",
+          content:
+            "We've covered a lot here. Refresh the page to start fresh, or email hello@alizanelabs.site and a human will take it from here.",
+        },
+        { status: 200 }
       );
     }
 
-    // 2. Input Sanitization & Clamping (Anti-Token-Drain Guardrail)
+    // 2. Reject oversized single messages — a 50k-character paste costs real money.
+    const latestUserMsg = messages[messages.length - 1]?.content || "";
+    const MAX_CHARS_PER_MESSAGE = 2000;
+    if (typeof latestUserMsg !== "string" || latestUserMsg.length > MAX_CHARS_PER_MESSAGE) {
+      return NextResponse.json(
+        { role: "assistant", content: "Could you shorten that a little? I'll pick it up from there." },
+        { status: 200 }
+      );
+    }
+
+    // Input Sanitization & Clamping (Anti-Token-Drain Guardrail)
     const sanitizedMessages = messages
       .filter((m) => m && typeof m.content === "string" && m.content.trim().length > 0)
       .slice(-10)
@@ -240,7 +264,6 @@ export async function POST(req: NextRequest) {
     }
 
     // 5. Async lead capture webhook to n8n
-    const latestUserMsg = messages[messages.length - 1]?.content || "";
     const webhookUrl = process.env.LEAD_WEBHOOK_URL;
     if (webhookUrl && (latestUserMsg.includes("@") || /\d{10}/.test(latestUserMsg))) {
       fetch(webhookUrl, {
@@ -255,30 +278,36 @@ export async function POST(req: NextRequest) {
       }).catch((e) => console.error("Chat lead webhook error:", e));
     }
 
-    const safeProviderHeader = String(activeProvider).replace(/[\r\n\t]/g, " ").slice(0, 100);
-    const safeDiagnosticHeader = String(diagnosticTrace).replace(/[\r\n\t]/g, " ").slice(0, 100);
+    const isDev = process.env.NODE_ENV !== "production";
+
+    const debugHeaders: Record<string, string> = isDev
+      ? {
+          "x-ai-provider": String(activeProvider).replace(/[\r\n\t]/g, " ").slice(0, 100),
+          "x-ai-diagnostic": String(diagnosticTrace).replace(/[\r\n\t]/g, " ").slice(0, 100),
+        }
+      : {};
+
+    // Always log the trace server-side so you keep it in production.
+    console.log(`[chat] provider=${activeProvider} trace=${diagnosticTrace}`);
 
     return NextResponse.json(
       {
         role: "assistant",
         content: assistantMessage,
-        provider: activeProvider,
-        diagnostic: diagnosticTrace,
+        ...(isDev ? { provider: activeProvider, diagnostic: diagnosticTrace } : {}),
       },
-      {
-        headers: {
-          "x-ai-provider": safeProviderHeader,
-          "x-ai-diagnostic": safeDiagnosticHeader,
-        },
-      }
+      { headers: debugHeaders }
     );
-  } catch (error: any) {
-    console.error("Chat API Error:", error);
+  } catch (error) {
+    // Operators get the detail in Vercel logs. The visitor gets a sentence.
+    console.error(
+      `[chat] request failed: ${error instanceof Error ? error.stack ?? error.message : String(error)}`
+    );
     return NextResponse.json(
       {
         role: "assistant",
-        content: "Sorry, I ran into an error. Please try again or reach out at hello@alizanelabs.site.",
-        error: error?.message || String(error),
+        content:
+          "Sorry, I ran into an error. Please try again, or email hello@alizanelabs.site and we'll pick it up from there.",
       },
       { status: 500 }
     );

@@ -179,32 +179,42 @@ export function AiChatWidget() {
           )}
 
           {/* Input Box */}
-          <form
-            onSubmit={(e) => {
-              e.preventDefault();
-              handleSend();
-            }}
-            className="flex items-center gap-2 border-t border-[#E7E5E4] bg-white p-2.5"
-          >
-            <input
-              type="text"
-              value={input}
-              onChange={(e) => setInput(e.target.value)}
-              placeholder="Ask about websites or AI..."
-              className="flex-1 rounded-lg border border-[#D6D3D1] bg-[#F9F9F7] px-3 py-2 text-xs text-[#111827] outline-none focus:border-[#065F46] focus:bg-white transition-colors"
-            />
-            <button
-              type="submit"
-              disabled={!input.trim() || isLoading}
-              className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-[#065F46] text-white hover:bg-[#064E3B] disabled:opacity-40 transition-colors shadow-xs"
-              aria-label="Send message"
-            >
-              <svg className="h-3.5 w-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-                <line x1="22" y1="2" x2="11" y2="13" />
-                <polygon points="22 2 15 22 11 13 2 9 22 2" />
-              </svg>
-            </button>
-          </form>
+          {(() => {
+            const conversationEnded = messages.length > 40;
+            return (
+              <form
+                onSubmit={(e) => {
+                  e.preventDefault();
+                  handleSend();
+                }}
+                className="flex items-center gap-2 border-t border-[#E7E5E4] bg-white p-2.5"
+              >
+                <input
+                  type="text"
+                  value={input}
+                  onChange={(e) => setInput(e.target.value)}
+                  disabled={isLoading || conversationEnded}
+                  placeholder={
+                    conversationEnded
+                      ? "Refresh to start a new chat"
+                      : "Ask about websites or AI..."
+                  }
+                  className="flex-1 rounded-lg border border-[#D6D3D1] bg-[#F9F9F7] px-3 py-2 text-xs text-[#111827] outline-none focus:border-[#065F46] focus:bg-white disabled:opacity-50 transition-colors"
+                />
+                <button
+                  type="submit"
+                  disabled={!input.trim() || isLoading || conversationEnded}
+                  className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-[#065F46] text-white hover:bg-[#064E3B] disabled:opacity-40 transition-colors shadow-xs"
+                  aria-label="Send message"
+                >
+                  <svg className="h-3.5 w-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                    <line x1="22" y1="2" x2="11" y2="13" />
+                    <polygon points="22 2 15 22 11 13 2 9 22 2" />
+                  </svg>
+                </button>
+              </form>
+            );
+          })()}
         </div>
       )}
 
@@ -213,16 +223,29 @@ export function AiChatWidget() {
         <button
           type="button"
           onClick={() => setIsOpen(true)}
-          className={`group flex items-center gap-2.5 rounded-full border border-[#064E3B] bg-[#065F46] py-2.5 px-4 text-xs font-medium text-white shadow-xl hover:bg-[#064E3B] hover:shadow-2xl transition-all duration-300 active:scale-95 ${
+          className={`group flex items-center gap-2.5 rounded-full border py-2.5 px-4 text-xs font-medium shadow-xl hover:shadow-2xl transition-all duration-300 active:scale-95 ${
             isPlannerInView
               ? "opacity-0 pointer-events-none translate-y-8 scale-90"
               : "opacity-100 translate-y-0 scale-100"
           }`}
+          style={{
+            backgroundColor: "var(--chat-accent)",
+            borderColor: "var(--chat-accent-border)",
+            color: "var(--chat-on-accent)",
+          }}
+          onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = "var(--chat-accent-hover)")}
+          onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = "var(--chat-accent)")}
           aria-label="Open AI Assistant"
         >
           <span className="relative flex h-2 w-2">
-            <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-[#34D399] opacity-75" />
-            <span className="relative inline-flex h-2 w-2 rounded-full bg-[#34D399]" />
+            <span
+              className="absolute inline-flex h-full w-full animate-ping rounded-full opacity-75 motion-reduce:animate-none"
+              style={{ backgroundColor: "var(--chat-pulse)" }}
+            />
+            <span
+              className="relative inline-flex h-2 w-2 rounded-full"
+              style={{ backgroundColor: "var(--chat-pulse)" }}
+            />
           </span>
           <svg className="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
             <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
