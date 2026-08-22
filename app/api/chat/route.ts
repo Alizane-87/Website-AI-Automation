@@ -39,44 +39,16 @@ function sanitizeAssistantResponse(rawText: string): string {
 
   let text = rawText.trim();
 
-  // 1. Strip XML-style reasoning/think tags
-  if (text.includes("</think>")) {
-    text = text.split("</think>").pop() || "";
-  }
-  if (text.includes("</thought>")) {
-    text = text.split("</thought>").pop() || "";
-  }
-  if (text.includes("</reasoning>")) {
-    text = text.split("</reasoning>").pop() || "";
-  }
+  // 1. Strip XML-style reasoning/think tags if any
   text = text.replace(/<think>[\s\S]*?<\/think>/gi, "");
   text = text.replace(/<thought>[\s\S]*?<\/thought>/gi, "");
   text = text.replace(/<reasoning>[\s\S]*?<\/reasoning>/gi, "");
 
-  // 2. Strip plaintext chain-of-thought preambles & drafting notes
-  text = text.replace(/^Here('s| is) a thinking process:?[\s\S]*?(?=(?:Hello|Hi|Our|The Site|The Works|We |That's|For |At Alizane|\n\n[A-Z]))/i, "");
-  text = text.replace(/^Thinking Process:?[\s\S]*?(?=(?:Hello|Hi|Our|The Site|The Works|We |That's|For |At Alizane|\n\n[A-Z]))/i, "");
+  // 2. Strip leading plaintext chain-of-thought preambles
+  text = text.replace(/^Here('s| is) a thinking process:?\s*/i, "");
+  text = text.replace(/^Thinking Process:?\s*/i, "");
 
-  // 3. Strip model drafting monologues (e.g. * Draft 1: ... * Draft 2:)
-  if (/\*?\s*(Draft \d+|Refining for Tone|User:|Identity:)/i.test(text)) {
-    const draftParts = text.split(/\*?\s*(?:Draft \d+:|Refining for Tone and Constraints:?|Final:?)\s*/i);
-    if (draftParts.length > 1) {
-      text = draftParts.pop() || "";
-    }
-  }
-
-  // 4. Catch raw CoT breakdown if remaining
-  const isRawCoT = /^\s*(Here('s| is) a thinking process|Thinking Process|\*\*Analyze User Input:\*\*|\*\*Identify Core Task:\*\*|\*\*Check Constraints|\*\s*User:|\*\s*Question:)/i.test(text);
-  if (isRawCoT) {
-    const splitMatch = text.split(/\n\s*(?:Response|Final Response|Answer|Output):\s*/i);
-    if (splitMatch.length > 1) {
-      text = splitMatch.pop() || "";
-    } else {
-      return "We offer 3 straightforward packages for contractors: The Site ($1,500 + $99/mo), The Works ($2,800 + $149/mo with 20 SEO pages & lead auto-text), and The Site That Answers ($4,500 + $299/mo with 24/7 AI Receptionist). What trade are you in?";
-    }
-  }
-
-  // 5. Strip model safety/assistant prefixes
+  // 3. Strip model safety/assistant prefixes
   text = text.replace(/^User Safety:\s*\w+\s*/i, "");
   text = text.replace(/^(Assistant|Alizane Assistant):\s*/i, "");
 
@@ -109,7 +81,7 @@ export async function POST(req: NextRequest) {
     // 2. Input Sanitization & Clamping (Anti-Token-Drain Guardrail)
     const sanitizedMessages = messages
       .filter((m) => m && typeof m.content === "string" && m.content.trim().length > 0)
-      .slice(-10) // Keep the last 10 turns
+      .slice(-10)
       .map((m) => ({
         role: m.role === "user" ? ("user" as const) : ("assistant" as const),
         content: m.content.trim().slice(0, 500),
@@ -142,18 +114,6 @@ export async function POST(req: NextRequest) {
 
     // 3A. PRIMARY: Official Google Gemini API (Ultra-fast, zero-CoT leaks, 100% free)
     if (geminiApiKey && geminiApiKey !== "your_gemini_api_key_here") {
-      let geminiModel = (process.env.AI_CHAT_MODEL || "gemini-1.5-flash-latest")
-        .replace(/['"=]/g, "")
-        .trim()
-        .replace(/^models\//, "");
-
-      if (geminiModel.includes("/")) {
-        geminiModel = geminiModel.split("/").pop() || "gemini-1.5-flash-latest";
-      }
-      if (!geminiModel.startsWith("gemini-")) {
-        geminiModel = "gemini-1.5-flash-latest";
-      }
-
       // Gemini requires first message to be "user" and alternating roles
       const geminiContents: { role: "user" | "model"; parts: { text: string }[] }[] = [];
       for (const m of sanitizedMessages) {
@@ -172,27 +132,18 @@ export async function POST(req: NextRequest) {
         }
       }
 
-      const candidateModels = Array.from(
-        new Set([
-          geminiModel,
-          "gemini-1.5-flash-latest",
-          "gemini-1.5-flash-002",
-          "gemini-1.5-flash-001",
-          "gemini-1.5-flash",
-          "gemini-2.0-flash-exp",
-          "gemini-1.5-pro-latest",
-          "gemini-1.5-pro-002",
-          "gemini-1.5-pro-001",
-          "gemini-1.5-pro",
-        ])
-      );
+      const priorityModels = [
+        "gemini-flash-lite-latest",
+        "gemini-flash-latest",
+        "gemini-2.0-flash-exp",
+        "gemini-1.5-flash-latest",
+      ];
 
       if (geminiContents.length > 0) {
-        for (const modelToTry of candidateModels) {
+        for (const modelName of priorityModels) {
           try {
-            const cleanName = modelToTry.replace(/^models\//, "");
             const geminiRes = await fetch(
-              `https://generativelanguage.googleapis.com/v1beta/models/${cleanName}:generateContent?key=${geminiApiKey}`,
+              `https://generativelanguage.googleapis.com/v1beta/models/${modelName}:generateContent?key=${geminiApiKey}`,
               {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
@@ -203,7 +154,7 @@ export async function POST(req: NextRequest) {
                   contents: geminiContents,
                   generationConfig: {
                     temperature: 0.2,
-                    maxOutputTokens: 350,
+                    maxOutputTokens: 600,
                   },
                 }),
               }
@@ -215,67 +166,16 @@ export async function POST(req: NextRequest) {
               const rawText = candidate?.content?.parts?.[0]?.text || "";
               assistantMessage = sanitizeAssistantResponse(rawText);
               if (assistantMessage) {
-                activeProvider = `google-gemini (${cleanName})`;
+                activeProvider = `google-gemini (${modelName})`;
                 break;
               }
             } else {
               const err = await geminiRes.text();
-              console.error(`Gemini (${cleanName}) API Error:`, geminiRes.status, err);
-              diagnosticTrace = `err-${geminiRes.status}-${cleanName}`;
+              console.error(`Gemini (${modelName}) API Error:`, geminiRes.status, err);
+              diagnosticTrace = `err-${geminiRes.status}-${modelName}`;
             }
           } catch (e: any) {
-            console.error(`Gemini (${modelToTry}) Fetch Error:`, e);
-          }
-        }
-
-        // Dynamic discovery fallback if hardcoded names are not matched
-        if (!assistantMessage) {
-          try {
-            const listRes = await fetch(
-              `https://generativelanguage.googleapis.com/v1beta/models?key=${geminiApiKey}`
-            );
-            if (listRes.ok) {
-              const listData = await listRes.json();
-              // Strictly filter for official Gemini generateContent models
-              const available = (listData.models || [])
-                .filter((m: any) =>
-                  m.supportedGenerationMethods?.includes("generateContent") &&
-                  m.name?.toLowerCase().includes("gemini") &&
-                  !m.name?.toLowerCase().includes("gemma")
-                )
-                .map((m: any) => m.name.replace(/^models\//, ""));
-
-              for (const discoveredModel of available) {
-                const res = await fetch(
-                  `https://generativelanguage.googleapis.com/v1beta/models/${discoveredModel}:generateContent?key=${geminiApiKey}`,
-                  {
-                    method: "POST",
-                    headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify({
-                      systemInstruction: {
-                        parts: [{ text: SYSTEM_PROMPT }],
-                      },
-                      contents: geminiContents,
-                      generationConfig: {
-                        temperature: 0.2,
-                        maxOutputTokens: 350,
-                      },
-                    }),
-                  }
-                );
-                if (res.ok) {
-                  const resData = await res.json();
-                  const text = resData.candidates?.[0]?.content?.parts?.[0]?.text || "";
-                  assistantMessage = sanitizeAssistantResponse(text);
-                  if (assistantMessage) {
-                    activeProvider = `google-gemini (${discoveredModel})`;
-                    break;
-                  }
-                }
-              }
-            }
-          } catch (listErr) {
-            console.error("ListModels discovery error:", listErr);
+            console.error(`Gemini (${modelName}) Fetch Error:`, e);
           }
         }
       }
