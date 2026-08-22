@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono, Instrument_Serif } from "next/font/google";
 import type { ReactNode } from "react";
 import { Analytics } from "@vercel/analytics/react";
+import { SpeedInsights } from "@vercel/speed-insights/next";
 
 import { AiChatWidget } from "@/components/ai-chat-widget";
 import { RevealProvider } from "@/components/reveal";
@@ -89,6 +90,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
         <RevealProvider />
         <AiChatWidget />
         <Analytics />
+        <SpeedInsights />
       </body>
     </html>
   );
