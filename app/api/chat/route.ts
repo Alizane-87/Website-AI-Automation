@@ -122,8 +122,12 @@ export async function POST(req: NextRequest) {
     ).replace(/['"=]/g, "").trim();
     const openRouterApiKey = (process.env.OPENROUTER_API_KEY || "").replace(/['"=]/g, "").trim();
 
-    let assistantMessage = "";
-    let activeProvider = "fallback";
+    let diagnosticTrace = "init";
+    if (!geminiApiKey) {
+      diagnosticTrace = "no-gemini-key-in-env";
+    } else {
+      diagnosticTrace = `gemini-key-present-len-${geminiApiKey.length}`;
+    }
 
     // 3A. PRIMARY: Official Google Gemini API (Ultra-fast, zero-CoT leaks, 100% free)
     if (geminiApiKey && geminiApiKey !== "your_gemini_api_key_here") {
@@ -147,7 +151,6 @@ export async function POST(req: NextRequest) {
       for (const m of sanitizedMessages) {
         const role = m.role === "user" ? "user" : "model";
         if (geminiContents.length === 0 && role === "model") {
-          // Skip leading assistant message
           continue;
         }
         const prev = geminiContents[geminiContents.length - 1];
@@ -192,9 +195,11 @@ export async function POST(req: NextRequest) {
           } else {
             const err = await geminiRes.text();
             console.error("Gemini API Error:", geminiRes.status, err);
+            activeProvider = `gemini-api-error-${geminiRes.status}`;
           }
-        } catch (e) {
+        } catch (e: any) {
           console.error("Gemini Fetch Error:", e);
+          activeProvider = `gemini-fetch-catch-${e?.message || "error"}`;
         }
       }
     }
@@ -278,10 +283,12 @@ export async function POST(req: NextRequest) {
         role: "assistant",
         content: assistantMessage,
         provider: activeProvider,
+        diagnostic: diagnosticTrace,
       },
       {
         headers: {
           "x-ai-provider": activeProvider,
+          "x-ai-diagnostic": diagnosticTrace,
         },
       }
     );
