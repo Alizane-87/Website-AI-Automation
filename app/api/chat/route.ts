@@ -170,17 +170,20 @@ export async function POST(req: NextRequest) {
         new Set([
           geminiModel,
           "gemini-2.0-flash",
+          "gemini-2.0-flash-exp",
           "gemini-1.5-flash",
-          "gemini-2.5-flash",
-          "gemini-1.5-flash-8b",
+          "gemini-1.5-flash-latest",
+          "gemini-1.5-pro",
+          "gemini-pro",
         ])
       );
 
       if (geminiContents.length > 0) {
         for (const modelToTry of candidateModels) {
           try {
+            const cleanName = modelToTry.replace(/^models\//, "");
             const geminiRes = await fetch(
-              `https://generativelanguage.googleapis.com/v1beta/models/${modelToTry}:generateContent?key=${geminiApiKey}`,
+              `https://generativelanguage.googleapis.com/v1beta/models/${cleanName}:generateContent?key=${geminiApiKey}`,
               {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
@@ -203,18 +206,66 @@ export async function POST(req: NextRequest) {
               const rawText = candidate?.content?.parts?.[0]?.text || "";
               assistantMessage = sanitizeAssistantResponse(rawText);
               if (assistantMessage) {
-                activeProvider = `google-gemini (${modelToTry})`;
+                activeProvider = `google-gemini (${cleanName})`;
                 break;
               }
             } else {
               const err = await geminiRes.text();
-              console.error(`Gemini (${modelToTry}) API Error:`, geminiRes.status, err);
-              activeProvider = `gemini-api-error-${geminiRes.status}-${modelToTry}`;
-              diagnosticTrace = `err-${geminiRes.status}-${err.slice(0, 80)}`;
+              console.error(`Gemini (${cleanName}) API Error:`, geminiRes.status, err);
+              activeProvider = `gemini-api-error-${geminiRes.status}-${cleanName}`;
+              diagnosticTrace = `err-${geminiRes.status}-${err.replace(/[\r\n\t]/g, " ").slice(0, 80)}`;
             }
           } catch (e: any) {
             console.error(`Gemini (${modelToTry}) Fetch Error:`, e);
             activeProvider = `gemini-fetch-catch-${e?.message || "error"}`;
+          }
+        }
+
+        // Dynamic discovery fallback if hardcoded names are not matched
+        if (!assistantMessage) {
+          try {
+            const listRes = await fetch(
+              `https://generativelanguage.googleapis.com/v1beta/models?key=${geminiApiKey}`
+            );
+            if (listRes.ok) {
+              const listData = await listRes.json();
+              const available = (listData.models || [])
+                .filter((m: any) =>
+                  m.supportedGenerationMethods?.includes("generateContent")
+                )
+                .map((m: any) => m.name.replace(/^models\//, ""));
+
+              for (const discoveredModel of available) {
+                const res = await fetch(
+                  `https://generativelanguage.googleapis.com/v1beta/models/${discoveredModel}:generateContent?key=${geminiApiKey}`,
+                  {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({
+                      systemInstruction: {
+                        parts: [{ text: SYSTEM_PROMPT }],
+                      },
+                      contents: geminiContents,
+                      generationConfig: {
+                        temperature: 0.2,
+                        maxOutputTokens: 350,
+                      },
+                    }),
+                  }
+                );
+                if (res.ok) {
+                  const resData = await res.json();
+                  const text = resData.candidates?.[0]?.content?.parts?.[0]?.text || "";
+                  assistantMessage = sanitizeAssistantResponse(text);
+                  if (assistantMessage) {
+                    activeProvider = `google-gemini (${discoveredModel})`;
+                    break;
+                  }
+                }
+              }
+            }
+          } catch (listErr) {
+            console.error("ListModels discovery error:", listErr);
           }
         }
       }
@@ -294,6 +345,9 @@ export async function POST(req: NextRequest) {
       }).catch((e) => console.error("Chat lead webhook error:", e));
     }
 
+    const safeProviderHeader = String(activeProvider).replace(/[\r\n\t]/g, " ").slice(0, 100);
+    const safeDiagnosticHeader = String(diagnosticTrace).replace(/[\r\n\t]/g, " ").slice(0, 100);
+
     return NextResponse.json(
       {
         role: "assistant",
@@ -303,8 +357,8 @@ export async function POST(req: NextRequest) {
       },
       {
         headers: {
-          "x-ai-provider": activeProvider,
-          "x-ai-diagnostic": diagnosticTrace,
+          "x-ai-provider": safeProviderHeader,
+          "x-ai-diagnostic": safeDiagnosticHeader,
         },
       }
     );
