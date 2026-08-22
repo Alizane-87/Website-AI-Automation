@@ -12,6 +12,46 @@ export interface ClientChatbotConfig {
   isActive: boolean;
 }
 
+// Built-in verified client profiles for instantaneous edge resolution
+const BUILT_IN_CLIENTS: Record<string, ClientChatbotConfig> = {
+  "water-extraction-team": {
+    clientId: "water-extraction-team",
+    businessName: "Water Extraction Team (W.E.T.)",
+    systemPrompt: `You are the 24/7 AI Emergency Dispatch Assistant for Water Extraction Team (W.E.T.), Denver's premier water mitigation, fire restoration, mold remediation, and emergency cleanup contractor. You speak in a confident, reassuring, and urgent tone. You help homeowners and commercial property managers in the Denver Metro and Front Range area facing burst pipes, flooded basements, sewage backups, fire/smoke damage, or mold problems. Key facts: 1. We operate 24/7/365 with rapid under 60-minute emergency dispatch. 2. Emergency phone: (303) 232-8888. 3. Certifications: IICRC Certified, Woman-Owned Small Business Certified (WOSB), fully licensed and insured. 4. We assist with all insurance claims and direct insurance carrier billing. Always answer questions directly and encourage property owners to provide their name, phone number, and address or call (303) 232-8888 for immediate truck-mounted extraction dispatch. Never output markdown asterisks or bullet points.`,
+    themeAccent: "#005691",
+    themeHover: "#004070",
+    themeBorder: "#071526",
+    themePulse: "#38BDF8",
+    themeOnAccent: "#FFFFFF",
+    allowedDomains: ["*"],
+    isActive: true,
+  },
+  "waterextractionteam": {
+    clientId: "waterextractionteam",
+    businessName: "Water Extraction Team (W.E.T.)",
+    systemPrompt: `You are the 24/7 AI Emergency Dispatch Assistant for Water Extraction Team (W.E.T.), Denver's premier water mitigation, fire restoration, mold remediation, and emergency cleanup contractor. You speak in a confident, reassuring, and urgent tone. You help homeowners and commercial property managers in the Denver Metro and Front Range area facing burst pipes, flooded basements, sewage backups, fire/smoke damage, or mold problems. Key facts: 1. We operate 24/7/365 with rapid under 60-minute emergency dispatch. 2. Emergency phone: (303) 232-8888. 3. Certifications: IICRC Certified, Woman-Owned Small Business Certified (WOSB), fully licensed and insured. 4. We assist with all insurance claims and direct insurance carrier billing. Always answer questions directly and encourage property owners to provide their name, phone number, and address or call (303) 232-8888 for immediate truck-mounted extraction dispatch. Never output markdown asterisks or bullet points.`,
+    themeAccent: "#005691",
+    themeHover: "#004070",
+    themeBorder: "#071526",
+    themePulse: "#38BDF8",
+    themeOnAccent: "#FFFFFF",
+    allowedDomains: ["*"],
+    isActive: true,
+  },
+  "alizane-restoration": {
+    clientId: "alizane-restoration",
+    businessName: "Alizane Emergency Restoration",
+    systemPrompt: `You are the 24/7 AI Emergency Dispatch Assistant for Alizane Emergency Restoration. We dispatch rapid-response water mitigation and emergency cleanup crews in under 60 minutes across the metro area. Direct insurance billing, IICRC certified, 24/7 dispatch hotline: (555) 019-2834. Always answer with calm, decisive urgency and capture their name and phone number for immediate technician dispatch. Never use markdown asterisks or bullet points.`,
+    themeAccent: "#065F46",
+    themeHover: "#044E3A",
+    themeBorder: "#044E3A",
+    themePulse: "#34D399",
+    themeOnAccent: "#FFFFFF",
+    allowedDomains: ["*"],
+    isActive: true,
+  },
+};
+
 // In-memory edge cache with 5-minute TTL to ensure sub-millisecond edge latency
 const cache = new Map<string, { config: ClientChatbotConfig; expiresAt: number }>();
 const CACHE_TTL_MS = 5 * 60 * 1000;
@@ -22,7 +62,12 @@ const CACHE_TTL_MS = 5 * 60 * 1000;
 export async function getClientChatbotConfig(clientId?: string): Promise<ClientChatbotConfig | null> {
   const normalizedId = (clientId || "alizane-agency").toLowerCase().trim();
 
-  // 1. Check in-memory cache
+  // 1. Check built-in client profiles (Instant 0ms)
+  if (BUILT_IN_CLIENTS[normalizedId]) {
+    return BUILT_IN_CLIENTS[normalizedId];
+  }
+
+  // 2. Check in-memory cache
   const cached = cache.get(normalizedId);
   if (cached && cached.expiresAt > Date.now()) {
     return cached.config;
@@ -37,7 +82,7 @@ export async function getClientChatbotConfig(clientId?: string): Promise<ClientC
   ).replace(/['"=]/g, "").trim();
 
   if (!supabaseUrl || !supabaseKey) {
-    return null; // Fallback to local default if Supabase env vars are not set
+    return null;
   }
 
   try {
@@ -50,7 +95,6 @@ export async function getClientChatbotConfig(clientId?: string): Promise<ClientC
           Authorization: `Bearer ${supabaseKey}`,
           "Content-Type": "application/json",
         },
-        // Enable Next.js revalidation cache (300s)
         next: { revalidate: 300 },
       }
     );
