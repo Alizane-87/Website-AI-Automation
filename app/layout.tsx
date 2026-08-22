@@ -64,6 +64,8 @@ export const metadata: Metadata = {
   robots: { index: true, follow: true },
 };
 
+import { GlobalAgencyLayout } from "@/components/global-agency-layout";
+
 export default function RootLayout({ children }: { children: ReactNode }) {
   return (
     <html
@@ -82,13 +84,8 @@ export default function RootLayout({ children }: { children: ReactNode }) {
         >
           Skip to content
         </a>
-        <SiteHeader />
-        <main id="main" className="flex-1">
-          {children}
-        </main>
-        <SiteFooter />
+        <GlobalAgencyLayout>{children}</GlobalAgencyLayout>
         <RevealProvider />
-        <AiChatWidget />
         <Analytics />
         <SpeedInsights />
       </body>
