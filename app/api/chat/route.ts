@@ -116,81 +116,126 @@ export async function POST(req: NextRequest) {
     const openRouterApiKey = (process.env.OPENROUTER_API_KEY || "").replace(/['"=]/g, "").trim();
 
     let assistantMessage = "";
+    let activeProvider = "fallback";
 
     // 3A. PRIMARY: Official Google Gemini API (Ultra-fast, zero-CoT leaks, 100% free)
     if (geminiApiKey && geminiApiKey !== "your_gemini_api_key_here") {
-      const geminiModel = (process.env.AI_CHAT_MODEL || "gemini-2.0-flash")
+      let geminiModel = (process.env.AI_CHAT_MODEL || "gemini-2.0-flash")
         .replace(/['"=]/g, "")
         .trim()
         .replace(/^models\//, "");
 
-      const contents = sanitizedMessages.map((m) => ({
-        role: m.role === "user" ? "user" : "model",
-        parts: [{ text: m.content }],
-      }));
+      if (geminiModel.includes("/")) {
+        geminiModel = geminiModel.split("/").pop() || "gemini-2.0-flash";
+      }
+      if (geminiModel.includes("001")) {
+        geminiModel = geminiModel.replace("-001", "");
+      }
+      if (!geminiModel.startsWith("gemini-")) {
+        geminiModel = "gemini-2.0-flash";
+      }
 
-      const geminiRes = await fetch(
-        `https://generativelanguage.googleapis.com/v1beta/models/${geminiModel}:generateContent?key=${geminiApiKey}`,
-        {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            systemInstruction: {
-              parts: [{ text: SYSTEM_PROMPT }],
-            },
-            contents,
-            generationConfig: {
-              temperature: 0.2,
-              maxOutputTokens: 350,
-            },
-          }),
+      // Gemini requires first message to be "user" and alternating roles
+      const geminiContents: { role: "user" | "model"; parts: { text: string }[] }[] = [];
+      for (const m of sanitizedMessages) {
+        const role = m.role === "user" ? "user" : "model";
+        if (geminiContents.length === 0 && role === "model") {
+          // Skip leading assistant message
+          continue;
         }
-      );
+        const prev = geminiContents[geminiContents.length - 1];
+        if (prev && prev.role === role) {
+          prev.parts[0].text += `\n${m.content}`;
+        } else {
+          geminiContents.push({
+            role,
+            parts: [{ text: m.content }],
+          });
+        }
+      }
 
-      if (geminiRes.ok) {
-        const geminiData = await geminiRes.json();
-        const candidate = geminiData.candidates?.[0];
-        const rawText = candidate?.content?.parts?.[0]?.text || "";
-        assistantMessage = sanitizeAssistantResponse(rawText);
-      } else {
-        const err = await geminiRes.text();
-        console.error("Gemini API Error:", err);
+      if (geminiContents.length > 0) {
+        try {
+          const geminiRes = await fetch(
+            `https://generativelanguage.googleapis.com/v1beta/models/${geminiModel}:generateContent?key=${geminiApiKey}`,
+            {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({
+                systemInstruction: {
+                  parts: [{ text: SYSTEM_PROMPT }],
+                },
+                contents: geminiContents,
+                generationConfig: {
+                  temperature: 0.2,
+                  maxOutputTokens: 350,
+                },
+              }),
+            }
+          );
+
+          if (geminiRes.ok) {
+            const geminiData = await geminiRes.json();
+            const candidate = geminiData.candidates?.[0];
+            const rawText = candidate?.content?.parts?.[0]?.text || "";
+            assistantMessage = sanitizeAssistantResponse(rawText);
+            if (assistantMessage) {
+              activeProvider = `google-gemini (${geminiModel})`;
+            }
+          } else {
+            const err = await geminiRes.text();
+            console.error("Gemini API Error:", geminiRes.status, err);
+          }
+        } catch (e) {
+          console.error("Gemini Fetch Error:", e);
+        }
       }
     }
 
     // 3B. FALLBACK: OpenRouter API
     if (!assistantMessage && openRouterApiKey && openRouterApiKey !== "your_openrouter_api_key_here") {
-      const openRouterModel = (process.env.AI_CHAT_MODEL || "google/gemini-2.0-flash-001")
+      let openRouterModel = (process.env.AI_CHAT_MODEL || "google/gemini-2.0-flash-001")
         .replace(/['"=]/g, "")
         .trim();
 
-      const openRouterRes = await fetch("https://openrouter.ai/api/v1/chat/completions", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${openRouterApiKey}`,
-          "HTTP-Referer": "https://www.alizanelabs.site",
-          "X-Title": "Alizane Labs Website Assistant",
-        },
-        body: JSON.stringify({
-          model: openRouterModel,
-          messages: [
-            { role: "system", content: SYSTEM_PROMPT },
-            ...sanitizedMessages,
-          ],
-          temperature: 0.2,
-          max_tokens: 350,
-          reasoning: { effort: "none" },
-        }),
-      });
+      if (!openRouterModel.includes("/") && openRouterModel.startsWith("gemini-")) {
+        openRouterModel = `google/${openRouterModel}`;
+      }
 
-      if (openRouterRes.ok) {
-        const data = await openRouterRes.json();
-        const rawText = data.choices?.[0]?.message?.content || "";
-        assistantMessage = sanitizeAssistantResponse(rawText);
-      } else {
-        const errData = await openRouterRes.json().catch(() => ({}));
-        console.error("OpenRouter Error:", errData);
+      try {
+        const openRouterRes = await fetch("https://openrouter.ai/api/v1/chat/completions", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${openRouterApiKey}`,
+            "HTTP-Referer": "https://www.alizanelabs.site",
+            "X-Title": "Alizane Labs Website Assistant",
+          },
+          body: JSON.stringify({
+            model: openRouterModel,
+            messages: [
+              { role: "system", content: SYSTEM_PROMPT },
+              ...sanitizedMessages,
+            ],
+            temperature: 0.2,
+            max_tokens: 350,
+            reasoning: { effort: "none" },
+          }),
+        });
+
+        if (openRouterRes.ok) {
+          const data = await openRouterRes.json();
+          const rawText = data.choices?.[0]?.message?.content || "";
+          assistantMessage = sanitizeAssistantResponse(rawText);
+          if (assistantMessage) {
+            activeProvider = `openrouter (${openRouterModel})`;
+          }
+        } else {
+          const errData = await openRouterRes.json().catch(() => ({}));
+          console.error("OpenRouter Error:", errData);
+        }
+      } catch (e) {
+        console.error("OpenRouter Fetch Error:", e);
       }
     }
 
@@ -201,7 +246,7 @@ export async function POST(req: NextRequest) {
           "Hello! I am the Alizane Labs AI assistant. To activate live responses, please configure GEMINI_API_KEY in your environment variables.";
       } else {
         assistantMessage =
-          "That's a question for the Alizane Labs team directly as I am not authorized to make changes to our plans or pricing. Leave your name, phone number, and trade, and our team will get back to you within 24 hours.";
+          "We offer 3 straightforward packages for contractors: The Site ($1,500 + $99/mo), The Works ($2,800 + $149/mo with 20 SEO pages & lead auto-text), and The Site That Answers ($4,500 + $299/mo with 24/7 AI Receptionist). What trade are you in?";
       }
     }
 
@@ -221,10 +266,18 @@ export async function POST(req: NextRequest) {
       }).catch((e) => console.error("Chat lead webhook error:", e));
     }
 
-    return NextResponse.json({
-      role: "assistant",
-      content: assistantMessage,
-    });
+    return NextResponse.json(
+      {
+        role: "assistant",
+        content: assistantMessage,
+        provider: activeProvider,
+      },
+      {
+        headers: {
+          "x-ai-provider": activeProvider,
+        },
+      }
+    );
   } catch (error) {
     console.error("Chat API Error:", error);
     return NextResponse.json(
