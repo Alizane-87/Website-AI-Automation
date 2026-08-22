@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { checkChatRateLimit, chatClientKeyFromHeaders } from "@/lib/rate-limit";
 
+// Alizane Labs AI Website Assistant Controller (Powered by Google Gemini 2.0 Flash)
 const SYSTEM_PROMPT = `You are the Alizane Assistant for Alizane Labs (https://alizanelabs.site).
 You are a sharp, helpful, and professional agency representative. You explain what Alizane Labs does for contractors and service businesses clearly and conversationally.
 
