@@ -19,8 +19,8 @@ export async function generateMetadata(props: DemoPageProps): Promise<Metadata> 
   const businessName = config?.businessName || "Contractor Demo";
 
   return {
-    title: `${businessName} | Interactive High-Performance Demo`,
-    description: `Live interactive Next.js 16 prototype built for ${businessName} with sub-second speeds and 24/7 AI speed-to-lead.`,
+    title: `${businessName} | 24/7 Emergency Dispatch & Restoration`,
+    description: `Live interactive Next.js 16 build for ${businessName} with sub-second speeds and 24/7 AI speed-to-lead.`,
   };
 }
 
@@ -33,10 +33,19 @@ export default async function DemoPage(props: DemoPageProps) {
   return (
     <DemoShowcase
       clientId={config?.clientId || clientId}
-      businessName={config?.businessName || "Custom Contractor Demo"}
-      themeAccent={config?.themeAccent || "#065F46"}
-      themePulse={config?.themePulse || "#34D399"}
-      themeBorder={config?.themeBorder || "#064E3B"}
+      businessName={config?.businessName || "Contractor Demo"}
+      phone={config?.phone || "(303) 232-8888"}
+      serviceCity={config?.serviceCity || "Denver Metro & Front Range"}
+      tagline={config?.tagline || "Expert Craftsmanship & Fast 24/7 Emergency Service"}
+      subheadline={config?.subheadline || "Licensed & insured contractors delivering upfront flat-rate pricing, master technicians, and guaranteed workmanship."}
+      trade={config?.trade || "Restoration & General Contracting"}
+      trustBadges={config?.trustBadges || ["Licensed & Insured", "24/7 Emergency Dispatch", "Upfront Flat-Rate Pricing"]}
+      services={config?.services || []}
+      serviceAreas={config?.serviceAreas || []}
+      reviews={config?.reviews || []}
+      themeAccent={config?.themeAccent || "#005691"}
+      themePulse={config?.themePulse || "#38BDF8"}
+      themeBorder={config?.themeBorder || "#071526"}
       themeOnAccent={config?.themeOnAccent || "#FFFFFF"}
     />
   );

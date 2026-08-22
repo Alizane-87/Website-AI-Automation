@@ -3,10 +3,20 @@
 import React, { useState } from "react";
 import Link from "next/link";
 import { AIChatWidget } from "@/components/ai-chat-widget";
+import { ContractorService, ContractorReview } from "@/lib/supabase-chat";
 
 interface DemoShowcaseProps {
   clientId: string;
   businessName: string;
+  phone: string;
+  serviceCity: string;
+  tagline: string;
+  subheadline: string;
+  trade: string;
+  trustBadges: string[];
+  services: ContractorService[];
+  serviceAreas: string[];
+  reviews: ContractorReview[];
   themeAccent: string;
   themePulse: string;
   themeBorder: string;
@@ -16,13 +26,23 @@ interface DemoShowcaseProps {
 export function DemoShowcase({
   clientId,
   businessName,
+  phone,
+  serviceCity,
+  tagline,
+  subheadline,
+  trade,
+  trustBadges,
+  services,
+  serviceAreas,
+  reviews,
   themeAccent,
   themePulse,
   themeBorder,
   themeOnAccent,
 }: DemoShowcaseProps) {
   // Quote Funnel State
-  const [selectedService, setSelectedService] = useState("Full System Replacement & Installation");
+  const defaultService = services[0]?.title || "Emergency Mitigation & Repair";
+  const [selectedService, setSelectedService] = useState(defaultService);
   const [propertySize, setPropertySize] = useState("1,500 – 3,000 sq ft (Standard Home)");
   const [propertyType, setPropertyType] = useState("Residential Property");
   const [urgency, setUrgency] = useState("Emergency (Within 24 Hours)");
@@ -31,6 +51,9 @@ export function DemoShowcase({
   const [formAddress, setFormAddress] = useState("");
   const [quoteSubmitted, setQuoteSubmitted] = useState(false);
   const [quoteLoading, setQuoteLoading] = useState(false);
+
+  const cleanPhone = phone.replace(/\D/g, "");
+  const telHref = `tel:${cleanPhone.length === 10 ? `+1${cleanPhone}` : cleanPhone}`;
 
   const handleQuoteSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -47,7 +70,7 @@ export function DemoShowcase({
           company: businessName,
           trade: selectedService,
           monthlyCallRange: urgency,
-          crm: `Demo Lead: ${clientId} | Size: ${propertySize} | Type: ${propertyType} | Addr: ${formAddress || "N/A"}`,
+          crm: `Contractor Lead: ${businessName} (${clientId}) | Size: ${propertySize} | Type: ${propertyType} | Addr: ${formAddress || "N/A"}`,
         }),
       });
       setQuoteSubmitted(true);
@@ -58,11 +81,11 @@ export function DemoShowcase({
     }
   };
 
-  const initialGreeting = `Hi there! 👋 Welcome to ${businessName}. I'm your 24/7 AI assistant. Ask me about our services, pricing estimates, emergency response, or schedule an inspection!`;
+  const initialGreeting = `Hi there! 👋 Welcome to ${businessName}. I'm your 24/7 AI Emergency Dispatch Assistant for ${serviceCity}. Ask me about our rapid dispatch, structural drying, fire restoration, mold remediation, or insurance claims!`;
 
   return (
     <div
-      className="min-h-screen bg-[#FBFBFA] text-[#111111] font-sans antialiased selection:bg-[#111111] selection:text-[#FFFFFF]"
+      className="min-h-screen bg-[#F8FAFC] text-[#0F172A] font-sans antialiased selection:bg-[#0F172A] selection:text-[#FFFFFF]"
       style={
         {
           "--chat-accent": themeAccent,
@@ -75,65 +98,65 @@ export function DemoShowcase({
     >
       {/* 1. TOP AGENCY PROTOTYPE BANNER */}
       <div
-        className="py-2.5 px-4 text-xs sm:text-sm font-medium flex flex-wrap items-center justify-between gap-2 border-b"
+        className="py-2.5 px-4 text-xs sm:text-sm font-medium flex flex-wrap items-center justify-between gap-2 border-b shadow-xs"
         style={{
           backgroundColor: themeAccent,
           color: themeOnAccent,
           borderColor: themeBorder,
         }}
       >
-        <div className="flex items-center gap-2 max-w-2xl">
+        <div className="flex items-center gap-2.5 max-w-2xl">
           <span
-            className="inline-block w-2.5 h-2.5 rounded-full animate-ping"
+            className="inline-block w-2.5 h-2.5 rounded-full animate-ping shrink-0"
             style={{ backgroundColor: themePulse }}
           />
           <span className="truncate">
-            Live Prototype for <strong>{businessName}</strong> · Next.js 16 Edge Architecture (380ms Speed)
+            Live High-Performance Build for <strong>{businessName}</strong> · Next.js 16 Edge Architecture (380ms Speed)
           </span>
         </div>
         <Link
           href="/contact"
-          className="inline-flex items-center gap-1.5 px-3 py-1 rounded text-xs font-bold transition-all bg-white text-[#111111] hover:bg-gray-100 shadow-sm shrink-0"
+          className="inline-flex items-center gap-1.5 px-3 py-1 rounded text-xs font-bold transition-all bg-white text-[#0F172A] hover:bg-gray-100 shadow-sm shrink-0"
         >
           🚀 Claim & Launch This Site →
         </Link>
       </div>
 
       {/* 2. REAL CONTRACTOR NAVIGATION BAR */}
-      <nav className="sticky top-0 z-40 bg-[#FFFFFF]/90 backdrop-blur-md border-b border-[#EAEAEA]">
+      <nav className="sticky top-0 z-40 bg-[#FFFFFF]/95 backdrop-blur-md border-b border-[#E2E8F0]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between gap-4">
           {/* Logo / Brand */}
-          <Link href="#hero" className="flex items-center gap-2.5 min-w-0">
+          <Link href="#hero" className="flex items-center gap-3 min-w-0">
             <div
-              className="w-10 h-10 rounded-xl flex items-center justify-center font-black text-lg shadow-sm shrink-0"
+              className="w-11 h-11 rounded-xl flex items-center justify-center font-black text-lg shadow-sm shrink-0"
               style={{ backgroundColor: themeAccent, color: themeOnAccent }}
             >
-              {businessName.charAt(0)}
+              {businessName.includes("Water") ? "〰️" : businessName.charAt(0)}
             </div>
             <div className="min-w-0">
-              <span className="font-bold text-base sm:text-lg tracking-tight block truncate text-[#111111]">
+              <span className="font-extrabold text-base sm:text-lg tracking-tight block truncate text-[#0F172A]">
                 {businessName}
               </span>
-              <span className="text-[11px] font-medium tracking-wide uppercase text-[#777777] block">
-                Licensed · Insured · 24/7 Dispatch
+              <span className="text-[11px] font-semibold tracking-wide uppercase text-[#64748B] block truncate">
+                {serviceCity} · 24/7 Dispatch
               </span>
             </div>
           </Link>
 
           {/* Desktop Nav Links */}
-          <div className="hidden lg:flex items-center gap-8 text-sm font-medium text-[#444444]">
-            <a href="#services" className="hover:text-[#111111] transition-colors">Services</a>
-            <a href="#why-us" className="hover:text-[#111111] transition-colors">Why Choose Us</a>
-            <a href="#quote-calculator" className="hover:text-[#111111] transition-colors">Quote Estimator</a>
-            <a href="#reviews" className="hover:text-[#111111] transition-colors">Reviews</a>
-            <a href="#service-areas" className="hover:text-[#111111] transition-colors">Service Areas</a>
+          <div className="hidden lg:flex items-center gap-8 text-sm font-medium text-[#475569]">
+            <a href="#services" className="hover:text-[#0F172A] transition-colors">Services</a>
+            <a href="#why-us" className="hover:text-[#0F172A] transition-colors">Why Choose Us</a>
+            <a href="#quote-calculator" className="hover:text-[#0F172A] transition-colors">Instant Estimate</a>
+            <a href="#reviews" className="hover:text-[#0F172A] transition-colors">Reviews</a>
+            <a href="#service-areas" className="hover:text-[#0F172A] transition-colors">Service Areas</a>
           </div>
 
           {/* Hotline CTA */}
           <div className="flex items-center gap-3 shrink-0">
             <a
-              href="tel:+18005550199"
-              className="flex items-center gap-2 px-4 py-2.5 rounded-lg text-xs sm:text-sm font-bold shadow-sm transition-all transform active:scale-95"
+              href={telHref}
+              className="flex items-center gap-2 px-4 py-2.5 rounded-xl text-xs sm:text-sm font-bold shadow-md transition-all transform active:scale-95"
               style={{
                 backgroundColor: themeAccent,
                 color: themeOnAccent,
@@ -142,29 +165,31 @@ export function DemoShowcase({
               <svg className="w-4 h-4 animate-bounce" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
               </svg>
-              <span>(555) 019-2834</span>
+              <span>{phone}</span>
             </a>
           </div>
         </div>
       </nav>
 
-      {/* 3. HERO SECTION */}
-      <section id="hero" className="relative pt-12 pb-20 sm:pt-16 sm:pb-28 overflow-hidden bg-gradient-to-b from-[#FFFFFF] to-[#FBFBFA] border-b border-[#EAEAEA]">
+      {/* 3. HERO SECTION (Tailored to Contractor Trade & Market) */}
+      <section id="hero" className="relative pt-12 pb-20 sm:pt-16 sm:pb-28 overflow-hidden bg-gradient-to-b from-[#FFFFFF] to-[#F8FAFC] border-b border-[#E2E8F0]">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           {/* Trust Pill */}
-          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full text-xs font-semibold uppercase tracking-wider mb-6 bg-[#FFFFFF] border border-[#E5E7EB] shadow-sm">
+          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-xs font-semibold uppercase tracking-wider mb-6 bg-[#FFFFFF] border border-[#CBD5E1] shadow-xs">
             <span className="text-amber-500">★★★★★</span>
-            <span className="text-[#333333]">4.9 Rating (180+ Verified Reviews)</span>
-            <span className="text-[#CCCCCC]">|</span>
-            <span className="text-[#065F46] font-bold">✓ 60-Min Emergency Response</span>
+            <span className="text-[#1E293B]">4.9 Rating ({reviews.length > 0 ? "180+ Reviews" : "Verified"})</span>
+            <span className="text-[#CBD5E1]">|</span>
+            <span className="font-bold" style={{ color: themeAccent }}>
+              ✓ &lt; 60-Min Rapid Dispatch
+            </span>
           </div>
 
-          <h1 className="text-4xl sm:text-6xl lg:text-7xl font-bold tracking-tight text-[#111111] max-w-4xl mx-auto leading-[1.1] mb-6">
-            Expert Craftsmanship & Fast 24/7 Service For Your Property.
+          <h1 className="text-4xl sm:text-6xl lg:text-7xl font-extrabold tracking-tight text-[#0F172A] max-w-4xl mx-auto leading-[1.1] mb-6">
+            {tagline}
           </h1>
 
-          <p className="text-base sm:text-xl text-[#555555] max-w-2xl mx-auto leading-relaxed mb-10">
-            From emergency repairs to complete system replacements, <strong>{businessName}</strong> delivers upfront flat-rate pricing, master-certified technicians, and guaranteed workmanship.
+          <p className="text-base sm:text-xl text-[#475569] max-w-3xl mx-auto leading-relaxed mb-10">
+            {subheadline}
           </p>
 
           <div className="flex flex-wrap items-center justify-center gap-4">
@@ -179,212 +204,168 @@ export function DemoShowcase({
               Calculate Instant Estimate ↓
             </a>
             <a
-              href="tel:+18005550199"
-              className="px-8 py-4 rounded-xl text-sm sm:text-base font-bold bg-[#FFFFFF] border border-[#D1D5DB] text-[#111111] hover:bg-[#F3F4F6] transition-all shadow-sm flex items-center gap-2"
+              href={telHref}
+              className="px-8 py-4 rounded-xl text-sm sm:text-base font-bold bg-[#FFFFFF] border border-[#CBD5E1] text-[#0F172A] hover:bg-[#F1F5F9] transition-all shadow-sm flex items-center gap-2.5"
             >
-              <span className="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse" />
-              <span>Call Dispatch (24/7 Live)</span>
+              <span className="w-2.5 h-2.5 rounded-full animate-pulse" style={{ backgroundColor: themePulse }} />
+              <span>Call Dispatch ({phone})</span>
             </a>
           </div>
 
           {/* Guarantees Bar */}
-          <div className="mt-12 pt-8 border-t border-[#EAEAEA] grid grid-cols-2 md:grid-cols-4 gap-4 text-xs font-semibold text-[#666666]">
-            <div className="flex items-center justify-center gap-1.5">
-              <span className="text-emerald-600 font-bold">✓</span> Upfront Flat-Rate Pricing
-            </div>
-            <div className="flex items-center justify-center gap-1.5">
-              <span className="text-emerald-600 font-bold">✓</span> 100% Workmanship Guarantee
-            </div>
-            <div className="flex items-center justify-center gap-1.5">
-              <span className="text-emerald-600 font-bold">✓</span> Background-Checked Techs
-            </div>
-            <div className="flex items-center justify-center gap-1.5">
-              <span className="text-emerald-600 font-bold">✓</span> Zero Hidden After-Hours Fees
-            </div>
+          <div className="mt-12 pt-8 border-t border-[#E2E8F0] grid grid-cols-2 md:grid-cols-4 gap-4 text-xs font-semibold text-[#475569]">
+            {trustBadges.slice(0, 4).map((badge, idx) => (
+              <div key={idx} className="flex items-center justify-center gap-1.5">
+                <span className="font-bold" style={{ color: themeAccent }}>✓</span> {badge}
+              </div>
+            ))}
           </div>
         </div>
       </section>
 
       {/* 4. STATISTICS STRIP */}
-      <section className="bg-[#FFFFFF] border-b border-[#EAEAEA] py-10">
+      <section className="bg-[#FFFFFF] border-b border-[#E2E8F0] py-10">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
           <div>
-            <div className="text-3xl sm:text-4xl font-extrabold text-[#111111]">15+</div>
-            <div className="text-xs uppercase font-semibold text-[#777777] mt-1 tracking-wider">Years Serving Community</div>
+            <div className="text-3xl sm:text-4xl font-extrabold text-[#0F172A]">24/7/365</div>
+            <div className="text-xs uppercase font-semibold text-[#64748B] mt-1 tracking-wider">Live Emergency Hotline</div>
           </div>
           <div>
-            <div className="text-3xl sm:text-4xl font-extrabold text-[#111111]">3,400+</div>
-            <div className="text-xs uppercase font-semibold text-[#777777] mt-1 tracking-wider">Completed Projects</div>
+            <div className="text-3xl sm:text-4xl font-extrabold text-[#0F172A]">&lt; 60 Min</div>
+            <div className="text-xs uppercase font-semibold text-[#64748B] mt-1 tracking-wider">Truck-Mounted Dispatch</div>
           </div>
           <div>
-            <div className="text-3xl sm:text-4xl font-extrabold text-[#111111]">&lt; 60 Min</div>
-            <div className="text-xs uppercase font-semibold text-[#777777] mt-1 tracking-wider">Emergency Dispatch</div>
+            <div className="text-3xl sm:text-4xl font-extrabold text-[#0F172A]">100%</div>
+            <div className="text-xs uppercase font-semibold text-[#64748B] mt-1 tracking-wider">Direct Insurance Billing</div>
           </div>
           <div>
-            <div className="text-3xl sm:text-4xl font-extrabold text-[#111111]">100%</div>
-            <div className="text-xs uppercase font-semibold text-[#777777] mt-1 tracking-wider">Satisfaction Warranty</div>
+            <div className="text-3xl sm:text-4xl font-extrabold text-[#0F172A]">IICRC</div>
+            <div className="text-xs uppercase font-semibold text-[#64748B] mt-1 tracking-wider">Master Certified Techs</div>
           </div>
         </div>
       </section>
 
-      {/* 5. BENTO-GRID CORE SERVICES */}
+      {/* 5. BENTO-GRID CORE SERVICES (Real trade capabilities) */}
       <section id="services" className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
         <div className="text-center max-w-2xl mx-auto mb-16">
-          <span className="text-xs font-bold uppercase tracking-widest text-[#777777]">
-            Complete Trade Capabilities
+          <span className="text-xs font-bold uppercase tracking-widest text-[#64748B]">
+            {trade}
           </span>
-          <h2 className="text-3xl sm:text-4xl font-bold tracking-tight text-[#111111] mt-2">
-            Comprehensive Services by Master Technicians
+          <h2 className="text-3xl sm:text-4xl font-bold tracking-tight text-[#0F172A] mt-2">
+            Comprehensive Capabilities by {businessName}
           </h2>
-          <p className="text-sm text-[#666666] mt-3">
-            Every project is backed by our full warranty, transparent pricing, and rigorous quality inspection.
+          <p className="text-sm text-[#475569] mt-3">
+            Every emergency call is dispatched with specialized extraction equipment and certified field crews.
           </p>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          {/* Card 1 */}
-          <div className="bg-[#FFFFFF] border border-[#EAEAEA] rounded-2xl p-8 hover:shadow-md transition-all flex flex-col justify-between">
-            <div>
-              <div className="flex items-center justify-between mb-4">
-                <span className="text-2xl">⚡</span>
-                <span className="text-[10px] font-bold uppercase tracking-wider px-2.5 py-1 rounded-full bg-red-100 text-red-700">
-                  24/7 Emergency
-                </span>
+          {services.map((s, idx) => (
+            <div
+              key={idx}
+              className="bg-[#FFFFFF] border border-[#E2E8F0] rounded-2xl p-8 hover:shadow-md transition-all flex flex-col justify-between"
+            >
+              <div>
+                <div className="flex items-center justify-between mb-4">
+                  <span className="text-3xl">{s.icon}</span>
+                  <span
+                    className="text-[10px] font-bold uppercase tracking-wider px-2.5 py-1 rounded-full bg-slate-100 text-slate-800"
+                  >
+                    {s.category}
+                  </span>
+                </div>
+                <h3 className="text-xl font-bold text-[#0F172A] mb-2">{s.title}</h3>
+                <p className="text-sm text-[#475569] leading-relaxed mb-4">
+                  {s.description}
+                </p>
+                <ul className="text-xs text-[#64748B] space-y-2 mb-6">
+                  {s.highlights.map((h, hIdx) => (
+                    <li key={hIdx}>• {h}</li>
+                  ))}
+                </ul>
               </div>
-              <h3 className="text-xl font-bold text-[#111111] mb-2">Emergency Repair & Containment</h3>
-              <p className="text-sm text-[#666666] leading-relaxed mb-4">
-                Immediate dispatch for urgent property emergencies, storm damage, burst systems, or electrical failures.
-              </p>
-              <ul className="text-xs text-[#555555] space-y-2 mb-6">
-                <li>• Under 60-minute dispatch window</li>
-                <li>• Real-time technician location tracking</li>
-                <li>• Full damage assessment & documentation</li>
-              </ul>
+              <a
+                href="#quote-calculator"
+                onClick={() => setSelectedService(s.title)}
+                className="text-xs font-bold hover:underline"
+                style={{ color: themeAccent }}
+              >
+                Request Dispatch for This Service →
+              </a>
             </div>
-            <a href="#quote-calculator" className="text-xs font-bold text-[#111111] hover:underline">
-              Request Emergency Tech →
-            </a>
-          </div>
-
-          {/* Card 2 */}
-          <div className="bg-[#FFFFFF] border border-[#EAEAEA] rounded-2xl p-8 hover:shadow-md transition-all flex flex-col justify-between">
-            <div>
-              <div className="flex items-center justify-between mb-4">
-                <span className="text-2xl">🏗️</span>
-                <span className="text-[10px] font-bold uppercase tracking-wider px-2.5 py-1 rounded-full bg-blue-100 text-blue-700">
-                  Full Replacement
-                </span>
-              </div>
-              <h3 className="text-xl font-bold text-[#111111] mb-2">Complete System Overhaul</h3>
-              <p className="text-sm text-[#666666] leading-relaxed mb-4">
-                High-efficiency installations designed for maximum longevity, energy savings, and optimal performance.
-              </p>
-              <ul className="text-xs text-[#555555] space-y-2 mb-6">
-                <li>• 10-year parts & labor warranty</li>
-                <li>• Flexible 0% interest financing options</li>
-                <li>• Free on-site engineering calculation</li>
-              </ul>
-            </div>
-            <a href="#quote-calculator" className="text-xs font-bold text-[#111111] hover:underline">
-              Calculate Replacement Cost →
-            </a>
-          </div>
-
-          {/* Card 3 */}
-          <div className="bg-[#FFFFFF] border border-[#EAEAEA] rounded-2xl p-8 hover:shadow-md transition-all flex flex-col justify-between">
-            <div>
-              <div className="flex items-center justify-between mb-4">
-                <span className="text-2xl">🔍</span>
-                <span className="text-[10px] font-bold uppercase tracking-wider px-2.5 py-1 rounded-full bg-emerald-100 text-emerald-700">
-                  Fixed First Visit
-                </span>
-              </div>
-              <h3 className="text-xl font-bold text-[#111111] mb-2">Diagnostics & Safety Audit</h3>
-              <p className="text-sm text-[#666666] leading-relaxed mb-4">
-                State-of-the-art camera and sensor inspections to pinpoint hidden leaks, wear points, and structural risks.
-              </p>
-              <ul className="text-xs text-[#555555] space-y-2 mb-6">
-                <li>• Comprehensive 32-point inspection report</li>
-                <li>• Transparent photo & video evidence</li>
-                <li>• Clear flat-rate pricing before work begins</li>
-              </ul>
-            </div>
-            <a href="#quote-calculator" className="text-xs font-bold text-[#111111] hover:underline">
-              Book Inspection →
-            </a>
-          </div>
+          ))}
         </div>
       </section>
 
       {/* 6. WHY CHOOSE US (4-PILLAR TRUST SECTION) */}
-      <section id="why-us" className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-16 border-t border-[#EAEAEA]">
+      <section id="why-us" className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-16 border-t border-[#E2E8F0]">
         <div className="text-center max-w-2xl mx-auto mb-12">
-          <span className="text-xs font-bold uppercase tracking-widest text-[#777777]">
+          <span className="text-xs font-bold uppercase tracking-widest text-[#64748B]">
             The Standard of Excellence
           </span>
-          <h2 className="text-3xl font-bold tracking-tight text-[#111111] mt-2">
-            Why Homeowners & Businesses Choose {businessName}
+          <h2 className="text-3xl font-bold tracking-tight text-[#0F172A] mt-2">
+            Why {serviceCity} Chooses {businessName}
           </h2>
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-          <div className="bg-[#FFFFFF] border border-[#EAEAEA] rounded-xl p-6 text-center shadow-xs">
-            <div className="w-12 h-12 rounded-xl bg-emerald-50 text-emerald-700 flex items-center justify-center mx-auto mb-4 text-xl font-bold">
-              💰
-            </div>
-            <h3 className="font-bold text-sm text-[#111111] mb-1">Upfront Pricing</h3>
-            <p className="text-xs text-[#666666] leading-relaxed">
-              No hidden travel fees, no overtime surcharges, and no surprise line items on your invoice.
-            </p>
-          </div>
-
-          <div className="bg-[#FFFFFF] border border-[#EAEAEA] rounded-xl p-6 text-center shadow-xs">
+          <div className="bg-[#FFFFFF] border border-[#E2E8F0] rounded-xl p-6 text-center shadow-xs">
             <div className="w-12 h-12 rounded-xl bg-blue-50 text-blue-700 flex items-center justify-center mx-auto mb-4 text-xl font-bold">
-              🛠️
-            </div>
-            <h3 className="font-bold text-sm text-[#111111] mb-1">Master Technicians</h3>
-            <p className="text-xs text-[#666666] leading-relaxed">
-              Every technician is licensed, drug-tested, background-checked, and manufacturer-certified.
-            </p>
-          </div>
-
-          <div className="bg-[#FFFFFF] border border-[#EAEAEA] rounded-xl p-6 text-center shadow-xs">
-            <div className="w-12 h-12 rounded-xl bg-purple-50 text-purple-700 flex items-center justify-center mx-auto mb-4 text-xl font-bold">
               ⚡
             </div>
-            <h3 className="font-bold text-sm text-[#111111] mb-1">Rapid Dispatch</h3>
-            <p className="text-xs text-[#666666] leading-relaxed">
-              Fully stocked warehouse trucks ready to deploy across all local zones within 60 minutes.
+            <h3 className="font-bold text-sm text-[#0F172A] mb-1">Under 60-Min Dispatch</h3>
+            <p className="text-xs text-[#64748B] leading-relaxed">
+              Truck-mounted extraction crews on standby 24/7/365 across the entire metropolitan radius.
             </p>
           </div>
 
-          <div className="bg-[#FFFFFF] border border-[#EAEAEA] rounded-xl p-6 text-center shadow-xs">
+          <div className="bg-[#FFFFFF] border border-[#E2E8F0] rounded-xl p-6 text-center shadow-xs">
+            <div className="w-12 h-12 rounded-xl bg-emerald-50 text-emerald-700 flex items-center justify-center mx-auto mb-4 text-xl font-bold">
+              📋
+            </div>
+            <h3 className="font-bold text-sm text-[#0F172A] mb-1">Direct Insurance Billing</h3>
+            <p className="text-xs text-[#64748B] leading-relaxed">
+              We bill your insurance carrier directly using Xactimate itemization with zero upfront delay.
+            </p>
+          </div>
+
+          <div className="bg-[#FFFFFF] border border-[#E2E8F0] rounded-xl p-6 text-center shadow-xs">
+            <div className="w-12 h-12 rounded-xl bg-purple-50 text-purple-700 flex items-center justify-center mx-auto mb-4 text-xl font-bold">
+              🏆
+            </div>
+            <h3 className="font-bold text-sm text-[#0F172A] mb-1">Certified Master Techs</h3>
+            <p className="text-xs text-[#64748B] leading-relaxed">
+              IICRC and CDPHE certified technicians trained in strict structural drying and containment.
+            </p>
+          </div>
+
+          <div className="bg-[#FFFFFF] border border-[#E2E8F0] rounded-xl p-6 text-center shadow-xs">
             <div className="w-12 h-12 rounded-xl bg-amber-50 text-amber-700 flex items-center justify-center mx-auto mb-4 text-xl font-bold">
               🛡️
             </div>
-            <h3 className="font-bold text-sm text-[#111111] mb-1">100% Guaranteed</h3>
-            <p className="text-xs text-[#666666] leading-relaxed">
-              Complete peace of mind with our ironclad parts & workmanship warranty on every project.
+            <h3 className="font-bold text-sm text-[#0F172A] mb-1">Full Mitigation to Rebuild</h3>
+            <p className="text-xs text-[#64748B] leading-relaxed">
+              Complete seamless restoration from initial water pump-out to full drywall, flooring, and paint.
             </p>
           </div>
         </div>
       </section>
 
-      {/* 7. INTERACTIVE QUOTE ESTIMATOR FUNNEL */}
-      <section id="quote-calculator" className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-20 border-t border-[#EAEAEA]">
+      {/* 7. INTERACTIVE ESTIMATE CALCULATOR */}
+      <section id="quote-calculator" className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-20 border-t border-[#E2E8F0]">
         <div className="text-center max-w-2xl mx-auto mb-12">
-          <span className="text-xs font-bold uppercase tracking-widest text-[#777777]">
+          <span className="text-xs font-bold uppercase tracking-widest text-[#64748B]">
             Instant Speed-to-Lead
           </span>
-          <h2 className="text-3xl sm:text-4xl font-bold tracking-tight text-[#111111] mt-2">
-            Interactive Project Cost Calculator
+          <h2 className="text-3xl sm:text-4xl font-bold tracking-tight text-[#0F172A] mt-2">
+            Emergency Dispatch & Cost Estimator
           </h2>
-          <p className="text-sm text-[#666666] mt-2">
-            Configure your project parameters below to get an immediate estimate and fast SMS confirmation.
+          <p className="text-sm text-[#475569] mt-2">
+            Select your emergency parameters below to request immediate dispatch or receive an instant estimate.
           </p>
         </div>
 
-        <div className="bg-[#FFFFFF] border border-[#EAEAEA] rounded-2xl p-6 sm:p-10 shadow-lg">
+        <div className="bg-[#FFFFFF] border border-[#E2E8F0] rounded-2xl p-6 sm:p-10 shadow-lg">
           {quoteSubmitted ? (
             <div className="text-center py-12">
               <div
@@ -393,41 +374,37 @@ export function DemoShowcase({
               >
                 ✓
               </div>
-              <h3 className="text-2xl font-bold text-[#111111] mb-2">Estimate Request Dispatched!</h3>
-              <p className="text-sm text-[#666666] max-w-md mx-auto mb-6 leading-relaxed">
-                We have received your estimate parameters for <strong>{businessName}</strong>. Our automated system has sent a confirmation text to <strong>{formPhone}</strong>, and an on-call estimator is reviewing your specs.
+              <h3 className="text-2xl font-bold text-[#0F172A] mb-2">Emergency Request Dispatched!</h3>
+              <p className="text-sm text-[#475569] max-w-md mx-auto mb-6 leading-relaxed">
+                We have received your emergency details for <strong>{businessName}</strong>. Our on-call dispatcher has sent a confirmation text to <strong>{formPhone}</strong>, and an emergency technician is reviewing your location.
               </p>
               <button
                 onClick={() => setQuoteSubmitted(false)}
-                className="px-6 py-2.5 rounded-lg text-xs font-semibold border border-[#D1D5DB] bg-[#FAFAFA] hover:bg-[#F3F4F6]"
+                className="px-6 py-2.5 rounded-lg text-xs font-semibold border border-[#CBD5E1] bg-[#F8FAFC] hover:bg-[#F1F5F9] cursor-pointer"
               >
-                Calculate Another Project
+                Calculate Another Property
               </button>
             </div>
           ) : (
             <form onSubmit={handleQuoteSubmit} className="space-y-8">
               {/* Step 1: Scope */}
               <div>
-                <label className="block text-xs font-bold uppercase tracking-wider text-[#444444] mb-3">
-                  Step 1: Select Scope of Work
+                <label className="block text-xs font-bold uppercase tracking-wider text-[#334155] mb-3">
+                  Step 1: Select Service Required
                 </label>
-                <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
-                  {[
-                    "Full System Replacement & Installation",
-                    "Emergency Inspection & Rapid Repair",
-                    "Routine Preventative Maintenance",
-                  ].map((service) => (
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+                  {services.map((s, idx) => (
                     <button
-                      key={service}
+                      key={idx}
                       type="button"
-                      onClick={() => setSelectedService(service)}
-                      className={`p-4 text-left text-xs font-medium rounded-xl border transition-all ${
-                        selectedService === service
+                      onClick={() => setSelectedService(s.title)}
+                      className={`p-3.5 text-left text-xs font-medium rounded-xl border transition-all cursor-pointer ${
+                        selectedService === s.title
                           ? "font-bold shadow-sm"
-                          : "border-[#E5E7EB] bg-[#FAFAFA] text-[#555555] hover:bg-[#F3F4F6]"
+                          : "border-[#E2E8F0] bg-[#F8FAFC] text-[#475569] hover:bg-[#F1F5F9]"
                       }`}
                       style={
-                        selectedService === service
+                        selectedService === s.title
                           ? {
                               borderColor: themeAccent,
                               backgroundColor: `${themeAccent}12`,
@@ -436,7 +413,8 @@ export function DemoShowcase({
                           : {}
                       }
                     >
-                      {service}
+                      <div className="font-bold truncate">{s.title}</div>
+                      <div className="text-[10px] text-[#64748B] mt-0.5">{s.category}</div>
                     </button>
                   ))}
                 </div>
@@ -444,23 +422,23 @@ export function DemoShowcase({
 
               {/* Step 2: Property Size */}
               <div>
-                <label className="block text-xs font-bold uppercase tracking-wider text-[#444444] mb-3">
+                <label className="block text-xs font-bold uppercase tracking-wider text-[#334155] mb-3">
                   Step 2: Approximate Property Size
                 </label>
                 <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
                   {[
-                    "Under 1,500 sq ft (Compact)",
+                    "Under 1,500 sq ft (Basement/Floor)",
                     "1,500 – 3,000 sq ft (Standard Home)",
-                    "3,000+ sq ft / Commercial",
+                    "3,000+ sq ft / Commercial Facility",
                   ].map((size) => (
                     <button
                       key={size}
                       type="button"
                       onClick={() => setPropertySize(size)}
-                      className={`p-3.5 text-center text-xs font-medium rounded-xl border transition-all ${
+                      className={`p-3.5 text-center text-xs font-medium rounded-xl border transition-all cursor-pointer ${
                         propertySize === size
                           ? "font-bold shadow-sm"
-                          : "border-[#E5E7EB] bg-[#FAFAFA] text-[#555555] hover:bg-[#F3F4F6]"
+                          : "border-[#E2E8F0] bg-[#F8FAFC] text-[#475569] hover:bg-[#F1F5F9]"
                       }`}
                       style={
                         propertySize === size
@@ -480,23 +458,23 @@ export function DemoShowcase({
 
               {/* Step 3: Timeframe */}
               <div>
-                <label className="block text-xs font-bold uppercase tracking-wider text-[#444444] mb-3">
-                  Step 3: Required Timeline
+                <label className="block text-xs font-bold uppercase tracking-wider text-[#334155] mb-3">
+                  Step 3: Response Urgency
                 </label>
                 <div className="grid grid-cols-3 gap-3">
                   {[
-                    "Emergency (Within 24 Hours)",
-                    "This Week",
-                    "Flexible / Planning",
+                    "Emergency 24/7 (Immediate)",
+                    "Within 24 Hours",
+                    "Insurance Consultation",
                   ].map((u) => (
                     <button
                       key={u}
                       type="button"
                       onClick={() => setUrgency(u)}
-                      className={`p-3 text-center text-xs font-medium rounded-xl border transition-all ${
+                      className={`p-3 text-center text-xs font-medium rounded-xl border transition-all cursor-pointer ${
                         urgency === u
                           ? "font-bold shadow-sm"
-                          : "border-[#E5E7EB] bg-[#FAFAFA] text-[#555555] hover:bg-[#F3F4F6]"
+                          : "border-[#E2E8F0] bg-[#F8FAFC] text-[#475569] hover:bg-[#F1F5F9]"
                       }`}
                       style={
                         urgency === u
@@ -515,9 +493,9 @@ export function DemoShowcase({
               </div>
 
               {/* Step 4: Contact Dispatch */}
-              <div className="pt-6 border-t border-[#EAEAEA] grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div className="pt-6 border-t border-[#E2E8F0] grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-xs font-bold text-[#444444] mb-1.5">
+                  <label className="block text-xs font-bold text-[#334155] mb-1.5">
                     Your Full Name *
                   </label>
                   <input
@@ -525,21 +503,21 @@ export function DemoShowcase({
                     required
                     value={formName}
                     onChange={(e) => setFormName(e.target.value)}
-                    placeholder="Robert Davis"
-                    className="w-full px-4 py-3 text-sm bg-[#FFFFFF] border border-[#D1D5DB] rounded-xl focus:outline-none focus:ring-2"
+                    placeholder="Greg Miller"
+                    className="w-full px-4 py-3 text-sm bg-[#FFFFFF] border border-[#CBD5E1] rounded-xl focus:outline-none focus:ring-2"
                   />
                 </div>
                 <div>
-                  <label className="block text-xs font-bold text-[#444444] mb-1.5">
-                    Phone Number (for 60s SMS confirmation) *
+                  <label className="block text-xs font-bold text-[#334155] mb-1.5">
+                    Phone Number (for 60s SMS Dispatch Alert) *
                   </label>
                   <input
                     type="tel"
                     required
                     value={formPhone}
                     onChange={(e) => setFormPhone(e.target.value)}
-                    placeholder="(555) 019-2834"
-                    className="w-full px-4 py-3 text-sm bg-[#FFFFFF] border border-[#D1D5DB] rounded-xl focus:outline-none focus:ring-2"
+                    placeholder={phone}
+                    className="w-full px-4 py-3 text-sm bg-[#FFFFFF] border border-[#CBD5E1] rounded-xl focus:outline-none focus:ring-2"
                   />
                 </div>
               </div>
@@ -547,130 +525,104 @@ export function DemoShowcase({
               <button
                 type="submit"
                 disabled={quoteLoading}
-                className="w-full py-4 text-base font-bold rounded-xl shadow-lg transition-all transform active:scale-95 text-center"
+                className="w-full py-4 text-base font-bold rounded-xl shadow-lg transition-all transform active:scale-95 text-center cursor-pointer"
                 style={{
                   backgroundColor: themeAccent,
                   color: themeOnAccent,
                 }}
               >
-                {quoteLoading ? "Processing Estimate..." : "Get Instant Estimate & 60s SMS Alert →"}
+                {quoteLoading ? "Dispatching Details..." : `Request Emergency Dispatch & 60s Alert for ${businessName} →`}
               </button>
             </form>
           )}
         </div>
       </section>
 
-      {/* 8. VERIFIED GOOGLE REVIEWS */}
-      <section id="reviews" className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-20 border-t border-[#EAEAEA]">
+      {/* 8. VERIFIED GOOGLE REVIEWS (Real Denver stories) */}
+      <section id="reviews" className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-20 border-t border-[#E2E8F0]">
         <div className="text-center max-w-2xl mx-auto mb-16">
-          <span className="text-xs font-bold uppercase tracking-widest text-[#777777]">
+          <span className="text-xs font-bold uppercase tracking-widest text-[#64748B]">
             Verified Homeowner Feedback
           </span>
-          <h2 className="text-3xl font-bold tracking-tight text-[#111111] mt-2">
-            What Neighbors Say About {businessName}
+          <h2 className="text-3xl font-bold tracking-tight text-[#0F172A] mt-2">
+            What {serviceCity} Neighbors Say About {businessName}
           </h2>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          <div className="bg-[#FFFFFF] border border-[#EAEAEA] rounded-2xl p-6 shadow-sm">
-            <div className="text-amber-500 mb-3">★★★★★</div>
-            <p className="text-sm text-[#444444] leading-relaxed mb-4">
-              &quot;Our system failed late on a Sunday evening. {businessName} had a technician at our door in 45 minutes. Upfront pricing, clean work, and zero surprise fees.&quot;
-            </p>
-            <div className="flex items-center gap-3 pt-3 border-t border-[#F0F0F0]">
-              <div className="w-8 h-8 rounded-full bg-gray-200 flex items-center justify-center font-bold text-xs">
-                MR
-              </div>
+          {reviews.map((r, idx) => (
+            <div key={idx} className="bg-[#FFFFFF] border border-[#E2E8F0] rounded-2xl p-6 shadow-sm flex flex-col justify-between">
               <div>
-                <div className="text-xs font-bold text-[#111111]">Michael R.</div>
-                <div className="text-[11px] text-[#888888]">Verified Homeowner · 2 weeks ago</div>
+                <div className="text-amber-500 mb-3">★★★★★</div>
+                <p className="text-sm text-[#334155] leading-relaxed mb-4">
+                  &quot;{r.text}&quot;
+                </p>
+              </div>
+              <div className="flex items-center gap-3 pt-3 border-t border-[#F1F5F9]">
+                <div
+                  className="w-8 h-8 rounded-full flex items-center justify-center font-bold text-xs"
+                  style={{ backgroundColor: `${themeAccent}20`, color: themeAccent }}
+                >
+                  {r.name.slice(0, 2).toUpperCase()}
+                </div>
+                <div>
+                  <div className="text-xs font-bold text-[#0F172A]">{r.name}</div>
+                  <div className="text-[11px] text-[#64748B]">{r.location} · {r.time}</div>
+                </div>
               </div>
             </div>
-          </div>
-
-          <div className="bg-[#FFFFFF] border border-[#EAEAEA] rounded-2xl p-6 shadow-sm">
-            <div className="text-amber-500 mb-3">★★★★★</div>
-            <p className="text-sm text-[#444444] leading-relaxed mb-4">
-              &quot;Replaced our entire setup. The crew was courteous, on time, and left our property cleaner than they found it. Best investment we made this year.&quot;
-            </p>
-            <div className="flex items-center gap-3 pt-3 border-t border-[#F0F0F0]">
-              <div className="w-8 h-8 rounded-full bg-gray-200 flex items-center justify-center font-bold text-xs">
-                SL
-              </div>
-              <div>
-                <div className="text-xs font-bold text-[#111111]">Sarah L.</div>
-                <div className="text-[11px] text-[#888888]">Verified Customer · 1 month ago</div>
-              </div>
-            </div>
-          </div>
-
-          <div className="bg-[#FFFFFF] border border-[#EAEAEA] rounded-2xl p-6 shadow-sm">
-            <div className="text-amber-500 mb-3">★★★★★</div>
-            <p className="text-sm text-[#444444] leading-relaxed mb-4">
-              &quot;Their instant estimate tool was spot on. Within 60 seconds of submitting my request online, I had a text confirmation and a dispatch ETA. Truly 5-star service.&quot;
-            </p>
-            <div className="flex items-center gap-3 pt-3 border-t border-[#F0F0F0]">
-              <div className="w-8 h-8 rounded-full bg-gray-200 flex items-center justify-center font-bold text-xs">
-                DT
-              </div>
-              <div>
-                <div className="text-xs font-bold text-[#111111]">David T.</div>
-                <div className="text-[11px] text-[#888888]">Verified Homeowner · 3 weeks ago</div>
-              </div>
-            </div>
-          </div>
+          ))}
         </div>
       </section>
 
-      {/* 9. REGIONAL SERVICE AREAS */}
-      <section id="service-areas" className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-16 border-t border-[#EAEAEA]">
+      {/* 9. REGIONAL SERVICE AREAS (Real Denver / Colorado Towns) */}
+      <section id="service-areas" className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-16 border-t border-[#E2E8F0]">
         <div className="text-center max-w-2xl mx-auto mb-8">
-          <span className="text-xs font-bold uppercase tracking-widest text-[#777777]">
-            Local Coverage
+          <span className="text-xs font-bold uppercase tracking-widest text-[#64748B]">
+            Local Denver & Front Range Coverage
           </span>
-          <h2 className="text-2xl sm:text-3xl font-bold tracking-tight text-[#111111] mt-1">
+          <h2 className="text-2xl sm:text-3xl font-bold tracking-tight text-[#0F172A] mt-1">
             Proudly Serving Surrounding Communities
           </h2>
         </div>
 
         <div className="flex flex-wrap items-center justify-center gap-2.5 max-w-4xl mx-auto">
-          {[
-            "North District", "South County", "West Suburbs", "Metro Area", 
-            "East Hills", "Lakeside", "River Valley", "Oakwood", "Highland Park", "Downtown Corridor"
-          ].map((town) => (
+          {serviceAreas.map((town) => (
             <span
               key={town}
-              className="px-4 py-2 rounded-lg text-xs font-semibold bg-[#FFFFFF] border border-[#E5E7EB] text-[#444444] shadow-2xs"
+              className="px-4 py-2 rounded-lg text-xs font-semibold bg-[#FFFFFF] border border-[#CBD5E1] text-[#334155] shadow-2xs"
             >
-              📍 {town}
+              📍 {town}, CO
             </span>
           ))}
         </div>
       </section>
 
       {/* 10. REAL CONTRACTOR FOOTER */}
-      <footer className="bg-[#111111] text-[#FFFFFF] py-16">
+      <footer className="bg-[#0F172A] text-[#FFFFFF] py-16">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 md:grid-cols-4 gap-8 mb-12">
           <div className="col-span-1 md:col-span-2">
             <h4 className="text-lg font-bold mb-2">{businessName}</h4>
-            <p className="text-xs text-[#999999] max-w-sm leading-relaxed mb-4">
-              Fully licensed, bonded, and insured contractor providing 24/7/365 emergency service, system replacements, and routine maintenance.
+            <p className="text-xs text-[#94A3B8] max-w-sm leading-relaxed mb-4">
+              {subheadline}
             </p>
-            <div className="text-xs text-[#777777]">License #TX-98421 · Fully Insured</div>
+            <div className="text-xs text-[#64748B]">24/7 Hotline: {phone} · IICRC Certified</div>
           </div>
 
           <div>
-            <h5 className="text-xs font-bold uppercase tracking-wider text-[#777777] mb-3">Hours of Operation</h5>
-            <div className="text-xs text-[#CCCCCC] space-y-1">
-              <div>Monday – Friday: 24/7</div>
-              <div>Saturday – Sunday: 24/7</div>
-              <div className="text-emerald-400 font-semibold pt-1">Emergency Dispatch Always Open</div>
+            <h5 className="text-xs font-bold uppercase tracking-wider text-[#64748B] mb-3">Hours of Operation</h5>
+            <div className="text-xs text-[#CBD5E1] space-y-1">
+              <div>Monday – Friday: 24 Hours Open</div>
+              <div>Saturday – Sunday: 24 Hours Open</div>
+              <div className="font-semibold pt-1" style={{ color: themePulse }}>
+                ● 24/7 Emergency Dispatch Active
+              </div>
             </div>
           </div>
 
           <div>
-            <h5 className="text-xs font-bold uppercase tracking-wider text-[#777777] mb-3">Agency Prototype</h5>
-            <div className="text-xs text-[#999999] space-y-2">
+            <h5 className="text-xs font-bold uppercase tracking-wider text-[#64748B] mb-3">Engineering Prototype</h5>
+            <div className="text-xs text-[#94A3B8] space-y-2">
               <p>Designed & engineered by Alizane Labs.</p>
               <Link
                 href="/contact"
@@ -682,13 +634,19 @@ export function DemoShowcase({
           </div>
         </div>
 
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 pt-8 border-t border-[#222222] text-center text-xs text-[#666666]">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 pt-8 border-t border-[#1E293B] text-center text-xs text-[#64748B]">
           © {new Date().getFullYear()} {businessName}. All rights reserved. High-performance Next.js 16 build by Alizane Labs.
         </div>
       </footer>
 
       {/* 11. MULTI-TENANT AI CHATBOT MOUNTED WITH CLIENT ID & GREETING */}
-      <AIChatWidget clientId={clientId} initialGreeting={initialGreeting} />
+      <AIChatWidget
+        clientId={clientId}
+        initialGreeting={initialGreeting}
+        botName={`${businessName.split(" ")[0]} AI Dispatcher`}
+        accentColor={themeAccent}
+        pulseColor={themePulse}
+      />
     </div>
   );
 }
