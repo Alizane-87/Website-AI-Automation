@@ -21,9 +21,21 @@ const SUGGESTIONS = [
   "How does lead follow-up work?",
 ];
 
-export function AiChatWidget() {
+interface AiChatWidgetProps {
+  clientId?: string;
+  initialGreeting?: string;
+}
+
+export function AiChatWidget({ clientId, initialGreeting }: AiChatWidgetProps = {}) {
   const [isOpen, setIsOpen] = useState<boolean>(false);
-  const [messages, setMessages] = useState<Message[]>(INITIAL_MESSAGES);
+  const [messages, setMessages] = useState<Message[]>(() => [
+    {
+      role: "assistant",
+      content:
+        initialGreeting ||
+        "Hi there! 👋 I'm the Alizane Labs AI assistant. Ask me anything about websites, 24/7 call answering, lead follow-up, or which plan fits your business.",
+    },
+  ]);
   const [input, setInput] = useState<string>("");
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [isPlannerInView, setIsPlannerInView] = useState<boolean>(false);
@@ -69,7 +81,10 @@ export function AiChatWidget() {
       const res = await fetch("/api/chat", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ messages: updatedMessages }),
+        body: JSON.stringify({
+          clientId: clientId || "alizane-agency",
+          messages: updatedMessages,
+        }),
       });
 
       if (!res.ok) {
@@ -256,3 +271,5 @@ export function AiChatWidget() {
     </aside>
   );
 }
+
+export const AIChatWidget = AiChatWidget;
