@@ -9,6 +9,7 @@ CRITICAL TONE & IDENTITY RULES:
 - NEVER break character. NEVER say "I am an AI model", "I can't browse the web or run code", or output robotic AI disclaimers.
 - Speak naturally, warmly, and concisely as part of the Alizane Labs team.
 - Keep answers focused (2-4 sentences max per response) and conversational.
+- Reply in plain conversational sentences only. Never use markdown — no asterisks, no bullet points, no hash headings, no square-bracket links. If you need a list, write it as a sentence or separate it with line breaks.
 
 WHAT ALIZANE LABS DOES:
 We build high-converting websites, 24/7 AI phone receptionists, and automated lead follow-up systems designed specifically for contractors (HVAC, roofing, plumbing, electrical, restoration, general contracting, and home services).
@@ -263,19 +264,45 @@ export async function POST(req: NextRequest) {
       }
     }
 
-    // 5. Async lead capture webhook to n8n
-    const webhookUrl = process.env.LEAD_WEBHOOK_URL;
-    if (webhookUrl && (latestUserMsg.includes("@") || /\d{10}/.test(latestUserMsg))) {
-      fetch(webhookUrl, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          source: "website_ai_chat",
-          message: latestUserMsg,
-          full_history: messages,
-          timestamp: new Date().toISOString(),
-        }),
-      }).catch((e) => console.error("Chat lead webhook error:", e));
+    // 5. Async lead capture webhook (Fires once per conversation when contact info is first provided)
+    const CONTACT_RE = /([\w.+-]+@[\w-]+\.[\w.-]+)|(\+?\d[\d\s().-]{8,}\d)/;
+
+    const priorUserText = messages
+      .slice(0, -1)
+      .filter((m: { role: string }) => m.role === "user")
+      .map((m: { content: string }) => String(m.content))
+      .join(" ");
+
+    // Fires exactly once: contact details appear now, and appeared in no earlier turn.
+    const isNewLead =
+      CONTACT_RE.test(String(latestUserMsg)) && !CONTACT_RE.test(priorUserText);
+
+    if (process.env.LEAD_WEBHOOK_URL && isNewLead) {
+      const transcript = messages
+        .map((m: { role: string; content: string }) => `${m.role === "user" ? "Visitor" : "Assistant"}: ${m.content}`)
+        .join("\n")
+        .slice(-3500); // Safe length for Telegram / Slack / webhook payload limits
+
+      try {
+        await fetch(process.env.LEAD_WEBHOOK_URL, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            source: "site-chatbot",
+            message: latestUserMsg,
+            transcript,
+            timestamp: new Date().toISOString(),
+          }),
+          signal: AbortSignal.timeout(3000),
+        });
+      } catch (e) {
+        // A lost lead must leave a trace. Never swallow this silently.
+        console.error(
+          `[chat] LEAD DELIVERY FAILED — visitor message: ${String(latestUserMsg).slice(0, 200)} — ${
+            e instanceof Error ? e.message : String(e)
+          }`
+        );
+      }
     }
 
     const isDev = process.env.NODE_ENV !== "production";
