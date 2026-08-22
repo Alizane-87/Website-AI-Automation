@@ -112,7 +112,13 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    const geminiApiKey = (process.env.GEMINI_API_KEY || "").replace(/['"=]/g, "").trim();
+    const geminiApiKey = (
+      process.env.GEMINI_API_KEY ||
+      process.env.GOOGLE_API_KEY ||
+      process.env.GEMINI_KEY ||
+      process.env.GOOGLE_GENERATIVE_AI_API_KEY ||
+      ""
+    ).replace(/['"=]/g, "").trim();
     const openRouterApiKey = (process.env.OPENROUTER_API_KEY || "").replace(/['"=]/g, "").trim();
 
     let assistantMessage = "";
