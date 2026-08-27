@@ -1,7 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
-import Link from "next/link";
+import React, { useState, useEffect } from "react";
 import { AIChatWidget } from "@/components/ai-chat-widget";
 import { ContractorService, ContractorReview, ContractorLeader } from "@/lib/supabase-chat";
 
@@ -29,57 +28,41 @@ interface DemoShowcaseProps {
 
 export function DemoShowcase({
   clientId,
-  businessName,
-  phone,
+  businessName = "Water Extraction Team",
+  phone = "(303) 232-8888",
   tollFree = "(866) 344-4WET",
   address = "4191 Inca St, Denver, CO 80211",
-  serviceCity,
-  tagline,
-  subheadline,
-  trade,
-  trustBadges,
-  services,
-  serviceAreas,
-  reviews,
+  serviceCity = "Denver Metropolitan Area & Colorado Front Range",
+  services = [],
   leadership = [],
-  foundationMission,
-  themeAccent,
-  themePulse,
-  themeBorder,
-  themeOnAccent,
+  reviews = [],
 }: DemoShowcaseProps) {
-  const [activeServiceIdx, setActiveServiceIdx] = useState(0);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [isLoaded, setIsLoaded] = useState(false);
 
-  // Quote & Dispatch Console State
-  const defaultServiceTitle = services[0]?.title || "Water Extraction & Structural Drying";
-  const [selectedService, setSelectedService] = useState(defaultServiceTitle);
-  const [damageCategory, setDamageCategory] = useState("Category 1: Clean Water (Supply Pipe / Heater)");
-  const [insuranceCarrier, setInsuranceCarrier] = useState("State Farm Insurance");
-  const [deductible, setDeductible] = useState("$1,000");
-  const [urgency, setUrgency] = useState("Emergency 24/7 (Under 60 Mins)");
+  // Triage / Form States
+  const [damageCategory, setDamageCategory] = useState("Category 1: Clean Water (Supply Line / Pipe Burst)");
+  const [selectedService, setSelectedService] = useState("Water Extraction & Structural Drying");
   const [formName, setFormName] = useState("");
   const [formPhone, setFormPhone] = useState("");
   const [formAddress, setFormAddress] = useState("");
-  const [dispatchDispatched, setDispatchDispatched] = useState(false);
-  const [dispatchLoading, setDispatchLoading] = useState(false);
-
-  // Homeowner Checklist Interactive State
-  const [checkedSteps, setCheckedSteps] = useState<number[]>([]);
+  const [formLossDetails, setFormLossDetails] = useState("");
+  const [isFirstResponder, setIsFirstResponder] = useState(false);
+  const [intakeDispatched, setIntakeDispatched] = useState(false);
+  const [intakeLoading, setIntakeLoading] = useState(false);
 
   const cleanPhone = phone.replace(/\D/g, "");
   const telHref = `tel:${cleanPhone.length === 10 ? `+1${cleanPhone}` : cleanPhone}`;
 
-  const toggleChecklist = (idx: number) => {
-    setCheckedSteps((prev) =>
-      prev.includes(idx) ? prev.filter((i) => i !== idx) : [...prev, idx]
-    );
-  };
+  useEffect(() => {
+    setIsLoaded(true);
+  }, []);
 
-  const handleDispatchSubmit = async (e: React.FormEvent) => {
+  const handleIntakeSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!formName || !formPhone) return;
 
-    setDispatchLoading(true);
+    setIntakeLoading(true);
     try {
       await fetch("/api/lead", {
         method: "POST",
@@ -89,891 +72,933 @@ export function DemoShowcase({
           phone: formPhone,
           company: businessName,
           trade: selectedService,
-          monthlyCallRange: urgency,
-          crm: `EMERGENCY DISPATCH: ${businessName} (${clientId}) | Addr: ${formAddress || "N/A"} | Damage: ${damageCategory} | Ins: ${insuranceCarrier} | Deductible: ${deductible}`,
+          monthlyCallRange: isFirstResponder ? "First Responder (Foundation 1023 5% Loss Donation)" : "Standard Loss",
+          crm: `TRIAGE INTAKE: ${businessName} (${clientId}) | Addr: ${formAddress || "N/A"} | Damage: ${damageCategory} | Details: ${formLossDetails || "None"}`,
         }),
       });
-      setDispatchDispatched(true);
+      setIntakeDispatched(true);
     } catch {
-      setDispatchDispatched(true);
+      setIntakeDispatched(true);
     } finally {
-      setDispatchLoading(false);
+      setIntakeLoading(false);
     }
   };
 
-  const currentService = services[activeServiceIdx] || services[0];
-  const initialGreeting = `Hi there! 👋 Welcome to ${businessName} (Corporate Office: 4191 Inca St, Denver). I'm your 24/7 AI Emergency Dispatch Assistant for ${serviceCity}. How can I assist with your emergency water extraction, fire restoration, mold remediation, or insurance claim today?`;
+  const initialGreeting = `This is the 24/7 AI Emergency Dispatch Assistant for ${businessName} (Corporate Office: 4191 Inca St, Denver). How can I assist with your emergency water extraction, structural drying, fire restoration, or insurance claim today?`;
 
   return (
     <div
-      className="min-h-screen bg-[#08121E] text-[#F8FAFC] font-sans antialiased selection:bg-[#00B4D8] selection:text-[#08121E]"
+      className="min-h-screen bg-[#F4F1EC] text-[#16191C] font-sans antialiased selection:bg-[#C94300] selection:text-[#FFFFFF]"
       style={
         {
-          "--chat-accent": themeAccent,
-          "--chat-pulse": themePulse,
-          "--chat-accent-hover": themeAccent,
-          "--chat-accent-border": themeBorder,
-          "--chat-on-accent": themeOnAccent,
+          "--chat-accent": "#C94300",
+          "--chat-pulse": "#F07B41",
+          "--chat-accent-hover": "#AD3A00",
+          "--chat-accent-border": "#16191C",
+          "--chat-on-accent": "#FFFFFF",
         } as React.CSSProperties
       }
     >
-      {/* 1. TOP AGENCY PROTOTYPE STATUS BAR */}
-      <div className="bg-[#040A12] border-b border-white/10 py-2 px-4 text-xs font-medium text-[#94A3B8] flex flex-wrap items-center justify-between gap-3">
-        <div className="flex items-center gap-2.5">
-          <span className="flex h-2 w-2 relative">
-            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-cyan-400 opacity-75" />
-            <span className="relative inline-flex rounded-full h-2 w-2 bg-cyan-500" />
-          </span>
-          <span>
-            Live Redesign Build for <strong className="text-white">{businessName}</strong> · Direct Scraped Authentic Assets · Next.js 16 Edge (380ms Speed)
-          </span>
-        </div>
-        <Link
-          href="/contact"
-          className="inline-flex items-center gap-1.5 px-3 py-1 rounded bg-gradient-to-r from-cyan-500 to-blue-600 text-white font-bold text-xs hover:brightness-110 shadow-sm transition-all shrink-0"
-        >
-          🚀 Claim &amp; Launch This Site →
-        </Link>
-      </div>
+      {/* ─────────────────────────────────────────────────────────────────────────
+          CUSTOM MOTION STYLES (Section 9.7 Motion System)
+      ───────────────────────────────────────────────────────────────────────── */}
+      <style dangerouslySetInnerHTML={{ __html: `
+        @keyframes hourRuleDraw {
+          0% { width: 0%; }
+          100% { width: 100%; }
+        }
+        @keyframes tickFadeIn {
+          0% { opacity: 0; transform: translateY(4px); }
+          100% { opacity: 1; transform: translateY(0); }
+        }
+        .hour-rule-line-animated {
+          animation: hourRuleDraw 420ms cubic-bezier(0.22, 1, 0.36, 1) forwards;
+        }
+        .tick-stagger-1 { animation: tickFadeIn 180ms cubic-bezier(0.0, 0.0, 0.2, 1) 200ms forwards; opacity: 0; }
+        .tick-stagger-2 { animation: tickFadeIn 180ms cubic-bezier(0.0, 0.0, 0.2, 1) 260ms forwards; opacity: 0; }
+        .tick-stagger-3 { animation: tickFadeIn 180ms cubic-bezier(0.0, 0.0, 0.2, 1) 320ms forwards; opacity: 0; }
+        .tick-stagger-4 { animation: tickFadeIn 180ms cubic-bezier(0.0, 0.0, 0.2, 1) 380ms forwards; opacity: 0; }
+        
+        .service-row {
+          transition: background-color 140ms cubic-bezier(0.4, 0.0, 0.2, 1);
+        }
+        .service-row:hover {
+          background-color: #FBFAF8;
+        }
+        .service-row:hover .service-arrow {
+          transform: translateX(4px);
+        }
+        .service-arrow {
+          transition: transform 140ms cubic-bezier(0.4, 0.0, 0.2, 1);
+        }
+      `}} />
 
-      {/* 2. EMERGENCY ADVISORY & REAL CORPORATE ADDRESS BAR */}
-      <div className="bg-[#0C2340] border-b border-cyan-500/30 py-2.5 px-4 text-center text-xs font-semibold text-cyan-200 flex flex-wrap items-center justify-center gap-x-4 gap-y-1">
-        <span>
-          📍 <strong>Corporate Office:</strong> {address}
-        </span>
-        <span className="text-white/30 hidden sm:inline">|</span>
-        <span>
-          📞 <strong>24/7 Hotline:</strong> {phone} · <strong>Toll-Free:</strong> {tollFree}
-        </span>
-      </div>
-
-      {/* 3. REAL CONTRACTOR HEADER */}
-      <header className="sticky top-0 z-40 bg-[#0C1A2E]/95 backdrop-blur-xl border-b border-white/10 shadow-xl">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between gap-4">
-          {/* Logo & Trade Identity */}
-          <Link href="#overview" className="flex items-center gap-3.5 min-w-0 group">
-            <div
-              className="w-12 h-12 rounded-2xl flex items-center justify-center font-black text-xl shadow-md border border-white/20 shrink-0"
-              style={{ backgroundColor: themeAccent, color: themeOnAccent }}
-            >
-              〰️
-            </div>
-            <div className="min-w-0">
-              <span className="font-extrabold text-base sm:text-lg tracking-tight block truncate text-white group-hover:text-cyan-300 transition-colors">
-                {businessName}
-              </span>
-              <span className="text-[11px] font-semibold tracking-wider uppercase text-cyan-400 block truncate">
-                {serviceCity} · 24/7 Emergency Dispatch
-              </span>
-            </div>
-          </Link>
-
-          {/* Desktop Navigation Links */}
-          <nav className="hidden lg:flex items-center gap-6 text-xs font-bold text-[#CBD5E1]">
-            <a href="#overview" className="hover:text-cyan-400 transition-colors">Overview</a>
-            <a href="#protocols" className="hover:text-cyan-400 transition-colors">Capabilities &amp; Fleet</a>
-            <a href="#leadership" className="hover:text-cyan-400 transition-colors">Leadership Team</a>
-            <a href="#emergency-guide" className="hover:text-cyan-400 transition-colors">Homeowner Guide</a>
-            <a href="#insurance-desk" className="hover:text-cyan-400 transition-colors">Insurance Desk</a>
-            <a href="#reviews" className="hover:text-cyan-400 transition-colors">Client Reviews</a>
-          </nav>
-
-          {/* 24/7 Hotline CTA */}
-          <div className="flex items-center gap-3 shrink-0">
+      {/* ─────────────────────────────────────────────────────────────────────────
+          0. PERSISTENT DESKTOP DISPATCH BAR (Row 1 of Header, Dark Slate Ground)
+          Section 8.1 Specification
+      ───────────────────────────────────────────────────────────────────────── */}
+      <div className="hidden lg:block bg-[#16191C] text-[#F4F1EC] border-b border-[#242A2F] py-2.5 px-6 sticky top-0 z-50">
+        <div className="max-w-[1440px] mx-auto flex items-center justify-between font-mono text-[12px] tracking-[0.08em]">
+          <div className="flex items-center gap-3 text-[#79838B]">
+            <span className="inline-block w-2 h-2 rounded-none bg-[#C94300]"></span>
+            <span>24 HOURS A DAY · DENVER, CO & FRONT RANGE</span>
+            <span className="text-[#5C666E]">|</span>
+            <span>EST. OCTOBER 14, 2004 · BBB A+ ACCREDITED</span>
+          </div>
+          <div className="flex items-center gap-6">
+            <span className="text-[#79838B]">EMERGENCY DISPATCH:</span>
             <a
               href={telHref}
-              className="flex items-center gap-2.5 px-4 py-2.5 rounded-xl text-xs sm:text-sm font-extrabold text-white shadow-xl transition-all transform hover:scale-105 active:scale-95 border border-white/20"
-              style={{ backgroundColor: themeAccent }}
+              className="text-[#F4F1EC] font-semibold text-[15px] hover:text-[#F07B41] transition-colors tracking-normal flex items-center gap-2"
             >
-              <svg className="w-4 h-4 animate-bounce text-cyan-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
-              </svg>
-              <div className="text-left">
-                <span className="block text-[9px] uppercase font-bold text-cyan-200 tracking-wider">24/7 Emergency Dispatch</span>
-                <span className="block leading-none">{phone}</span>
-              </div>
+              <span className="text-[#C94300]">☎</span> {phone}
+            </a>
+            <span className="text-[#5C666E]">·</span>
+            <a
+              href="#contact"
+              className="text-[#79838B] hover:text-[#F4F1EC] transition-colors text-[13px] tracking-normal cursor-pointer"
+            >
+              Not an emergency →
             </a>
           </div>
         </div>
-      </header>
+      </div>
 
-      {/* 4. HERO SECTION (Overview & Live Dispatch Console) */}
-      <section id="overview" className="relative pt-12 pb-20 sm:pt-16 sm:pb-28 overflow-hidden bg-gradient-to-b from-[#0C1A2E] via-[#08121E] to-[#040A12] border-b border-white/10">
-        <div className="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[350px] bg-cyan-500/10 blur-[120px] pointer-events-none rounded-full" />
-
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
-            {/* Left Column */}
-            <div className="lg:col-span-7 text-left space-y-6">
-              <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full text-xs font-semibold uppercase tracking-wider bg-white/5 border border-white/15 backdrop-blur-md">
-                <span className="text-amber-400">★★★★★</span>
-                <span className="text-white">Over 3 Decades of Excellence</span>
-                <span className="text-white/30">|</span>
-                <span className="text-cyan-400 font-bold">SBA Certified WOSB &amp; IICRC</span>
+      {/* ─────────────────────────────────────────────────────────────────────────
+          0B. DESKTOP MAIN NAVIGATION (Row 2 of Header, Light Gypsum Ground)
+          Section 5.2 Specification with Smooth Anchor Navigation
+      ───────────────────────────────────────────────────────────────────────── */}
+      <header className="bg-[#F4F1EC]/95 backdrop-blur-sm border-b border-[#DCD5C9] sticky top-0 lg:top-[41px] z-40">
+        <div className="max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-10 h-16 flex items-center justify-between">
+          <div className="flex items-center gap-4">
+            <a href="#" className="group text-left cursor-pointer">
+              <div className="flex items-baseline gap-2">
+                <span className="font-bold text-[19px] sm:text-[22px] tracking-[-0.02em] text-[#16191C] group-hover:text-[#AD430E] transition-colors uppercase">
+                  Water Extraction Team
+                </span>
+                <span className="font-mono text-[11px] font-semibold text-[#AD430E] tracking-[0.08em]">
+                  WET
+                </span>
               </div>
-
-              <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight text-white leading-[1.1]">
-                {tagline}
-              </h1>
-
-              <p className="text-base sm:text-lg text-[#94A3B8] leading-relaxed max-w-2xl">
-                {subheadline}
+              <p className="font-mono text-[10px] text-[#5C666E] uppercase tracking-[0.06em]">
+                Loss Mitigation & Structural Drying · Est. 2004
               </p>
-
-              {/* Real-time Fleet Indicator */}
-              <div className="p-4 rounded-2xl bg-white/5 border border-white/10 backdrop-blur-md flex items-center justify-between gap-4 max-w-xl">
-                <div className="flex items-center gap-3">
-                  <span className="flex h-3 w-3 relative shrink-0">
-                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
-                    <span className="relative inline-flex rounded-full h-3 w-3 bg-emerald-500" />
-                  </span>
-                  <div>
-                    <div className="text-xs font-bold text-white">4 Mobile Extraction Trucks on Standby</div>
-                    <div className="text-[11px] text-[#94A3B8]">{serviceCity} Metropolitan Radius</div>
-                  </div>
-                </div>
-                <div className="text-right shrink-0">
-                  <div className="text-xs font-black text-cyan-400">&lt; 60 MIN</div>
-                  <div className="text-[10px] uppercase text-[#64748B] font-bold">Avg Arrival</div>
-                </div>
-              </div>
-
-              {/* Dual Action Buttons */}
-              <div className="flex flex-wrap items-center gap-4 pt-2">
-                <a
-                  href={telHref}
-                  className="px-8 py-4 rounded-xl text-sm sm:text-base font-extrabold text-white shadow-2xl transition-all transform hover:-translate-y-0.5 active:scale-95 flex items-center gap-2"
-                  style={{ backgroundColor: themeAccent }}
-                >
-                  <span>🚨 Call 24/7 Dispatch ({phone})</span>
-                </a>
-                <a
-                  href="#emergency-guide"
-                  className="px-6 py-4 rounded-xl text-sm sm:text-base font-bold bg-white/10 hover:bg-white/20 text-white border border-white/20 transition-all backdrop-blur-md"
-                >
-                  Homeowner Emergency Guide ↓
-                </a>
-              </div>
-
-              {/* Trust Badges Bar */}
-              <div className="pt-6 border-t border-white/10 grid grid-cols-2 sm:grid-cols-4 gap-3 text-xs font-medium text-[#94A3B8]">
-                {trustBadges.slice(0, 4).map((badge, idx) => (
-                  <div key={idx} className="flex items-center gap-1.5">
-                    <span className="text-cyan-400 font-bold">✓</span> {badge}
-                  </div>
-                ))}
-              </div>
-            </div>
-
-            {/* Right Column: Embedded Dispatch Console Box */}
-            <div id="dispatch-console" className="lg:col-span-5">
-              <div className="bg-[#0C1A2E] border border-cyan-500/30 rounded-3xl p-6 sm:p-8 shadow-2xl relative overflow-hidden backdrop-blur-2xl">
-                <div className="absolute top-0 right-0 w-32 h-32 bg-cyan-500/10 blur-3xl pointer-events-none" />
-
-                <div className="flex items-center justify-between mb-6 pb-4 border-b border-white/10">
-                  <div>
-                    <h3 className="text-lg font-black text-white">Emergency Dispatch Console</h3>
-                    <p className="text-xs text-cyan-400">Direct 24/7 Technician Alert Desk</p>
-                  </div>
-                  <span className="text-2xl">⚡</span>
-                </div>
-
-                {dispatchDispatched ? (
-                  <div className="text-center py-8 space-y-4">
-                    <div className="w-16 h-16 rounded-full bg-emerald-500/20 text-emerald-400 flex items-center justify-center text-3xl font-black mx-auto border border-emerald-500/40">
-                      ✓
-                    </div>
-                    <h4 className="text-xl font-bold text-white">Emergency Ticket Dispatched!</h4>
-                    <p className="text-xs text-[#94A3B8] leading-relaxed">
-                      Your emergency parameters have been dispatched to <strong>{businessName}</strong>. An on-call supervisor has received your alert and a confirmation text was sent to <strong>{formPhone}</strong>.
-                    </p>
-                    <button
-                      onClick={() => setDispatchDispatched(false)}
-                      className="px-4 py-2 rounded-lg text-xs font-bold bg-white/10 hover:bg-white/20 text-white border border-white/20 cursor-pointer"
-                    >
-                      Submit Another Ticket
-                    </button>
-                  </div>
-                ) : (
-                  <form onSubmit={handleDispatchSubmit} className="space-y-4 text-left">
-                    <div>
-                      <label className="block text-xs font-bold uppercase tracking-wider text-[#94A3B8] mb-1.5">
-                        1. Select Damage Category
-                      </label>
-                      <select
-                        value={selectedService}
-                        onChange={(e) => setSelectedService(e.target.value)}
-                        className="w-full px-3.5 py-2.5 text-xs bg-[#08121E] border border-white/20 rounded-xl text-white focus:outline-none focus:border-cyan-400"
-                      >
-                        {services.map((s, idx) => (
-                          <option key={idx} value={s.title}>
-                            {s.title}
-                          </option>
-                        ))}
-                      </select>
-                    </div>
-
-                    <div>
-                      <label className="block text-xs font-bold uppercase tracking-wider text-[#94A3B8] mb-1.5">
-                        2. Damage Source &amp; Water Category
-                      </label>
-                      <select
-                        value={damageCategory}
-                        onChange={(e) => setDamageCategory(e.target.value)}
-                        className="w-full px-3.5 py-2.5 text-xs bg-[#08121E] border border-white/20 rounded-xl text-white focus:outline-none focus:border-cyan-400"
-                      >
-                        <option>Category 1: Clean Water (Supply Line / Water Main / Heater)</option>
-                        <option>Category 2: Gray Water (Washing Machine / Sump Overflow)</option>
-                        <option>Category 3: Black Water / Sewage Backup</option>
-                        <option>Fire Damage: Structural Soot &amp; Protein Smoke</option>
-                        <option>Microbial: Hazardous Mold Colony</option>
-                        <option>Asbestos Abatement Inspection</option>
-                      </select>
-                    </div>
-
-                    <div>
-                      <label className="block text-xs font-bold uppercase tracking-wider text-[#94A3B8] mb-1.5">
-                        3. Insurance Carrier for Direct Billing
-                      </label>
-                      <select
-                        value={insuranceCarrier}
-                        onChange={(e) => setInsuranceCarrier(e.target.value)}
-                        className="w-full px-3.5 py-2.5 text-xs bg-[#08121E] border border-white/20 rounded-xl text-white focus:outline-none focus:border-cyan-400"
-                      >
-                        <option>State Farm Insurance</option>
-                        <option>Allstate Insurance</option>
-                        <option>USAA Insurance</option>
-                        <option>Travelers / Liberty Mutual / Farmers</option>
-                        <option>HOA Commercial Property Account</option>
-                        <option>Self-Pay Account</option>
-                      </select>
-                    </div>
-
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-2">
-                      <div>
-                        <label className="block text-[11px] font-bold text-[#94A3B8] mb-1">
-                          Your Name *
-                        </label>
-                        <input
-                          type="text"
-                          required
-                          value={formName}
-                          onChange={(e) => setFormName(e.target.value)}
-                          placeholder="Greg Miller"
-                          className="w-full px-3 py-2 text-xs bg-[#08121E] border border-white/20 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:border-cyan-400"
-                        />
-                      </div>
-                      <div>
-                        <label className="block text-[11px] font-bold text-[#94A3B8] mb-1">
-                          Phone (for 60s SMS Alert) *
-                        </label>
-                        <input
-                          type="tel"
-                          required
-                          value={formPhone}
-                          onChange={(e) => setFormPhone(e.target.value)}
-                          placeholder={phone}
-                          className="w-full px-3 py-2 text-xs bg-[#08121E] border border-white/20 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:border-cyan-400"
-                        />
-                      </div>
-                    </div>
-
-                    <div>
-                      <label className="block text-[11px] font-bold text-[#94A3B8] mb-1">
-                        {serviceCity} Property Address (for technician GPS)
-                      </label>
-                      <input
-                        type="text"
-                        value={formAddress}
-                        onChange={(e) => setFormAddress(e.target.value)}
-                        placeholder="4191 Inca St, Denver, CO"
-                        className="w-full px-3 py-2 text-xs bg-[#08121E] border border-white/20 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:border-cyan-400"
-                      />
-                    </div>
-
-                    <button
-                      type="submit"
-                      disabled={dispatchLoading}
-                      className="w-full py-3.5 text-xs sm:text-sm font-extrabold rounded-xl shadow-lg transition-all transform active:scale-95 text-center text-white cursor-pointer"
-                      style={{ backgroundColor: themeAccent }}
-                    >
-                      {dispatchLoading ? "Transmitting Ticket..." : "🚨 Transmit Emergency Dispatch Ticket →"}
-                    </button>
-                  </form>
-                )}
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* 5. STATISTICS STRIP */}
-      <section className="bg-[#040A12] border-b border-white/10 py-10">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
-          <div>
-            <div className="text-3xl sm:text-4xl font-extrabold text-white">30+ Yrs</div>
-            <div className="text-xs uppercase font-semibold text-cyan-400 mt-1 tracking-wider">Denver Industry Leadership</div>
-          </div>
-          <div>
-            <div className="text-3xl sm:text-4xl font-extrabold text-white">&lt; 60 Min</div>
-            <div className="text-xs uppercase font-semibold text-cyan-400 mt-1 tracking-wider">Truck-Mounted Arrival</div>
-          </div>
-          <div>
-            <div className="text-3xl sm:text-4xl font-extrabold text-white">100%</div>
-            <div className="text-xs uppercase font-semibold text-cyan-400 mt-1 tracking-wider">Direct Insurance Billing</div>
-          </div>
-          <div>
-            <div className="text-3xl sm:text-4xl font-extrabold text-white">WOSB</div>
-            <div className="text-xs uppercase font-semibold text-cyan-400 mt-1 tracking-wider">SBA Certified Enterprise</div>
-          </div>
-        </div>
-      </section>
-
-      {/* 6. TECHNICAL PROTOCOLS & FLEET EQUIPMENT SECTION */}
-      <section id="protocols" className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 border-b border-white/10">
-        <div className="text-center max-w-3xl mx-auto mb-16">
-          <span className="text-xs font-bold uppercase tracking-widest text-cyan-400">
-            {trade}
-          </span>
-          <h2 className="text-3xl sm:text-4xl font-bold tracking-tight text-white mt-2">
-            Engineered Capabilities &amp; Fleet Equipment
-          </h2>
-          <p className="text-sm text-[#94A3B8] mt-3">
-            Committed to taking on the toughest residential and commercial jobs with pride across Denver and the Front Range.
-          </p>
-        </div>
-
-        {/* 4-Phase Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-16">
-          <div className="bg-[#0C1A2E] border border-white/10 rounded-2xl p-6 relative">
-            <div className="text-xs font-black text-cyan-400 mb-2">PHASE 01</div>
-            <h3 className="font-bold text-white text-base mb-2">Thermal Inspection &amp; Mapping</h3>
-            <p className="text-xs text-[#94A3B8] leading-relaxed">
-              FLIR infrared thermal cameras detect hidden moisture trapped behind drywalls, beneath hardwood, and in crawlspaces without destructive demolition.
-            </p>
+            </a>
           </div>
 
-          <div className="bg-[#0C1A2E] border border-white/10 rounded-2xl p-6 relative">
-            <div className="text-xs font-black text-cyan-400 mb-2">PHASE 02</div>
-            <h3 className="font-bold text-white text-base mb-2">High-Volume Truck Extraction</h3>
-            <p className="text-xs text-[#94A3B8] leading-relaxed">
-              Industrial truck-mounted vacuum units extract thousands of gallons of floodwater, eliminating 90% of moisture within the first 60 minutes of arrival.
-            </p>
-          </div>
+          <nav className="hidden lg:flex items-center gap-7 font-medium text-[14px] text-[#16191C]">
+            <a href="#services" className="hover:text-[#AD430E] transition-colors">Emergency Services</a>
+            <a href="#process" className="hover:text-[#AD430E] transition-colors">What Happens Next</a>
+            <a href="#insurance" className="hover:text-[#AD430E] transition-colors">Insurance & Deductibles</a>
+            <a href="#managers" className="hover:text-[#AD430E] transition-colors">Property Managers</a>
+            <a href="#about" className="hover:text-[#AD430E] transition-colors">About</a>
+            <a href="#evidence" className="hover:text-[#AD430E] transition-colors">Evidence</a>
+            <a href="#foundation" className="hover:text-[#0E4F52] text-[#0E4F52] font-semibold transition-colors">Foundation 1023</a>
+          </nav>
 
-          <div className="bg-[#0C1A2E] border border-white/10 rounded-2xl p-6 relative">
-            <div className="text-xs font-black text-cyan-400 mb-2">PHASE 03</div>
-            <h3 className="font-bold text-white text-base mb-2">Structural LGR Dehumidification</h3>
-            <p className="text-xs text-[#94A3B8] leading-relaxed">
-              Low-Grain Refrigerant (LGR) industrial dehumidifiers and centrifugal air movers create targeted vortex airflow to dry timber framing and subfloors.
-            </p>
-          </div>
-
-          <div className="bg-[#0C1A2E] border border-white/10 rounded-2xl p-6 relative">
-            <div className="text-xs font-black text-cyan-400 mb-2">PHASE 04</div>
-            <h3 className="font-bold text-white text-base mb-2">Antimicrobial &amp; Clearance</h3>
-            <p className="text-xs text-[#94A3B8] leading-relaxed">
-              EPA-registered botanical antimicrobial treatments prevent microbial spores, followed by digital psychrometric moisture logs signed off for insurance.
-            </p>
-          </div>
-        </div>
-
-        {/* Interactive Capabilities Switcher */}
-        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-2.5 mb-8">
-          {services.map((s, idx) => (
-            <button
-              key={idx}
-              onClick={() => setActiveServiceIdx(idx)}
-              className={`p-3 rounded-xl text-left text-xs font-bold transition-all border cursor-pointer ${
-                activeServiceIdx === idx
-                  ? "bg-cyan-500/20 border-cyan-400 text-white shadow-lg"
-                  : "bg-white/5 border-white/10 text-[#94A3B8] hover:bg-white/10 hover:text-white"
-              }`}
+          <div className="flex items-center gap-3">
+            <a
+              href="#contact"
+              className="hidden sm:inline-flex items-center justify-center px-3.5 py-1.5 text-[13px] font-semibold text-[#16191C] border-[1.5px] border-[#16191C] hover:bg-[#FBFAF8] transition-colors rounded-[2px]"
             >
-              <span className="text-lg block mb-1">{s.icon}</span>
-              <span className="line-clamp-2">{s.title.split("&")[0]}</span>
+              Start an Intake
+            </a>
+            <a
+              href={telHref}
+              className="inline-flex items-center justify-center px-4 py-2 text-[14px] font-semibold text-[#FFFFFF] bg-[#C94300] hover:bg-[#AD3A00] transition-colors rounded-[2px] font-mono tracking-tight"
+            >
+              <span className="hidden sm:inline">Call Dispatch · </span> {phone}
+            </a>
+            {/* Mobile Menu Toggle */}
+            <button
+              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+              className="lg:hidden px-3 py-1.5 border border-[#16191C] font-mono text-[13px] font-bold uppercase"
+            >
+              Menu
             </button>
-          ))}
+          </div>
         </div>
 
-        {currentService && (
-          <div className="bg-[#0C1A2E] border border-white/15 rounded-3xl p-8 sm:p-12 shadow-2xl grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
-            <div className="lg:col-span-7 space-y-4 text-left">
-              <div className="inline-block text-[11px] font-bold uppercase tracking-wider px-3 py-1 rounded-full bg-cyan-500/20 text-cyan-300 border border-cyan-500/30">
-                {currentService.category}
-              </div>
-              <h3 className="text-2xl sm:text-3xl font-extrabold text-white">
-                {currentService.title}
-              </h3>
-              <p className="text-sm sm:text-base text-[#94A3B8] leading-relaxed">
-                {currentService.description}
-              </p>
-
-              <div className="space-y-2.5 pt-2">
-                <h4 className="text-xs font-bold uppercase tracking-wider text-cyan-400">
-                  Deployment Protocols:
-                </h4>
-                <ul className="space-y-2 text-xs text-[#CBD5E1]">
-                  {currentService.highlights.map((h, hIdx) => (
-                    <li key={hIdx} className="flex items-center gap-2">
-                      <span className="w-1.5 h-1.5 rounded-full bg-cyan-400" />
-                      <span>{h}</span>
-                    </li>
-                  ))}
-                </ul>
-              </div>
+        {/* Mobile Dropdown */}
+        {mobileMenuOpen && (
+          <div className="lg:hidden bg-[#16191C] text-[#F4F1EC] border-b-2 border-[#C94300] p-6 space-y-4 font-mono text-[14px]">
+            <div className="border-b border-[#242A2F] pb-3 flex items-center justify-between">
+              <span className="text-[#C94300] font-bold">24/7 DISPATCH: {phone}</span>
+              <button onClick={() => setMobileMenuOpen(false)} className="text-[#79838B]">✕ CLOSE</button>
             </div>
-
-            <div className="lg:col-span-5 bg-[#08121E] border border-white/10 rounded-2xl p-6 space-y-4 text-left">
-              <div className="text-xs font-bold uppercase tracking-wider text-cyan-400">
-                Field Unit Specs:
-              </div>
-              <div className="space-y-3 text-xs">
-                <div className="flex justify-between pb-2 border-b border-white/10">
-                  <span className="text-[#94A3B8]">Fleet Units:</span>
-                  <span className="font-bold text-white">Truck-Mounted High-CFM</span>
-                </div>
-                <div className="flex justify-between pb-2 border-b border-white/10">
-                  <span className="text-[#94A3B8]">Thermal Mapping:</span>
-                  <span className="font-bold text-white">FLIR Infrared Cameras</span>
-                </div>
-                <div className="flex justify-between pb-2 border-b border-white/10">
-                  <span className="text-[#94A3B8]">Dehumidification:</span>
-                  <span className="font-bold text-white">Commercial LGR Systems</span>
-                </div>
-                <div className="flex justify-between">
-                  <span className="text-[#94A3B8]">Insurance Billing:</span>
-                  <span className="font-bold text-emerald-400">100% Direct Carrier Itemized</span>
-                </div>
-              </div>
+            <div className="grid grid-cols-2 gap-3 text-[13px]">
+              <a href="#services" onClick={() => setMobileMenuOpen(false)} className="text-left py-1 hover:text-[#C94300]">Services</a>
+              <a href="#process" onClick={() => setMobileMenuOpen(false)} className="text-left py-1 hover:text-[#C94300]">Process (Hour 0→Dry)</a>
+              <a href="#insurance" onClick={() => setMobileMenuOpen(false)} className="text-left py-1 hover:text-[#C94300]">Insurance & Deductibles</a>
+              <a href="#managers" onClick={() => setMobileMenuOpen(false)} className="text-left py-1 hover:text-[#C94300]">Property Managers</a>
+              <a href="#about" onClick={() => setMobileMenuOpen(false)} className="text-left py-1 hover:text-[#C94300]">About Us</a>
+              <a href="#evidence" onClick={() => setMobileMenuOpen(false)} className="text-left py-1 hover:text-[#C94300]">Reviews & Proof</a>
+              <a href="#foundation" onClick={() => setMobileMenuOpen(false)} className="text-left py-1 text-[#9CC7C2]">Foundation 1023</a>
+              <a href="#contact" onClick={() => setMobileMenuOpen(false)} className="text-left py-1 hover:text-[#C94300]">Contact & Intake</a>
             </div>
           </div>
         )}
+      </header>
+
+      {/* ─────────────────────────────────────────────────────────────────────────
+          1. HERO SECTION (§6.1)
+      ───────────────────────────────────────────────────────────────────────── */}
+      <section className="pt-12 sm:pt-16 pb-14 border-b border-[#DCD5C9]">
+        <div className="max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-10">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-start">
+            {/* Measure Track (Left) */}
+            <div className="hidden lg:block lg:col-span-2 font-mono text-[11px] text-[#5C666E] space-y-4 pt-2 border-l border-[#8E8578] pl-4">
+              <div>
+                <p className="font-semibold text-[#16191C]">LOCATION</p>
+                <p>Denver Metro & Front Range</p>
+              </div>
+              <div>
+                <p className="font-semibold text-[#16191C]">STANDARDS</p>
+                <p>IICRC S500 / S520</p>
+              </div>
+              <div>
+                <p className="font-semibold text-[#16191C]">ESTABLISHED</p>
+                <p>October 14, 2004</p>
+              </div>
+              <div>
+                <p className="font-semibold text-[#16191C]">BBB STATUS</p>
+                <p>A+ Accredited Firm</p>
+              </div>
+            </div>
+
+            {/* Argument Track (Center) */}
+            <div className="lg:col-span-7">
+              <p className="font-mono text-[11px] sm:text-[12px] uppercase text-[#AD430E] font-semibold tracking-[0.1em] mb-4">
+                DENVER, CO · 24 HOURS A DAY · IICRC CERTIFIED
+              </p>
+              <h1 className="text-[38px] sm:text-[54px] lg:text-[68px] leading-[0.98] font-bold text-[#16191C] tracking-[-0.02em] uppercase mb-6 max-w-[18ch]">
+                Water is moving through your home right now.
+              </h1>
+              <p className="text-[18px] sm:text-[21px] text-[#5C666E] leading-[1.45] max-w-[42ch] mb-8">
+                Call and a certified crew starts the clock. Denver water, fire, and mold mitigation since October 2004.
+              </p>
+
+              <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-4 pt-2">
+                <a
+                  href={telHref}
+                  className="inline-flex items-center justify-center gap-3 px-7 py-4 text-[16px] font-bold text-[#FFFFFF] bg-[#C94300] hover:bg-[#AD3A00] transition-colors rounded-[2px] font-mono"
+                >
+                  <span>☎ CALL EMERGENCY DISPATCH</span>
+                  <span className="tracking-tight text-[18px]">{phone}</span>
+                </a>
+                <a
+                  href="#contact"
+                  className="inline-flex items-center justify-center px-6 py-4 text-[15px] font-semibold text-[#16191C] border-[1.5px] border-[#16191C] hover:bg-[#FBFAF8] transition-colors rounded-[2px]"
+                >
+                  Submit Triage Form ↓
+                </a>
+              </div>
+            </div>
+
+            {/* Credential Ledger Column (Right) */}
+            <div className="lg:col-span-3 bg-[#FBFAF8] border border-[#8E8578] p-5 space-y-4">
+              <div className="border-b border-[#DCD5C9] pb-3">
+                <span className="font-mono text-[10px] uppercase text-[#79838B] tracking-[0.08em]">
+                  CREDENTIAL LEDGER · VERIFIED
+                </span>
+              </div>
+              <div className="space-y-3.5 text-[13px]">
+                <div>
+                  <p className="font-bold text-[#16191C]">SBA Certified WOSB</p>
+                  <p className="text-[#5C666E] text-[12px]">Women-Owned Small Business</p>
+                </div>
+                <div className="border-t border-[#DCD5C9] pt-2">
+                  <p className="font-bold text-[#16191C]">BBB A+ Accredited</p>
+                  <p className="text-[#5C666E] text-[12px]">Accredited since Dec 11, 2014</p>
+                </div>
+                <div className="border-t border-[#DCD5C9] pt-2">
+                  <p className="font-bold text-[#16191C]">IICRC Certified Technicians</p>
+                  <p className="text-[#5C666E] text-[12px]">Every field technician certified</p>
+                </div>
+                <div className="border-t border-[#DCD5C9] pt-2">
+                  <p className="font-bold text-[#16191C]">Colorado Health Links</p>
+                  <p className="text-[#5C666E] text-[12px]">Certified Health & Safety Partner</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
       </section>
 
-      {/* 7. AUTHENTIC LEADERSHIP TEAM SECTION */}
-      {leadership.length > 0 && (
-        <section id="leadership" className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-20 border-b border-white/10">
-          <div className="text-center max-w-3xl mx-auto mb-16">
-            <span className="text-xs font-bold uppercase tracking-widest text-cyan-400">
-              Empowering Associates
-            </span>
-            <h2 className="text-3xl sm:text-4xl font-bold tracking-tight text-white mt-2">
-              Leadership Team at {businessName}
+      {/* ─────────────────────────────────────────────────────────────────────────
+          2. THE SIGNATURE HOUR RULE & PROCESS (§6.2, §8.2, §9.7 ANIMATED)
+      ───────────────────────────────────────────────────────────────────────── */}
+      <section id="process" className="py-14 bg-[#FBFAF8] border-b border-[#DCD5C9] scroll-mt-20">
+        <div className="max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-10">
+          <div className="mb-8 max-w-[800px]">
+            <p className="font-mono text-[11px] uppercase text-[#AD430E] font-semibold tracking-[0.1em] mb-2">
+              SIGNATURE TIME DATUM · IICRC S500 ESCALATION
+            </p>
+            <h2 className="text-[32px] sm:text-[42px] font-bold text-[#16191C] tracking-tight uppercase leading-[1.05] mb-3">
+              The Hour Rule: Why Speed Is a Citable Fact
             </h2>
-            <p className="text-sm text-[#94A3B8] mt-3">
-              &quot;Great leaders are almost always great simplifiers, who can cut through argument, debate, and doubt to offer a solution everybody can understand.&quot;
+            <p className="text-[17px] text-[#5C666E] leading-[1.5]">
+              Water damage is not an event — it is a clock. What can be dried in place during the first 24 hours must be cut out and discarded if delayed to Hour 48.
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 text-left">
-            {leadership.map((leader, idx) => (
-              <div key={idx} className="bg-[#0C1A2E] border border-white/10 rounded-2xl p-6 shadow-xl space-y-3">
-                <div className="w-12 h-12 rounded-xl bg-cyan-500/20 text-cyan-300 font-extrabold flex items-center justify-center text-lg border border-cyan-500/30">
-                  {leader.name.split(" ").map((n) => n[0]).join("")}
-                </div>
-                <h3 className="text-lg font-bold text-white">{leader.name}</h3>
-                <div className="text-xs font-bold text-cyan-400">{leader.role}</div>
-                <p className="text-xs text-[#94A3B8] leading-relaxed pt-2 border-t border-white/10">
-                  {leader.bio}
+          {/* Animated Hour Rule Horizontal Line */}
+          <div className="relative pt-6 pb-6 border-t-2 border-[#16191C]">
+            <div className={`grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 ${isLoaded ? "hour-rule-line-animated" : ""}`}>
+              <div className="pl-4 border-l-2 border-[#C94300] tick-stagger-1">
+                <p className="font-mono text-[17px] font-bold text-[#C94300]">HOUR 0</p>
+                <p className="font-bold text-[16px] text-[#16191C] mt-0.5">You Call Dispatch</p>
+                <p className="text-[13px] text-[#5C666E] mt-1 leading-[1.5]">
+                  Crew starts clock. Extraction units deployed, FLIR thermal moisture mapping started.
                 </p>
+              </div>
+              <div className="pl-4 border-l-2 border-[#8E8578] tick-stagger-2">
+                <p className="font-mono text-[17px] font-bold text-[#16191C]">HOUR 24</p>
+                <p className="font-bold text-[16px] text-[#16191C] mt-0.5">Clean Water Turns</p>
+                <p className="text-[13px] text-[#5C666E] mt-1 leading-[1.5]">
+                  Category 1 sanitary water degrades toward Category 2 contamination. Microbial growth begins.
+                </p>
+              </div>
+              <div className="pl-4 border-l-2 border-[#8E8578] tick-stagger-3">
+                <p className="font-mono text-[17px] font-bold text-[#16191C]">HOUR 48</p>
+                <p className="font-bold text-[16px] text-[#16191C] mt-0.5">Scope & Costs Rise</p>
+                <p className="text-[13px] text-[#5C666E] mt-1 leading-[1.5]">
+                  Materials that could dry in place must now be removed under containment.
+                </p>
+              </div>
+              <div className="pl-4 border-l-2 border-[#0E4F52] tick-stagger-4">
+                <p className="font-mono text-[17px] font-bold text-[#0E4F52]">HOUR 72+</p>
+                <p className="font-bold text-[16px] text-[#16191C] mt-0.5">Documented Dry Target</p>
+                <p className="text-[13px] text-[#5C666E] mt-1 leading-[1.5]">
+                  Daily protimeter readings confirm moisture content matches unaffected dry baseline.
+                </p>
+              </div>
+            </div>
+          </div>
+
+          {/* Full Process & The Drying Log Card Facsimile */}
+          <div className="mt-12 pt-8 border-t border-[#DCD5C9] grid grid-cols-1 lg:grid-cols-12 gap-10">
+            <div className="lg:col-span-6 space-y-6">
+              <h3 className="font-bold text-[22px] text-[#16191C] uppercase">What Happens When Our Crews Arrive</h3>
+              <div className="space-y-4 text-[14px] text-[#5C666E] leading-[1.6]">
+                <p>
+                  <strong className="text-[#16191C]">1. Source Isolation & Floor Protection:</strong> We verify the main water shut-off and lay heavy drop cloths to protect unaffected hardwood and carpet before rolling in equipment.
+                </p>
+                <p>
+                  <strong className="text-[#16191C]">2. High-CFM Truck-Mounted Extraction:</strong> Thousands of gallons are pumped out directly to our truck holding tanks, pulling trapped water out of padding and subflooring.
+                </p>
+                <p>
+                  <strong className="text-[#16191C]">3. Controlled Square Openings:</strong> If trapped in wall cavities, we cut clean, straight square openings to minimize reconstruction costs for your insurer.
+                </p>
+                <p>
+                  <strong className="text-[#16191C]">4. Psychrometric Chamber Setup:</strong> LGR commercial dehumidifiers and vortex air movers create balanced negative pressure to evaporate hidden moisture.
+                </p>
+              </div>
+            </div>
+
+            {/* The Drying Log Card Facsimile (§8.5) */}
+            <div className="lg:col-span-6">
+              <div className="bg-[#F4F1EC] border-2 border-[#16191C] p-5 sm:p-6 font-mono text-[12px]">
+                <div className="flex items-center justify-between border-b border-[#16191C] pb-3 mb-3">
+                  <div>
+                    <span className="font-bold text-[13px] text-[#16191C] uppercase block">
+                      W.E.T. Psychrometric Field Record
+                    </span>
+                    <span className="text-[#79838B] text-[11px]">JOB REF: #DEN-8891 · DISPATCH: 4191 INCA ST</span>
+                  </div>
+                  <span className="px-2 py-1 bg-[#E7E2DA] text-[#8A5B00] border border-[#8A5B00] text-[9px] sm:text-[10px] font-bold uppercase">
+                    ILLUSTRATIVE SAMPLE — NOT A CUSTOMER RECORD
+                  </span>
+                </div>
+
+                <div className="space-y-3">
+                  <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 bg-[#E7E2DA] p-2.5 border border-[#8E8578] text-[10px] sm:text-[11px]">
+                    <div>
+                      <span className="text-[#5C666E] block">DRY TARGET</span>
+                      <span className="font-bold">11.0% MC</span>
+                    </div>
+                    <div>
+                      <span className="text-[#5C666E] block">ROOM TEMP</span>
+                      <span className="font-bold">72°F / 22°C</span>
+                    </div>
+                    <div>
+                      <span className="text-[#5C666E] block">RH TARGET</span>
+                      <span className="font-bold">34% RH</span>
+                    </div>
+                    <div>
+                      <span className="text-[#5C666E] block">TECH LEAD</span>
+                      <span className="font-bold">JK / DL (IICRC)</span>
+                    </div>
+                  </div>
+
+                  <table className="w-full text-left border-collapse text-[11px]">
+                    <thead>
+                      <tr className="border-b border-[#8E8578] text-[#5C666E]">
+                        <th className="py-1.5">LOCATION</th>
+                        <th className="py-1.5">DAY 1</th>
+                        <th className="py-1.5">DAY 2</th>
+                        <th className="py-1.5">DAY 3</th>
+                        <th className="py-1.5">STATUS</th>
+                      </tr>
+                    </thead>
+                    <tbody className="divide-y divide-[#DCD5C9]">
+                      <tr>
+                        <td className="py-1.5 font-bold">Basement Subfloor (OSB)</td>
+                        <td className="py-1.5 text-[#C94300] font-bold">28.4%</td>
+                        <td className="py-1.5 text-[#8A5B00]">18.1%</td>
+                        <td className="py-1.5 text-[#0E4F52] font-bold">10.8%</td>
+                        <td className="py-1.5 text-[#0E4F52] font-bold">✓ PASS</td>
+                      </tr>
+                      <tr>
+                        <td className="py-1.5 font-bold">Drywall - Base 12"</td>
+                        <td className="py-1.5 text-[#C94300] font-bold">34.2%</td>
+                        <td className="py-1.5 text-[#8A5B00]">16.5%</td>
+                        <td className="py-1.5 text-[#0E4F52] font-bold">9.4%</td>
+                        <td className="py-1.5 text-[#0E4F52] font-bold">✓ PASS</td>
+                      </tr>
+                      <tr>
+                        <td className="py-1.5 font-bold">Bottom Plate Framing (Fir)</td>
+                        <td className="py-1.5 text-[#C94300] font-bold">24.1%</td>
+                        <td className="py-1.5 text-[#8A5B00]">15.0%</td>
+                        <td className="py-1.5 text-[#0E4F52] font-bold">11.0%</td>
+                        <td className="py-1.5 text-[#0E4F52] font-bold">✓ PASS</td>
+                      </tr>
+                    </tbody>
+                  </table>
+
+                  <div className="border-t border-[#8E8578] pt-2 text-[10px] text-[#5C666E]">
+                    This comprehensive scope record and psychrometric moisture log is delivered directly to your insurance adjuster for direct carrier payout.
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* ─────────────────────────────────────────────────────────────────────────
+          3. TABULATED SERVICES INDEX (§8.11 ANIMATED) & THE ESCALATION LADDER
+      ───────────────────────────────────────────────────────────────────────── */}
+      <section id="services" className="py-14 border-b border-[#DCD5C9] scroll-mt-20">
+        <div className="max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-10">
+          <div className="max-w-[800px] mb-10">
+            <p className="font-mono text-[11px] uppercase text-[#AD430E] font-semibold tracking-[0.1em] mb-2">
+              CERTIFIED SERVICE DIRECTORY · TABULATED INDEX
+            </p>
+            <h2 className="text-[32px] sm:text-[42px] font-bold text-[#16191C] tracking-tight uppercase leading-[1.05] mb-3">
+              Full Loss Mitigation & Structural Restoration
+            </h2>
+            <p className="text-[17px] text-[#5C666E]">
+              Every service is executed by IICRC-certified field technicians using truck-mounted extraction and thermal imaging.
+            </p>
+          </div>
+
+          {/* 6 Tabulated Service Rows with Section 9.7 Hover Animation */}
+          <div className="border-t-2 border-[#16191C] divide-y divide-[#DCD5C9] mb-14">
+            {[
+              {
+                code: "WE / 01",
+                name: "Water Extraction & Structural Drying",
+                desc: "High-CFM truck-mounted pump out, FLIR moisture mapping, and protimeter verification to reach dry baseline standards.",
+              },
+              {
+                code: "MR / 02",
+                name: "Mold Remediation & Physical Containment",
+                desc: "Negative air pressure poly-containment, HEPA air scrubbing, and botanical antimicrobial treatments addressing the moisture source.",
+              },
+              {
+                code: "FS / 03",
+                name: "Fire & Smoke Damage Restoration",
+                desc: "Soot and protein neutralization, structural deodorization, and water extraction from emergency firefighting efforts.",
+              },
+              {
+                code: "OR / 04",
+                name: "Odor Removal & Thermal Fogging",
+                desc: "Molecular thermal fogging that permanently breaks down smoke, pet, cooking, and decomposition odors without masking agents.",
+              },
+              {
+                code: "AA / 05",
+                name: "Asbestos Testing & Abatement",
+                desc: "State of Colorado CDPHE-certified testing at property losses, certified containment barriers, and compliant disposal manifests.",
+              },
+              {
+                code: "CU / 06",
+                name: "Carpet & Fine Upholstery Cleaning",
+                desc: "IICRC certified care for delicate area rugs, draperies, and fine upholstery in wool, leather, suede, linen, and silk.",
+              },
+            ].map((s) => (
+              <div key={s.code} className="service-row py-5 px-4 sm:px-6 flex flex-col md:flex-row md:items-center justify-between gap-4 cursor-pointer">
+                <div className="flex items-baseline gap-4 md:gap-8">
+                  <span className="font-mono text-[13px] font-bold text-[#AD430E] tracking-wider w-16 shrink-0">
+                    [{s.code}]
+                  </span>
+                  <div>
+                    <h3 className="text-[20px] sm:text-[22px] font-bold text-[#16191C]">{s.name}</h3>
+                    <p className="text-[14px] text-[#5C666E] mt-1 max-w-[70ch]">{s.desc}</p>
+                  </div>
+                </div>
+                <div className="service-arrow text-[18px] font-bold text-[#AD430E] self-end md:self-center">
+                  →
+                </div>
               </div>
             ))}
           </div>
-        </section>
-      )}
 
-      {/* 8. FOUNDATION 1023 PARTNERSHIP SECTION */}
-      {foundationMission && (
-        <section className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-16 border-b border-white/10">
-          <div className="p-8 sm:p-10 rounded-3xl bg-gradient-to-r from-blue-950/60 via-[#0C1A2E] to-cyan-950/60 border border-cyan-500/40 text-left space-y-4 shadow-2xl">
-            <div className="inline-block text-[10px] uppercase font-extrabold px-3 py-1 rounded-full bg-cyan-500/20 text-cyan-300 border border-cyan-500/30">
-              Community Impact Partnership
+          {/* The 3-Tier Escalation Ladder (§8.3) */}
+          <div className="bg-[#FBFAF8] border-2 border-[#16191C] p-6 sm:p-8">
+            <div className="max-w-[700px] mb-6">
+              <span className="font-mono text-[11px] font-bold text-[#AD430E] uppercase tracking-wider block mb-1">
+                IICRC S500 WATER CATEGORY DEFINITIONS
+              </span>
+              <h3 className="text-[24px] font-bold text-[#16191C] uppercase">The Water Contamination Ladder</h3>
             </div>
-            <h3 className="text-2xl sm:text-3xl font-black text-white">
-              Proud Supporter of Foundation 1023
-            </h3>
-            <p className="text-xs sm:text-sm text-[#CBD5E1] leading-relaxed max-w-3xl">
-              {foundationMission}
+
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+              <div className="bg-[#F4F1EC] border-2 border-[#8E8578] p-5">
+                <span className="font-mono text-[11px] font-bold text-[#16191C] block">CATEGORY 1</span>
+                <h4 className="text-[18px] font-bold text-[#16191C] mt-1">Clean Water Source</h4>
+                <p className="text-[13px] text-[#5C666E] mt-2 leading-[1.5]">
+                  Supply line break, water heater leak, or rainwater through roof. Materials dry in place if treated within 24 hours.
+                </p>
+              </div>
+              <div className="bg-[#F4F1EC] border-2 border-[#8A5B00] p-5">
+                <span className="font-mono text-[11px] font-bold text-[#8A5B00] block">CATEGORY 2</span>
+                <h4 className="text-[18px] font-bold text-[#16191C] mt-1">Grey Water Contamination</h4>
+                <p className="text-[13px] text-[#5C666E] mt-2 leading-[1.5]">
+                  Washing machine overflows, dishwasher discharge, or water dwelling past 24 hours. Contaminated pad and insulation must be removed.
+                </p>
+              </div>
+              <div className="bg-[#F4F1EC] border-2 border-[#C94300] p-5">
+                <span className="font-mono text-[11px] font-bold text-[#C94300] block">CATEGORY 3</span>
+                <h4 className="text-[18px] font-bold text-[#16191C] mt-1">Black Water / Gross Hazard</h4>
+                <p className="text-[13px] text-[#5C666E] mt-2 leading-[1.5]">
+                  Sewage back-up, storm runoff, or flood waters. Requires full antimicrobial decontamination, negative air scrubbers, and demolition.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* ─────────────────────────────────────────────────────────────────────────
+          4. INSURANCE, DEDUCTIBLES & WHAT TO DO FIRST (§6.8)
+      ───────────────────────────────────────────────────────────────────────── */}
+      <section id="insurance" className="py-14 border-b border-[#DCD5C9] scroll-mt-20">
+        <div className="max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-10">
+          <div className="max-w-[850px] mb-10">
+            <p className="font-mono text-[11px] uppercase text-[#AD430E] font-semibold tracking-[0.1em] mb-2">
+              DIRECT BILLING & DEDUCTIBLE GUIDANCE
             </p>
-            <div className="pt-2 text-xs font-bold text-cyan-400">
-              🎗️ 5% of property loss jobs donated to Colorado First Responder mental health wellness.
-            </div>
+            <h2 className="text-[32px] sm:text-[42px] font-bold text-[#16191C] tracking-tight uppercase leading-[1.05] mb-3">
+              Insurance Claims & Published Deductible Bands
+            </h2>
+            <p className="text-[17px] text-[#5C666E] leading-[1.5]">
+              Homeowners often ask: “Should I call my insurance company or call mitigation first?” The rule is clear: <strong>call mitigation immediately to stop secondary damage</strong>. Your insurance policy requires you to take reasonable steps to prevent further loss.
+            </p>
           </div>
-        </section>
-      )}
 
-      {/* 9. HOMEOWNER EMERGENCY SAFETY GUIDE */}
-      <section id="emergency-guide" className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-20 border-b border-white/10">
-        <div className="text-center max-w-2xl mx-auto mb-12">
-          <span className="text-xs font-bold uppercase tracking-widest text-cyan-400">
-            Immediate Safety Protocols
-          </span>
-          <h2 className="text-3xl sm:text-4xl font-bold tracking-tight text-white mt-2">
-            What To Do While Our Crew Is En Route
-          </h2>
-          <p className="text-sm text-[#94A3B8] mt-2">
-            Follow these critical 5 steps right now to protect your home and prevent secondary damage while our extraction truck drives to your location.
-          </p>
-        </div>
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+            {/* Deductible Bands Table */}
+            <div className="lg:col-span-7 bg-[#FBFAF8] border-2 border-[#16191C] p-6 sm:p-8">
+              <h3 className="font-mono text-[13px] font-bold text-[#16191C] uppercase mb-4">
+                Published Deductible Payment Bands
+              </h3>
+              <table className="w-full text-left font-mono text-[13px] border-collapse">
+                <thead>
+                  <tr className="border-b-2 border-[#16191C] text-[#5C666E]">
+                    <th className="py-2">BAND</th>
+                    <th className="py-2">RANGE</th>
+                    <th className="py-2">TYPICAL POLICY SCENARIO</th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-[#DCD5C9]">
+                  <tr>
+                    <td className="py-3 font-bold text-[#16191C]">Low Deductible</td>
+                    <td className="py-3 text-[#AD430E] font-bold">$100 – $1,000</td>
+                    <td className="py-3 text-[#5C666E]">Standard residential plumbing pipe bursts</td>
+                  </tr>
+                  <tr>
+                    <td className="py-3 font-bold text-[#16191C]">Medium Deductible</td>
+                    <td className="py-3 text-[#AD430E] font-bold">$1,100 – $5,000</td>
+                    <td className="py-3 text-[#5C666E]">Multi-room structural water or soot loss</td>
+                  </tr>
+                  <tr>
+                    <td className="py-3 font-bold text-[#16191C]">High Deductible</td>
+                    <td className="py-3 text-[#AD430E] font-bold">$5,500 – $10,000</td>
+                    <td className="py-3 text-[#5C666E]">Commercial, HOA, or multi-family property loss</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
 
-        <div className="space-y-4 mb-12">
-          {[
-            {
-              title: "1. Shut Off the Main Water Supply",
-              desc: "Locate your main water shutoff valve (usually in the basement, crawlspace, or near the street water meter) and turn it 90 degrees clockwise to stop incoming water pressure immediately.",
-              danger: "CRITICAL",
-            },
-            {
-              title: "2. Disconnect Electrical Breakers in Wet Areas",
-              desc: "If water has reached wall outlets, baseboard heaters, or appliances, turn off the corresponding circuit breakers at your main panel. NEVER walk into standing water if electrical devices are submerged.",
-              danger: "SAFETY",
-            },
-            {
-              title: "3. Avoid Category 3 Black Water / Sewage",
-              desc: "If the flood involves toilet backups, sewage, or river runoff, keep all family members and pets completely away from the area. Category 3 water contains harmful pathogens.",
-              danger: "BIOHAZARD",
-            },
-            {
-              title: "4. Photograph Damaged Belongings & High-Value Items",
-              desc: "Take wide-angle photos and short video clips of standing water depth, damaged furniture, flooring, and electronics. Our team will provide itemized Xactimate logs for your adjuster.",
-              danger: "INSURANCE",
-            },
-            {
-              title: "5. Do Not Use Household Vacuum Cleaners",
-              desc: "Never use a regular home vacuum to extract water — this creates severe electrical shock hazards. Wait for our industrial high-CFM truck extraction units.",
-              danger: "SAFETY",
-            },
-          ].map((step, idx) => (
-            <div
-              key={idx}
-              onClick={() => toggleChecklist(idx)}
-              className={`p-6 rounded-2xl border transition-all cursor-pointer flex items-start gap-4 ${
-                checkedSteps.includes(idx)
-                  ? "bg-emerald-950/30 border-emerald-500/50 text-white"
-                  : "bg-[#0C1A2E] border-white/10 text-[#CBD5E1] hover:border-cyan-400"
-              }`}
-            >
-              <div
-                className={`w-7 h-7 rounded-lg flex items-center justify-center font-bold text-xs shrink-0 mt-0.5 ${
-                  checkedSteps.includes(idx)
-                    ? "bg-emerald-500 text-black"
-                    : "bg-white/10 text-white"
-                }`}
-              >
-                {checkedSteps.includes(idx) ? "✓" : idx + 1}
+            {/* Direct Billing Explanation */}
+            <div className="lg:col-span-5 space-y-4">
+              <div className="bg-[#F4F1EC] border border-[#8E8578] p-5">
+                <h4 className="font-bold text-[16px] text-[#16191C] mb-2">Direct Carrier Xactimate Billing</h4>
+                <p className="text-[13px] text-[#5C666E] leading-[1.5]">
+                  We use Xactimate — the exact same pricing software used by State Farm, Allstate, USAA, Travelers, and Farmers adjusters, ensuring seamless approval.
+                </p>
               </div>
-              <div className="flex-1">
-                <div className="flex items-center gap-2 mb-1">
-                  <h3 className="font-bold text-white text-base">{step.title}</h3>
-                  <span className="text-[10px] uppercase font-bold px-2 py-0.5 rounded bg-cyan-500/20 text-cyan-300">
-                    {step.danger}
-                  </span>
-                </div>
-                <p className="text-xs sm:text-sm text-[#94A3B8] leading-relaxed">
-                  {step.desc}
+              <div className="bg-[#F4F1EC] border border-[#8E8578] p-5">
+                <h4 className="font-bold text-[16px] text-[#16191C] mb-2">Zero Out-Of-Pocket Delays</h4>
+                <p className="text-[13px] text-[#5C666E] leading-[1.5]">
+                  You pay only your agreed deductible. We submit the full drying record, moisture log, and itemized scope directly to your carrier.
                 </p>
               </div>
             </div>
-          ))}
-        </div>
-
-        <div className="p-8 rounded-3xl bg-gradient-to-r from-blue-900/40 to-cyan-900/40 border border-cyan-500/30 text-center space-y-4">
-          <h3 className="text-xl font-black text-white">Need Live Phone Guidance Right Now?</h3>
-          <p className="text-xs sm:text-sm text-cyan-200 max-w-xl mx-auto">
-            Our on-call supervisor can guide you through main shutoffs and electrical safety while our truck is driving to your property.
-          </p>
-          <a
-            href={telHref}
-            className="inline-flex items-center gap-2 px-8 py-4 rounded-xl font-extrabold text-white text-sm shadow-xl hover:scale-105 transition-transform"
-            style={{ backgroundColor: themeAccent }}
-          >
-            📞 Call On-Call Dispatcher ({phone})
-          </a>
+          </div>
         </div>
       </section>
 
-      {/* 10. DIRECT INSURANCE CARRIER BILLING DESK */}
-      <section id="insurance-desk" className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-20 border-b border-white/10">
-        <div className="text-center max-w-3xl mx-auto mb-16">
-          <span className="text-xs font-bold uppercase tracking-widest text-cyan-400">
-            Zero Out-of-Pocket Delays
-          </span>
-          <h2 className="text-3xl sm:text-4xl font-bold tracking-tight text-white mt-2">
-            Direct Insurance Carrier Billing Desk
-          </h2>
-          <p className="text-sm text-[#94A3B8] mt-3">
-            We bill your insurance provider directly using standard Xactimate pricing. You only pay your policy deductible on covered losses.
-          </p>
-        </div>
-
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
-          {/* Interactive Deductible Estimator */}
-          <div className="lg:col-span-6 bg-[#0C1A2E] border border-white/15 rounded-3xl p-8 shadow-xl space-y-6">
-            <h3 className="text-xl font-bold text-white">Interactive Coverage Breakdown</h3>
-
-            <div>
-              <label className="block text-xs font-bold uppercase tracking-wider text-[#94A3B8] mb-2">
-                Select Your Insurance Deductible:
-              </label>
-              <div className="grid grid-cols-3 gap-3">
-                {["$500", "$1,000", "$2,500"].map((d) => (
-                  <button
-                    key={d}
-                    type="button"
-                    onClick={() => setDeductible(d)}
-                    className={`py-3 text-center text-xs font-bold rounded-xl border transition-all cursor-pointer ${
-                      deductible === d
-                        ? "bg-cyan-500/20 border-cyan-400 text-white shadow-sm"
-                        : "bg-[#08121E] border-white/10 text-[#94A3B8] hover:text-white"
-                    }`}
-                  >
-                    {d} Deductible
-                  </button>
-                ))}
-              </div>
-            </div>
-
-            <div className="p-6 rounded-2xl bg-[#08121E] border border-white/10 space-y-3 text-xs">
-              <div className="flex justify-between pb-2 border-b border-white/10">
-                <span className="text-[#94A3B8]">Emergency Water Mitigation:</span>
-                <span className="font-bold text-white">100% Billed to Insurance</span>
-              </div>
-              <div className="flex justify-between pb-2 border-b border-white/10">
-                <span className="text-[#94A3B8]">Structural Dehumidification &amp; Drying:</span>
-                <span className="font-bold text-white">100% Billed to Insurance</span>
-              </div>
-              <div className="flex justify-between pb-2 border-b border-white/10">
-                <span className="text-[#94A3B8]">Antimicrobial Sanitization:</span>
-                <span className="font-bold text-white">100% Billed to Insurance</span>
-              </div>
-              <div className="flex justify-between pt-2 text-sm">
-                <span className="font-bold text-cyan-400">Your Out-of-Pocket:</span>
-                <span className="font-extrabold text-white">{deductible} (Deductible Only)</span>
-              </div>
-            </div>
-
-            <a
-              href={telHref}
-              className="block text-center py-4 rounded-xl font-bold text-white text-xs shadow-lg"
-              style={{ backgroundColor: themeAccent }}
-            >
-              Connect With Insurance Specialist ({phone}) →
-            </a>
+      {/* ─────────────────────────────────────────────────────────────────────────
+          5. PROPERTY MANAGERS & HOA DISASTER RESPONSE (§6.10)
+      ───────────────────────────────────────────────────────────────────────── */}
+      <section id="managers" className="py-14 bg-[#FBFAF8] border-b border-[#DCD5C9] scroll-mt-20">
+        <div className="max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-10">
+          <div className="max-w-[850px] mb-8">
+            <p className="font-mono text-[11px] uppercase text-[#AD430E] font-semibold tracking-[0.1em] mb-2">
+              INSTITUTIONAL & HOA PORTFOLIO SERVICES
+            </p>
+            <h2 className="text-[32px] sm:text-[42px] font-bold text-[#16191C] tracking-tight uppercase leading-[1.05] mb-3">
+              HOA, Multi-Family & Management Companies
+            </h2>
+            <p className="text-[17px] text-[#5C666E] leading-[1.5]">
+              Led by EVP Mark Muniz-Brown (CMCA, AMS, PCAM), W.E.T. specializes in multi-family emergency response contracts, tenant coordination, and comprehensive board documentation packages.
+            </p>
           </div>
 
-          {/* Insurance Workflow */}
-          <div className="lg:col-span-6 space-y-4 text-left">
-            <h3 className="text-xl font-bold text-white mb-4">How Direct Carrier Billing Works</h3>
-            <div className="space-y-4 text-xs text-[#CBD5E1]">
-              <div className="flex gap-3">
-                <div className="w-6 h-6 rounded-full bg-cyan-500/20 text-cyan-300 font-bold flex items-center justify-center shrink-0">
-                  1
-                </div>
-                <div>
-                  <h4 className="font-bold text-white">Emergency Crew Dispatch &amp; Damage Triage</h4>
-                  <p className="text-[#94A3B8] mt-0.5">We arrive in under 60 minutes, extract water immediately, and mitigate loss escalation.</p>
-                </div>
-              </div>
-
-              <div className="flex gap-3">
-                <div className="w-6 h-6 rounded-full bg-cyan-500/20 text-cyan-300 font-bold flex items-center justify-center shrink-0">
-                  2
-                </div>
-                <div>
-                  <h4 className="font-bold text-white">Itemized Xactimate Claim Submission</h4>
-                  <p className="text-[#94A3B8] mt-0.5">We photograph every damaged element and create an industry-standard Xactimate estimate for your insurance adjuster.</p>
-                </div>
-              </div>
-
-              <div className="flex gap-3">
-                <div className="w-6 h-6 rounded-full bg-cyan-500/20 text-cyan-300 font-bold flex items-center justify-center shrink-0">
-                  3
-                </div>
-                <div>
-                  <h4 className="font-bold text-white">Direct Adjuster Coordination</h4>
-                  <p className="text-[#94A3B8] mt-0.5">We conduct the on-site walkthrough with your insurance adjuster so you never have to argue over line items.</p>
-                </div>
-              </div>
-
-              <div className="flex gap-3">
-                <div className="w-6 h-6 rounded-full bg-cyan-500/20 text-cyan-300 font-bold flex items-center justify-center shrink-0">
-                  4
-                </div>
-                <div>
-                  <h4 className="font-bold text-white">100% Direct Payout Settlement</h4>
-                  <p className="text-[#94A3B8] mt-0.5">Your carrier settles the invoice directly with our office. Zero out-of-pocket delays for you.</p>
-                </div>
-              </div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+            <div className="bg-[#F4F1EC] border border-[#8E8578] p-5">
+              <strong className="block text-[#16191C] font-bold text-[16px] mb-1">Simultaneous Unit Capacity</strong>
+              <p className="text-[13px] text-[#5C666E]">Large truck fleet can extract up to 12 multi-family units at once.</p>
+            </div>
+            <div className="bg-[#F4F1EC] border border-[#8E8578] p-5">
+              <strong className="block text-[#16191C] font-bold text-[16px] mb-1">Master Billing Portals</strong>
+              <p className="text-[13px] text-[#5C666E]">Itemized invoicing separating HOA common areas from owner units.</p>
+            </div>
+            <div className="bg-[#F4F1EC] border border-[#8E8578] p-5">
+              <strong className="block text-[#16191C] font-bold text-[16px] mb-1">After-Hours Protocol</strong>
+              <p className="text-[13px] text-[#5C666E]">Dedicated direct line for property managers with zero phone tree delays.</p>
+            </div>
+            <div className="bg-[#F4F1EC] border border-[#8E8578] p-5">
+              <strong className="block text-[#16191C] font-bold text-[16px] mb-1">Licensed in CO & MT</strong>
+              <p className="text-[13px] text-[#5C666E]">Comprehensive general liability and worker's compensation coverage.</p>
             </div>
           </div>
         </div>
       </section>
 
-      {/* 11. VERIFIED REVIEWS WALL (AUTHENTIC COPIED TESTIMONIALS) */}
-      <section id="reviews" className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-20 border-b border-white/10">
-        <div className="text-center max-w-2xl mx-auto mb-16">
-          <span className="text-xs font-bold uppercase tracking-widest text-cyan-400">
-            Real Customer Praise
-          </span>
-          <h2 className="text-3xl sm:text-4xl font-bold tracking-tight text-white mt-2">
-            Verified {businessName} Testimonials
-          </h2>
-        </div>
+      {/* ─────────────────────────────────────────────────────────────────────────
+          6. ABOUT & EXECUTIVE LEADERSHIP (§6.11)
+      ───────────────────────────────────────────────────────────────────────── */}
+      <section id="about" className="py-14 border-b border-[#DCD5C9] scroll-mt-20">
+        <div className="max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-10">
+          <div className="max-w-[800px] mb-10">
+            <p className="font-mono text-[11px] uppercase text-[#AD430E] font-semibold tracking-[0.1em] mb-2">
+              COMPANY HISTORY & LEADERSHIP
+            </p>
+            <h2 className="text-[32px] sm:text-[42px] font-bold text-[#16191C] tracking-tight uppercase leading-[1.05] mb-3">
+              Serving Colorado’s Front Range Since October 14, 2004
+            </h2>
+            <p className="text-[17px] text-[#5C666E] leading-[1.5]">
+              Water Extraction Team (W.E.T.) is an SBA Certified Women-Owned Small Business (WOSB), BBB A+ Accredited firm since 2014, and Colorado Health Links Safety Partner.
+            </p>
+          </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          {reviews.map((r, idx) => (
-            <div key={idx} className="bg-[#0C1A2E] border border-white/10 rounded-2xl p-6 shadow-md flex flex-col justify-between text-left">
-              <div>
-                <div className="text-amber-400 mb-3 text-sm">★★★★★</div>
-                <p className="text-xs sm:text-sm text-[#CBD5E1] leading-relaxed mb-4">
-                  &quot;{r.text}&quot;
-                </p>
-              </div>
-              <div className="flex items-center gap-3 pt-3 border-t border-white/10">
-                <div className="w-8 h-8 rounded-full flex items-center justify-center font-bold text-xs bg-cyan-500/20 text-cyan-300 border border-cyan-500/30">
-                  {r.name.slice(0, 2).toUpperCase()}
-                </div>
-                <div>
-                  <div className="text-xs font-bold text-white">{r.name}</div>
-                  <div className="text-[11px] text-[#64748B]">{r.location} · {r.time}</div>
-                </div>
-              </div>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div className="bg-[#FBFAF8] border border-[#8E8578] p-6">
+              <span className="font-mono text-[11px] font-bold text-[#AD430E] block">CO-OWNER & COO</span>
+              <h3 className="text-[20px] font-bold text-[#16191C] mt-1">Jennifer Kronebusch, MBA</h3>
+              <p className="text-[13px] text-[#5C666E] mt-2 leading-[1.5]">
+                Directing residential and commercial large-loss restoration throughout Colorado and Montana for nearly two decades.
+              </p>
             </div>
-          ))}
+            <div className="bg-[#FBFAF8] border border-[#8E8578] p-6">
+              <span className="font-mono text-[11px] font-bold text-[#AD430E] block">CO-OWNER & PRESIDENT</span>
+              <h3 className="text-[20px] font-bold text-[#16191C] mt-1">David Lian</h3>
+              <p className="text-[13px] text-[#5C666E] mt-2 leading-[1.5]">
+                Over three decades managing disaster recovery operations, industrial water pumps, and insurance carrier settlements.
+              </p>
+            </div>
+            <div className="bg-[#FBFAF8] border border-[#8E8578] p-6">
+              <span className="font-mono text-[11px] font-bold text-[#AD430E] block">EVP BUSINESS DEVELOPMENT</span>
+              <h3 className="text-[20px] font-bold text-[#16191C] mt-1">Mark Muniz-Brown, CMCA</h3>
+              <p className="text-[13px] text-[#5C666E] mt-2 leading-[1.5]">
+                Two decades serving HOA Boards of Directors and management company portfolios across the Denver Metro.
+              </p>
+            </div>
+          </div>
         </div>
       </section>
 
-      {/* 12. REGIONAL TERRITORY GRID */}
-      <section id="service-areas" className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-16 border-b border-white/10">
-        <div className="text-center max-w-2xl mx-auto mb-8">
-          <span className="text-xs font-bold uppercase tracking-widest text-cyan-400">
-            Rapid Dispatch Radius
-          </span>
-          <h2 className="text-2xl sm:text-3xl font-bold tracking-tight text-white mt-1">
-            Proudly Serving Denver &amp; Colorado Front Range
-          </h2>
-        </div>
+      {/* ─────────────────────────────────────────────────────────────────────────
+          7. VERIFIED CUSTOMER EVIDENCE (§6.12, §8.7)
+      ───────────────────────────────────────────────────────────────────────── */}
+      <section id="evidence" className="py-14 bg-[#FBFAF8] border-b border-[#DCD5C9] scroll-mt-20">
+        <div className="max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-10">
+          <div className="max-w-[800px] mb-8">
+            <p className="font-mono text-[11px] uppercase text-[#AD430E] font-semibold tracking-[0.1em] mb-2">
+              THIRD-PARTY EVIDENCE & 4 PROOF BREAKDOWN
+            </p>
+            <h2 className="text-[32px] sm:text-[42px] font-bold text-[#16191C] tracking-tight uppercase leading-[1.05]">
+              Verified HOA Commercial Case Study
+            </h2>
+          </div>
 
-        <div className="flex flex-wrap items-center justify-center gap-2.5 max-w-4xl mx-auto">
-          {serviceAreas.map((town) => (
-            <span
-              key={town}
-              className="px-4 py-2 rounded-xl text-xs font-semibold bg-white/5 border border-white/15 text-[#CBD5E1] shadow-sm hover:border-cyan-400 hover:text-white transition-all cursor-default"
-            >
-              📍 {town}, CO
+          <div className="bg-[#F4F1EC] border-2 border-[#16191C] p-6 sm:p-8 max-w-[1000px]">
+            <blockquote className="text-[18px] sm:text-[20px] text-[#16191C] leading-[1.55] italic">
+              “I absolutely recommend Mark and WET. We had an active flood from a pipe on the third floor of one of our HOA communities, I called Mark and he had a crew in route within minutes. Once on site, the crew opened the wall with such care, nice straight opening making repairs so much easier, placed drop cloths on the floor to protect the flooring, found the leak and fixed it, dried everything out, explained to the owners what was needed to continue drying out the walls, floors and such. They called and followed up over the next couple of days, once it was all dried out, they came back and removed their equipment. The speed and professionalism is much appreciated!”
+            </blockquote>
+            <div className="mt-6 pt-4 border-t border-[#DCD5C9] flex flex-col sm:flex-row sm:items-center justify-between font-mono text-[12px] gap-2">
+              <span className="font-bold text-[#16191C]">JULIE BACA · COLORADO MANAGEMENT & REALTY</span>
+              <span className="text-[#0E4F52] font-semibold">VERIFIED HOA PROPERTY MANAGER</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* ─────────────────────────────────────────────────────────────────────────
+          8. FOUNDATION 1023 PARTNERSHIP (§6.13)
+      ───────────────────────────────────────────────────────────────────────── */}
+      <section id="foundation" className="py-14 bg-[#DCEAE8] border-b border-[#8CB9B4] scroll-mt-20">
+        <div className="max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-10">
+          <div className="max-w-[850px]">
+            <span className="font-mono text-[11px] font-bold text-[#0E4F52] uppercase tracking-[0.1em] block mb-2">
+              COMMUNITY COMMITMENT · COLORADO FIRST RESPONDERS
             </span>
-          ))}
-        </div>
-      </section>
-
-      {/* 13. 4-PILLAR WHY CHOOSE US */}
-      <section className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
-        <div className="text-center max-w-2xl mx-auto mb-12">
-          <span className="text-xs font-bold uppercase tracking-widest text-cyan-400">
-            The Colorado Standard
-          </span>
-          <h2 className="text-3xl font-bold tracking-tight text-white mt-2">
-            Why Denver Chooses {businessName}
-          </h2>
-        </div>
-
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-          <div className="bg-[#0C1A2E] border border-white/10 rounded-2xl p-6 text-center shadow-lg">
-            <div className="w-12 h-12 rounded-xl bg-cyan-500/20 text-cyan-400 flex items-center justify-center mx-auto mb-4 text-2xl font-bold border border-cyan-500/30">
-              ⚡
-            </div>
-            <h3 className="font-bold text-sm text-white mb-1">Under 60-Min Dispatch</h3>
-            <p className="text-xs text-[#94A3B8] leading-relaxed">
-              Truck-mounted extraction crews on standby 24/7/365 across the entire metropolitan radius.
+            <h2 className="text-[32px] sm:text-[42px] font-bold text-[#0E4F52] tracking-tight uppercase leading-[1.05] mb-4">
+              Foundation 1023 Partnership: 5% Loss Donation
+            </h2>
+            <p className="text-[17px] text-[#0E4F52] leading-[1.6] mb-6">
+              Water Extraction Team is a proud supporter of Foundation 1023, providing confidential mental wellness services for Colorado firefighters, paramedics, and law enforcement. W.E.T. donates 5% of a given property loss to Foundation 1023 whenever a first responder or homeowner mentions Foundation 1023 when calling.
             </p>
-          </div>
-
-          <div className="bg-[#0C1A2E] border border-white/10 rounded-2xl p-6 text-center shadow-lg">
-            <div className="w-12 h-12 rounded-xl bg-emerald-500/20 text-emerald-400 flex items-center justify-center mx-auto mb-4 text-2xl font-bold border border-emerald-500/30">
-              📋
+            <div className="bg-[#FBFAF8] border-2 border-[#0E4F52] p-5 font-mono text-[13px] text-[#0E4F52] max-w-[600px]">
+              <p className="font-bold mb-1 uppercase">How to Activate:</p>
+              <p>
+                Simply mention <strong>“Foundation 1023”</strong> to our dispatcher when you call <strong>{phone}</strong>. 5% of the property loss job proceeds will be routed directly to Foundation 1023.
+              </p>
             </div>
-            <h3 className="font-bold text-sm text-white mb-1">Direct Insurance Billing</h3>
-            <p className="text-xs text-[#94A3B8] leading-relaxed">
-              We bill your insurance carrier directly using Xactimate itemization with zero upfront delay.
-            </p>
-          </div>
-
-          <div className="bg-[#0C1A2E] border border-white/10 rounded-2xl p-6 text-center shadow-lg">
-            <div className="w-12 h-12 rounded-xl bg-purple-500/20 text-purple-400 flex items-center justify-center mx-auto mb-4 text-2xl font-bold border border-purple-500/30">
-              🏆
-            </div>
-            <h3 className="font-bold text-sm text-white mb-1">Certified Master Techs</h3>
-            <p className="text-xs text-[#94A3B8] leading-relaxed">
-              IICRC and CDPHE certified technicians trained in strict structural drying and containment.
-            </p>
-          </div>
-
-          <div className="bg-[#0C1A2E] border border-white/10 rounded-2xl p-6 text-center shadow-lg">
-            <div className="w-12 h-12 rounded-xl bg-amber-500/20 text-amber-400 flex items-center justify-center mx-auto mb-4 text-2xl font-bold border border-amber-500/30">
-              🛡️
-            </div>
-            <h3 className="font-bold text-sm text-white mb-1">Full Mitigation to Rebuild</h3>
-            <p className="text-xs text-[#94A3B8] leading-relaxed">
-              Complete seamless restoration from initial water pump-out to full drywall, flooring, and paint.
-            </p>
           </div>
         </div>
       </section>
 
-      {/* 14. REAL CONTRACTOR FOOTER */}
-      <footer className="bg-[#040A12] border-t border-white/10 text-[#CBD5E1] py-16">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 md:grid-cols-4 gap-8 mb-12 text-left">
-          <div className="col-span-1 md:col-span-2">
-            <h4 className="text-lg font-bold text-white mb-2">{businessName}</h4>
-            <p className="text-xs text-[#94A3B8] max-w-sm leading-relaxed mb-4">
-              {subheadline}
-            </p>
-            <div className="text-xs text-[#64748B] space-y-1">
-              <div>📍 Corporate Office: {address}</div>
-              <div>📞 24/7 Hotline: {phone} · Toll-Free: {tollFree}</div>
-              <div>🛡️ SBA Certified WOSB · Colorado Health Links Partner · Licensed in CO &amp; MT</div>
-            </div>
-          </div>
-
-          <div>
-            <h5 className="text-xs font-bold uppercase tracking-wider text-cyan-400 mb-3">Hours of Operation</h5>
-            <div className="text-xs text-[#94A3B8] space-y-1">
-              <div>Monday – Friday: 8:00 AM – 5:00 PM (Admin)</div>
-              <div>Saturday – Sunday: Emergency Standby</div>
-              <div className="font-semibold pt-1 text-emerald-400">
-                ● 24/7/365 Emergency Dispatch Active
+      {/* ─────────────────────────────────────────────────────────────────────────
+          9. TRIAGE INTAKE & LEAD DISPATCH FORM (§6.15, §8.4)
+      ───────────────────────────────────────────────────────────────────────── */}
+      <section id="contact" className="py-14 border-b border-[#DCD5C9] scroll-mt-20">
+        <div className="max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-10">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-10">
+            <div className="lg:col-span-5 space-y-4">
+              <p className="font-mono text-[11px] uppercase text-[#AD430E] font-semibold tracking-[0.1em]">
+                NON-CALL INTAKE PORTAL
+              </p>
+              <h2 className="text-[32px] sm:text-[42px] font-bold text-[#16191C] tracking-tight uppercase leading-[1.05]">
+                Contact & Emergency Triage Intake
+              </h2>
+              <p className="text-[16px] text-[#5C666E] leading-[1.5]">
+                If water is currently moving, call <strong className="text-[#C94300]">{phone}</strong> immediately. The form below is for non-call inquiries and after-hours dispatch triage.
+              </p>
+              <div className="border-t border-[#DCD5C9] pt-4 font-mono text-[12px] text-[#5C666E] space-y-1">
+                <p><strong className="text-[#16191C]">Corporate Office:</strong> {address}</p>
+                <p><strong className="text-[#16191C]">24/7 Hotline:</strong> {phone}</p>
+                <p><strong className="text-[#16191C]">Admin Hours:</strong> Mon–Fri 8:00 AM – 5:00 PM MST</p>
               </div>
             </div>
-          </div>
 
-          <div>
-            <h5 className="text-xs font-bold uppercase tracking-wider text-cyan-400 mb-3">Engineering Prototype</h5>
-            <div className="text-xs text-[#94A3B8] space-y-2">
-              <p>Designed &amp; engineered by Alizane Labs.</p>
-              <Link
-                href="/contact"
-                className="inline-block px-3 py-1.5 rounded bg-white text-black font-bold text-xs hover:bg-gray-200 transition-colors"
-              >
-                Claim This Website →
-              </Link>
+            <div className="lg:col-span-7 bg-[#FBFAF8] border-2 border-[#16191C] p-6 sm:p-8">
+              {intakeDispatched ? (
+                <div className="p-6 bg-[#DCEAE8] border-2 border-[#0E4F52] text-center font-mono">
+                  <p className="text-[20px] font-bold text-[#0E4F52]">✓ INTAKE DISPATCH RECEIVED</p>
+                  <p className="text-[14px] text-[#0E4F52] mt-2">
+                    A dispatch technician will contact you immediately at <span className="font-bold">{formPhone}</span>.
+                  </p>
+                </div>
+              ) : (
+                <form onSubmit={handleIntakeSubmit} className="space-y-4 text-[13px]">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div>
+                      <label className="font-mono font-bold text-[#16191C] block mb-1 uppercase text-[11px]">Full Name *</label>
+                      <input
+                        type="text"
+                        required
+                        value={formName}
+                        onChange={(e) => setFormName(e.target.value)}
+                        placeholder="e.g. Jennifer Smith"
+                        className="w-full bg-[#F4F1EC] border border-[#8E8578] p-2.5 text-[#16191C] rounded-[2px]"
+                      />
+                    </div>
+                    <div>
+                      <label className="font-mono font-bold text-[#16191C] block mb-1 uppercase text-[11px]">Phone Number *</label>
+                      <input
+                        type="tel"
+                        required
+                        value={formPhone}
+                        onChange={(e) => setFormPhone(e.target.value)}
+                        placeholder="(303) 555-0199"
+                        className="w-full bg-[#F4F1EC] border border-[#8E8578] p-2.5 text-[#16191C] rounded-[2px]"
+                      />
+                    </div>
+                  </div>
+
+                  <div>
+                    <label className="font-mono font-bold text-[#16191C] block mb-1 uppercase text-[11px]">Property Address</label>
+                    <input
+                      type="text"
+                      value={formAddress}
+                      onChange={(e) => setFormAddress(e.target.value)}
+                      placeholder="Street, City, ZIP in Denver Metro"
+                      className="w-full bg-[#F4F1EC] border border-[#8E8578] p-2.5 text-[#16191C] rounded-[2px]"
+                    />
+                  </div>
+
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div>
+                      <label className="font-mono font-bold text-[#16191C] block mb-1 uppercase text-[11px]">Service</label>
+                      <select
+                        value={selectedService}
+                        onChange={(e) => setSelectedService(e.target.value)}
+                        className="w-full bg-[#F4F1EC] border border-[#8E8578] p-2.5 text-[#16191C] rounded-[2px]"
+                      >
+                        <option>Water Extraction & Structural Drying</option>
+                        <option>Mold Remediation & Containment</option>
+                        <option>Fire & Smoke Damage Restoration</option>
+                        <option>Odor Removal & Thermal Fogging</option>
+                        <option>Asbestos Testing & Abatement</option>
+                        <option>Carpet & Upholstery Cleaning</option>
+                      </select>
+                    </div>
+                    <div>
+                      <label className="font-mono font-bold text-[#16191C] block mb-1 uppercase text-[11px]">Damage Category</label>
+                      <select
+                        value={damageCategory}
+                        onChange={(e) => setDamageCategory(e.target.value)}
+                        className="w-full bg-[#F4F1EC] border border-[#8E8578] p-2.5 text-[#16191C] rounded-[2px]"
+                      >
+                        <option>Category 1: Clean Water (Supply Pipe)</option>
+                        <option>Category 2: Grey Water (Appliance)</option>
+                        <option>Category 3: Black Water (Sewage / Flood)</option>
+                        <option>Uncertain / On-Site Inspection Needed</option>
+                      </select>
+                    </div>
+                  </div>
+
+                  <div>
+                    <label className="font-mono font-bold text-[#16191C] block mb-1 uppercase text-[11px]">Loss Details</label>
+                    <textarea
+                      rows={3}
+                      value={formLossDetails}
+                      onChange={(e) => setFormLossDetails(e.target.value)}
+                      placeholder="Briefly describe standing water depth, affected rooms, or active leaks..."
+                      className="w-full bg-[#F4F1EC] border border-[#8E8578] p-2.5 text-[#16191C] rounded-[2px]"
+                    />
+                  </div>
+
+                  <button
+                    type="submit"
+                    disabled={intakeLoading}
+                    className="w-full py-3.5 px-6 bg-[#C94300] hover:bg-[#AD3A00] text-[#FFFFFF] font-mono font-bold text-[14px] uppercase tracking-wide transition-colors rounded-[2px]"
+                  >
+                    {intakeLoading ? "Transmitting..." : "Submit Triage Request →"}
+                  </button>
+                </form>
+              )}
             </div>
           </div>
         </div>
+      </section>
 
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 pt-8 border-t border-white/5 text-center text-xs text-[#64748B]">
-          © {new Date().getFullYear()} {businessName}. All rights reserved. High-performance Next.js 16 build by Alizane Labs.
+      {/* ─────────────────────────────────────────────────────────────────────────
+          10. COMPREHENSIVE FOOTER & SITEMAP (§5.6, §8.14)
+      ───────────────────────────────────────────────────────────────────────── */}
+      <footer className="bg-[#16191C] text-[#F4F1EC] pt-14 pb-24 lg:pb-14 border-t border-[#242A2F]">
+        <div className="max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-10">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 pb-12 border-b border-[#242A2F]">
+            {/* Col 1: Emergency */}
+            <div>
+              <p className="font-mono text-[11px] font-bold text-[#F07B41] uppercase tracking-[0.08em] mb-3">
+                EMERGENCY LINES (24/7)
+              </p>
+              <a href={telHref} className="text-[20px] font-bold text-[#F4F1EC] hover:text-[#F07B41] font-mono block">
+                {phone}
+              </a>
+              <p className="text-[13px] text-[#79838B] mt-1 font-mono">Toll-Free: {tollFree}</p>
+              <p className="text-[13px] text-[#79838B] mt-1 font-mono">info@waterextractionteam.com</p>
+            </div>
+
+            {/* Col 2: Services */}
+            <div>
+              <p className="font-mono text-[11px] font-bold text-[#F4F1EC] uppercase tracking-[0.08em] mb-3">
+                CERTIFIED SERVICES
+              </p>
+              <ul className="space-y-1.5 text-[13px] text-[#79838B]">
+                <li><a href="#services" className="hover:text-[#F4F1EC]">Water Extraction & Drying</a></li>
+                <li><a href="#services" className="hover:text-[#F4F1EC]">Mold Remediation</a></li>
+                <li><a href="#services" className="hover:text-[#F4F1EC]">Fire & Smoke Restoration</a></li>
+                <li><a href="#services" className="hover:text-[#F4F1EC]">Deodorization & Fogging</a></li>
+                <li><a href="#services" className="hover:text-[#F4F1EC]">Asbestos Abatement</a></li>
+                <li><a href="#services" className="hover:text-[#F4F1EC]">Carpet & Upholstery</a></li>
+              </ul>
+            </div>
+
+            {/* Col 3: Company */}
+            <div>
+              <p className="font-mono text-[11px] font-bold text-[#F4F1EC] uppercase tracking-[0.08em] mb-3">
+                SECTION SHORTCUTS
+              </p>
+              <ul className="space-y-1.5 text-[13px] text-[#79838B]">
+                <li><a href="#process" className="hover:text-[#F4F1EC]">The Hour Rule (Process)</a></li>
+                <li><a href="#insurance" className="hover:text-[#F4F1EC]">Insurance & Deductibles</a></li>
+                <li><a href="#managers" className="hover:text-[#F4F1EC]">Property Managers & HOAs</a></li>
+                <li><a href="#about" className="hover:text-[#F4F1EC]">About & Leadership</a></li>
+                <li><a href="#evidence" className="hover:text-[#F4F1EC]">Verified Case Study</a></li>
+                <li><a href="#foundation" className="hover:text-[#F4F1EC]">Foundation 1023 (5% Donation)</a></li>
+                <li><a href="#contact" className="hover:text-[#F4F1EC]">Contact & Triage Form</a></li>
+              </ul>
+            </div>
+
+            {/* Col 4: Corporate Office */}
+            <div>
+              <p className="font-mono text-[11px] font-bold text-[#F4F1EC] uppercase tracking-[0.08em] mb-3">
+                CORPORATE HEADQUARTERS
+              </p>
+              <address className="not-italic text-[13px] text-[#79838B] space-y-1">
+                <p className="text-[#F4F1EC] font-semibold">{address}</p>
+                <p>Denver, Colorado 80211</p>
+                <p className="pt-2 font-mono text-[11px] text-[#5C666E]">
+                  ADMIN HOURS: Mon–Fri 8:00 AM – 5:00 PM MST (Closed Holidays)
+                </p>
+              </address>
+            </div>
+          </div>
+
+          <div className="pt-6 flex flex-col sm:flex-row items-center justify-between text-[12px] text-[#5C666E] font-mono">
+            <p>© {new Date().getFullYear()} Water Extraction Team LLC (WET). All rights reserved.</p>
+            <p>SBA WOSB Certified · BBB A+ Accredited since 2014 · Licensed & Insured in CO & MT</p>
+          </div>
         </div>
       </footer>
 
-      {/* 15. 24/7 AI EMERGENCY DISPATCHER WIDGET */}
-      <AIChatWidget
-        clientId={clientId}
-        initialGreeting={initialGreeting}
-        botName={`${businessName.split(" ")[0]} AI Dispatcher`}
-        accentColor={themeAccent}
-        pulseColor={themePulse}
-      />
+      {/* ─────────────────────────────────────────────────────────────────────────
+          11. NARROW VIEWPORT FIXED BOTTOM DISPATCH BAR (§8.1)
+      ───────────────────────────────────────────────────────────────────────── */}
+      <div className="lg:hidden fixed bottom-0 left-0 right-0 z-50 bg-[#16191C] border-t-4 border-[#C94300] px-4 py-2.5 safe-bottom shadow-lg">
+        <a
+          href={telHref}
+          className="flex flex-col items-center justify-center text-center font-mono"
+        >
+          <span className="text-[#F4F1EC] font-bold text-[19px] tracking-tight flex items-center gap-2">
+            <span className="text-[#C94300]">☎</span> {phone}
+          </span>
+          <span className="text-[#79838B] text-[10px] uppercase tracking-[0.08em]">
+            24 HOURS · DENVER METRO DISPATCH
+          </span>
+        </a>
+      </div>
+
+      {/* ─────────────────────────────────────────────────────────────────────────
+          12. LIVE 24/7 AI EMERGENCY DISPATCH ASSISTANT
+      ───────────────────────────────────────────────────────────────────────── */}
+      <AIChatWidget clientId={clientId} initialGreeting={initialGreeting} />
     </div>
   );
 }

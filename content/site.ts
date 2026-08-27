@@ -1,35 +1,37 @@
 /**
  * Single source of editable site copy and business facts for Alizane Labs.
- * Option A: Digital Systems Studio (Custom Websites + AI Automation)
+ * AI Phone Answering, AI Chat & Lead Automation Studio
  */
 
 export const site = {
   name: "Alizane Labs",
-  category: "Digital Systems Studio",
-  tagline: "Websites that look exceptional. Systems that work relentlessly.",
-  supportingTagline: "Design the experience. Automate the opportunity.",
+  category: "AI Voice & Automation Studio",
+  tagline: "Answers every call. Follows up on every lead. Runs without you.",
+  supportingTagline: "AI phone answering, chat, and automated follow-up — installed on the number and systems you already run.",
   descriptor:
-    "Alizane Labs creates distinctive custom websites and autonomous AI systems for ambitious businesses.",
-  defaultTitle: "Alizane Labs — Custom Websites & AI Automation Studio",
+    "Alizane Labs puts AI answering, chat, and follow-up on the phone number and website you already have — so fewer opportunities slip by unanswered.",
+  defaultTitle: "Alizane Labs — AI Phone, Chat & Automation for Any Business",
   defaultDescription:
-    "Alizane Labs designs high-performance editorial websites and engineers intelligent AI voice and automation systems that convert attention into qualified pipeline.",
+    "AI phone answering, chat, and automated follow-up — installed on the number and systems you already run, for any business tired of losing leads to a slow response.",
+  schemaSlogan: "Answers every call. Follows up on every lead. Runs without you.",
 } as const;
 
 export const nav = [
-  { href: "/#capabilities", label: "Capabilities" },
-  { href: "/#system", label: "How It Works" },
-  { href: "/#pricing", label: "Engagements" },
+  { href: "/#why", label: "Why us" },
+  { href: "/#capabilities", label: "What it does" },
+  { href: "/#process", label: "Process" },
+  { href: "/#price", label: "Pricing" },
   { href: "/#faq", label: "FAQ" },
 ] as const;
 
 /** Primary conversion destination. Every CTA reads from here. */
-export const ctaHref = "/contact";
+export const ctaHref = "/#start";
 
 export const cta = {
-  primary: { label: "Start a Project", href: ctaHref },
-  secondary: { label: "Explore Capabilities", href: "/#capabilities" },
-  capabilities: { label: "Explore Capabilities", href: "/#capabilities" },
-  discuss: { label: "Discuss Your Architecture", href: ctaHref },
+  primary: { label: "Get your automation plan", href: "/#start" },
+  secondary: { label: "Ask about pricing", href: "/#start" },
+  capabilities: { label: "What it does", href: "/#capabilities" },
+  discuss: { label: "Get your automation plan", href: "/#start" },
 } as const;
 
 export const footerNav = [

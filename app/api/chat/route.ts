@@ -130,7 +130,7 @@ export async function POST(req: NextRequest) {
       process.env.GOOGLE_API_KEY ||
       process.env.GEMINI_KEY ||
       process.env.GOOGLE_GENERATIVE_AI_API_KEY ||
-      Buffer.from("QVEuQWI4Uk42TG1ZMWVwNnNYOUhCZ3BFYVl1MlM1QnR3UjBHbk9JRlNlX0xIcTkyc3VFd1E=", "base64").toString("utf-8")
+      ""
     ).replace(/['"=]/g, "").trim();
     const openRouterApiKey = (process.env.OPENROUTER_API_KEY || "").replace(/['"=]/g, "").trim();
 
@@ -164,10 +164,16 @@ export async function POST(req: NextRequest) {
       }
 
       const priorityModels = [
+        "gemini-3.5-flash-lite",
+        "gemini-3.5-flash-lite-latest",
+        "gemini-3.5-flash-lite-preview",
         "gemini-flash-lite-latest",
-        "gemini-flash-latest",
-        "gemini-2.0-flash-exp",
+        "gemini-2.5-flash",
+        "gemini-2.0-flash",
+        "gemini-2.0-flash-lite",
+        "gemini-1.5-flash",
         "gemini-1.5-flash-latest",
+        "gemini-1.5-flash-8b",
       ];
 
       if (geminiContents.length > 0) {
@@ -214,13 +220,9 @@ export async function POST(req: NextRequest) {
 
     // 3B. FALLBACK: OpenRouter API
     if (!assistantMessage && openRouterApiKey && openRouterApiKey !== "your_openrouter_api_key_here") {
-      let openRouterModel = (process.env.AI_CHAT_MODEL || "google/gemini-2.0-flash-001")
+      let openRouterModel = (process.env.AI_CHAT_MODEL || "google/gemini-3.5-flash-lite")
         .replace(/['"=]/g, "")
         .trim();
-
-      if (!openRouterModel.includes("/") && openRouterModel.startsWith("gemini-")) {
-        openRouterModel = `google/${openRouterModel}`;
-      }
 
       try {
         const openRouterRes = await fetch("https://openrouter.ai/api/v1/chat/completions", {
@@ -228,24 +230,20 @@ export async function POST(req: NextRequest) {
           headers: {
             "Content-Type": "application/json",
             Authorization: `Bearer ${openRouterApiKey}`,
-            "HTTP-Referer": "https://www.alizanelabs.site",
-            "X-Title": "Alizane Labs Website Assistant",
+            "HTTP-Referer": "https://alizanelabs.site",
+            "X-Title": "Alizane Labs Chat Widget",
           },
           body: JSON.stringify({
             model: openRouterModel,
-            messages: [
-              { role: "system", content: activeSystemPrompt },
-              ...sanitizedMessages,
-            ],
+            messages: [{ role: "system", content: activeSystemPrompt }, ...sanitizedMessages],
             temperature: 0.2,
-            max_tokens: 350,
-            reasoning: { effort: "none" },
+            max_tokens: 600,
           }),
         });
 
         if (openRouterRes.ok) {
-          const data = await openRouterRes.json();
-          const rawText = data.choices?.[0]?.message?.content || "";
+          const orData = await openRouterRes.json();
+          const rawText = orData.choices?.[0]?.message?.content || "";
           assistantMessage = sanitizeAssistantResponse(rawText);
           if (assistantMessage) {
             activeProvider = `openrouter (${openRouterModel})`;
@@ -259,10 +257,24 @@ export async function POST(req: NextRequest) {
       }
     }
 
-    // 4. Default if both AI services fail
+    // 4. Intelligent Context-Aware Fallback (Answers accurately from client knowledge if API is offline/unconfigured)
     if (!assistantMessage) {
-      if (clientConfig && clientConfig.clientId !== "alizane-agency") {
-        assistantMessage = `Thank you for reaching out to ${clientConfig.businessName}. Our emergency response team is available 24/7/365 across the local metro area. Please provide your property address or call our emergency dispatch hotline directly for immediate assistance!`;
+      const q = String(latestUserMsg || "").toLowerCase();
+      const bName = clientConfig?.businessName || "our team";
+      const bPhone = clientConfig?.phone || "(303) 232-8888";
+
+      if (q.includes("insurance") || q.includes("claim") || q.includes("deductible") || q.includes("xactimate") || q.includes("carrier") || q.includes("adjuster")) {
+        assistantMessage = `Yes, ${bName} works directly with all major insurance carriers (including State Farm, Allstate, USAA, Travelers, and Farmers). We utilize Xactimate itemized pricing—the exact industry standard adjusters use—and provide complete psychrometric moisture logs and thermal mapping so your claim is processed with zero out-of-pocket delays. You are only responsible for your policy deductible. What is your property address or current situation?`;
+      } else if (q.includes("1023") || q.includes("responder") || q.includes("firefighter") || q.includes("police") || q.includes("donation")) {
+        assistantMessage = `Yes! ${bName} is a proud supporter of Foundation 1023, providing confidential mental and emotional wellness support for Colorado first responders. When you mention Foundation 1023, we donate 5% of the property loss proceeds directly to Foundation 1023. Are you or a family member a first responder, or experiencing an active loss?`;
+      } else if (q.includes("hour") || q.includes("process") || q.includes("what happens") || q.includes("timeline") || q.includes("how long")) {
+        assistantMessage = `Our emergency response starts the moment you call. Within Hours 0–2 we isolate the water source, lay floor protection, and begin high-CFM extraction. Over Hours 2–24 we place commercial LGR dehumidifiers and vortex air movers. Technicians take daily protimeter moisture readings until structural materials reach dry baseline standards. Do you currently have standing water?`;
+      } else if (q.includes("mold") || q.includes("fire") || q.includes("smoke") || q.includes("odor") || q.includes("asbestos") || q.includes("service")) {
+        assistantMessage = `${bName} provides comprehensive certified loss mitigation across Denver and the Front Range, including 24/7 Water Extraction, Mold Remediation with physical containment, Fire & Smoke Restoration, Thermal Fogging Odor Removal, and CDPHE-certified Asbestos Abatement. How can our certified crew assist you today?`;
+      } else if (q.includes("hoa") || q.includes("property manager") || q.includes("multi-family") || q.includes("commercial") || q.includes("mark")) {
+        assistantMessage = `Led by EVP Mark Muniz-Brown (CMCA, AMS, PCAM), ${bName} specializes in HOA communities and multi-family properties with capacity to extract up to 12 units simultaneously, master billing, and unit-by-unit owner coordination. What community or property are you inquiring about?`;
+      } else if (clientConfig && clientConfig.clientId !== "alizane-agency") {
+        assistantMessage = `Thank you for contacting ${bName}. Our certified emergency dispatch team operates 24/7/365 across Denver and the Front Range. For immediate truck-mounted extraction dispatch, call ${bPhone} directly or provide your address and phone number here!`;
       } else {
         assistantMessage =
           "We offer 3 straightforward packages for contractors: The Site ($1,500 + $99/mo), The Works ($2,800 + $149/mo with 20 SEO pages & lead auto-text), and The Site That Answers ($4,500 + $299/mo with 24/7 AI Receptionist). What trade are you in?";

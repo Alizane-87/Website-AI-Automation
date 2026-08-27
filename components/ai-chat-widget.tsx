@@ -21,24 +21,29 @@ const DEFAULT_CONTRACTOR_SUGGESTIONS = [
 
 interface AiChatWidgetProps {
   clientId?: string;
+  buttonLabel?: string;
   initialGreeting?: string;
   suggestions?: string[];
   botName?: string;
+  inputPlaceholder?: string;
   accentColor?: string;
   pulseColor?: string;
 }
 
 export function AiChatWidget({
   clientId,
+  buttonLabel,
   initialGreeting,
   suggestions,
   botName,
+  inputPlaceholder,
   accentColor,
   pulseColor,
 }: AiChatWidgetProps = {}) {
-  const isContractor = Boolean(clientId && clientId !== "alizane-agency");
-  const effectiveAccent = accentColor || (isContractor ? "#005691" : "#065F46");
-  const effectivePulse = pulseColor || (isContractor ? "#38BDF8" : "#34D399");
+  const isFitness = Boolean(clientId && (clientId.includes("6pack") || clientId.includes("macro") || clientId.includes("8weeks") || clientId.includes("spartan") || clientId.includes("gravl")));
+  const isContractor = Boolean(clientId && clientId !== "alizane-agency" && !isFitness);
+  const effectiveAccent = accentColor || (isFitness ? "#B8541C" : isContractor ? "#005691" : "#065F46");
+  const effectivePulse = pulseColor || (isFitness ? "#F3A06A" : isContractor ? "#38BDF8" : "#34D399");
 
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [messages, setMessages] = useState<Message[]>(() => [
@@ -46,7 +51,9 @@ export function AiChatWidget({
       role: "assistant",
       content:
         initialGreeting ||
-        (isContractor
+        (isFitness
+          ? "Hi there! 👋 I'm your 24/7 AI Nutrition & Coaching Assistant. How can I help you with custom macros, workouts, or choosing a coach today?"
+          : isContractor
           ? "Hi there! 👋 I'm your 24/7 AI Emergency Dispatch Assistant. How can we help you with your property today?"
           : "Hi there! 👋 I'm the Alizane Labs AI assistant. Ask me anything about websites, 24/7 call answering, lead follow-up, or which plan fits your business."),
     },
@@ -58,7 +65,11 @@ export function AiChatWidget({
 
   const activeSuggestions =
     suggestions ||
-    (isContractor ? DEFAULT_CONTRACTOR_SUGGESTIONS : DEFAULT_AGENCY_SUGGESTIONS);
+    (isFitness
+      ? ["How does flexible macro dieting work?", "How much is coaching per month?", "Can I choose my own coach?"]
+      : isContractor
+      ? DEFAULT_CONTRACTOR_SUGGESTIONS
+      : DEFAULT_AGENCY_SUGGESTIONS);
 
   useEffect(() => {
     const target = document.getElementById("start");
@@ -249,6 +260,10 @@ export function AiChatWidget({
                   placeholder={
                     conversationEnded
                       ? "Refresh to start a new chat"
+                      : inputPlaceholder
+                      ? inputPlaceholder
+                      : isFitness
+                      ? "Ask about custom macros, coaches, or workouts..."
                       : isContractor
                       ? "Ask about emergency dispatch or damage..."
                       : "Ask about websites or AI..."
@@ -288,7 +303,7 @@ export function AiChatWidget({
             borderColor: effectiveAccent,
             color: "#FFFFFF",
           }}
-          aria-label="Open 24/7 Dispatch AI"
+          aria-label="Open AI Assistant"
         >
           <span className="relative flex h-2.5 w-2.5">
             <span
@@ -304,7 +319,13 @@ export function AiChatWidget({
             <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
           </svg>
           <span className="font-bold tracking-tight">
-            {isContractor ? "Ask 24/7 Dispatcher" : "Ask AI Assistant"}
+            {buttonLabel
+              ? buttonLabel
+              : isFitness
+              ? "Chat with AI Nutrition Coach"
+              : isContractor
+              ? "Ask 24/7 Dispatcher"
+              : "Ask AI Assistant"}
           </span>
         </button>
       )}

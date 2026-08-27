@@ -19,7 +19,7 @@ export function SiteFooter() {
             Alizane Labs
           </Link>
           <span>·</span>
-          <span>Websites &amp; AI Systems Studio</span>
+          <span>AI Voice &amp; Automation Studio</span>
         </div>
 
         {/* Legal & Navigation Links */}

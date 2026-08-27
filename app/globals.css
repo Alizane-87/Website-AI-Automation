@@ -92,6 +92,43 @@
   border-top: 1px solid rgb(255 255 255 / 0.14);
 }
 
+/* Subtle Architectural Dot Grid Pattern */
+@utility bg-dot-grid {
+  background-image: radial-gradient(rgba(17, 24, 39, 0.08) 1px, transparent 1px);
+  background-size: 24px 24px;
+}
+
+@utility bg-dot-grid-light {
+  background-image: radial-gradient(rgba(6, 95, 70, 0.09) 1px, transparent 1px);
+  background-size: 20px 20px;
+}
+
+/* Card Glow Spotlight */
+.spotlight-card {
+  position: relative;
+  overflow: hidden;
+}
+
+.spotlight-card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  background: radial-gradient(
+    450px circle at var(--mouse-x, -999px) var(--mouse-y, -999px),
+    rgba(6, 95, 70, 0.05),
+    transparent 60%
+  );
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  z-index: 1;
+}
+
+.spotlight-card:hover::before {
+  opacity: 1;
+}
+
 /* Motion Reveals */
 [data-reveal][data-reveal-ready="pending"] {
   opacity: 0;

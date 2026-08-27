@@ -8,10 +8,13 @@ import { ReactNode } from "react";
 
 export function GlobalAgencyLayout({ children }: { children: ReactNode }) {
   const pathname = usePathname();
-  const isDemo = pathname?.startsWith("/demo");
+  const isWorkspace =
+    pathname?.startsWith("/demo") ||
+    pathname?.startsWith("/studio") ||
+    pathname?.startsWith("/lab");
 
-  // On /demo routes, render purely the standalone contractor website with zero agency header/chat overlap
-  if (isDemo) {
+  // On /demo, /studio, and /lab routes, isolate canvas with zero agency header/chat overlap
+  if (isWorkspace) {
     return <main id="main" className="flex-1">{children}</main>;
   }
 

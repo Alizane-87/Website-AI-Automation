@@ -19,6 +19,9 @@ credentials, performance metrics, revenue results, pricing, or delivery promises
 that are not confirmed. Unverified facts belong in `content/claims.ts` as `null`;
 open items are tracked in `docs/content-gaps.md`.
 
+## Navigation & Page Architecture Rules
+- **Always Use Subpages For Menu Items:** Every navigation menu item, dropdown option, and service link in website showcases and demos MUST correspond to a real, dedicated standalone subpage/subroute. Never collapse or flatten a multi-page brief into single-page section anchors.
+
 <!-- BEGIN:nextjs-agent-rules -->
 
 # This is NOT the Next.js you know

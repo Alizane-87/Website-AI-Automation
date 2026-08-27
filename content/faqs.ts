@@ -1,44 +1,47 @@
-export type Faq = { question: string; answer: string };
+export interface Faq {
+  question: string;
+  answer: string;
+}
 
 export const homeFaqs: Faq[] = [
   {
-    question: "Do you work with a specific industry?",
+    question: "Does this replace my website?",
     answer:
-      "No. We work across industries and adapt the strategy, design language, and automation logic to each business. The common thread is a meaningful customer journey and a clear operational opportunity.",
+      "No — it installs on the site and number you already have. If you don't have a site yet, that's a separate conversation; this is about what happens when someone calls or messages, not about building you a new one.",
   },
   {
-    question: "Do you use templates?",
+    question: "How does the AI actually answer calls?",
     answer:
-      "We do not force businesses into a prepackaged visual identity. We may use proven engineering foundations where they improve reliability, but the strategy, copy, interface, and system design are created for the project.",
+      "It picks up immediately and has a conversation, not a phone tree — asks what you'd ask, then books the job or gets the details to your team right away. Callers are told up front they're talking with an automated assistant.",
   },
   {
-    question: "Can you improve our existing website?",
+    question: "What if it gets something wrong, or a caller wants a person?",
     answer:
-      "Yes. We can redesign and rebuild the full experience or focus on the pages and systems creating the greatest friction. The right approach depends on the current technology and business goal.",
+      "It's built to hand off, not guess. Anything outside what it's configured for — an upset caller, a question it can't answer — routes to your team instead of the AI improvising.",
   },
   {
-    question: "Can AI hand a conversation to a person?",
+    question: "How much does this cost?",
     answer:
-      "Yes. Human handoff should be designed into the workflow. Automation handles the repeatable parts and routes exceptions, high-value opportunities, or sensitive conversations to the appropriate person.",
+      "It depends on call volume, how many systems it needs to plug into, and which pieces you need — answering, chat, follow-up, or all three. Send your setup through the form or ask the chat assistant, and you'll get real numbers back, not a generic range.",
   },
   {
-    question: "What can you integrate with?",
+    question: "Will this work with my existing phone number?",
     answer:
-      "Common projects connect calendars, CRMs, forms, messaging tools, email platforms, and internal systems. We confirm compatibility and data requirements before implementation.",
+      "Usually, through call forwarding set up during onboarding. If your setup is unusual, we confirm compatibility before anything changes.",
   },
   {
-    question: "How long does a project take?",
+    question: "What if I already have a chatbot or answering service?",
     answer:
-      "Timing depends on scope, content readiness, integrations, and review cycles. After the initial assessment, we provide a clear delivery plan with milestones and responsibilities.",
+      "Then you already know what the gap feels like when it doesn't quite work. We can usually run alongside it or replace it — worth a conversation either way.",
   },
   {
-    question: "Will we be able to update the website?",
+    question: "Can I cancel?",
     answer:
-      "Yes. The content architecture makes routine updates straightforward. We also provide a documented handoff for the parts your team will manage.",
+      "Month to month. If it's not worth what you're paying for it, you stop paying for it.",
+  },
+  {
+    question: "Are you based overseas?",
+    answer:
+      "Yes — we are based in India and work with businesses internationally (across the US, UK, UAE, and beyond). You work directly with a dedicated person with direct same-day communication.",
   },
 ];
-
-export const faqSection = {
-  label: "Questions",
-  headline: "What people ask before starting.",
-} as const;
