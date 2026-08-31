@@ -46,51 +46,33 @@ export function SiteHeader() {
         </Link>
 
         <nav className="hidden items-center gap-7 sm:flex">
-          <a
-            href="#why"
+          <Link
+            href="/"
             className="text-sm font-normal text-[#57534E] transition-colors hover:text-[#111827]"
           >
-            Why us
-          </a>
-          <a
-            href="#capabilities"
+            Home
+          </Link>
+          <Link
+            href="/product"
             className="text-sm font-normal text-[#57534E] transition-colors hover:text-[#111827]"
           >
-            What it does
-          </a>
-          <a
-            href="#process"
-            className="text-sm font-normal text-[#57534E] transition-colors hover:text-[#111827]"
-          >
-            Process
-          </a>
-          <a
-            href="#price"
-            className="text-sm font-normal text-[#57534E] transition-colors hover:text-[#111827]"
-          >
-            Pricing
-          </a>
-          <a
-            href="#faq"
-            className="text-sm font-normal text-[#57534E] transition-colors hover:text-[#111827]"
-          >
-            FAQ
-          </a>
-          <a
-            href="#start"
+            Conversion Desk
+          </Link>
+          <Link
+            href="/#start"
             className="relative overflow-hidden rounded-md bg-[#065F46] px-4 py-2 text-sm font-medium text-white shadow-xs transition-all duration-200 hover:bg-[#064E3B] hover:shadow-sm active:scale-98"
           >
-            Get your automation plan
-          </a>
+            Get your plan
+          </Link>
         </nav>
 
         <div className="flex items-center gap-3 sm:hidden">
-          <a
-            href="#start"
+          <Link
+            href="/#start"
             className="rounded-md bg-[#065F46] px-3.5 py-1.5 text-xs font-medium text-white shadow-xs active:scale-95"
           >
-            Get automation plan
-          </a>
+            Get plan
+          </Link>
         </div>
       </div>
     </header>

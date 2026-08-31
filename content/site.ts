@@ -5,23 +5,20 @@
 
 export const site = {
   name: "Alizane Labs",
-  category: "AI Voice & Automation Studio",
-  tagline: "Answers every call. Follows up on every lead. Runs without you.",
-  supportingTagline: "AI phone answering, chat, and automated follow-up — installed on the number and systems you already run.",
+  category: "AI Automation Studio",
+  tagline: "Tracking every conversion and answering every enquiry instantly.",
+  supportingTagline: "AI automation products for businesses running paid ads — tracking every conversion and answering every enquiry instantly.",
   descriptor:
-    "Alizane Labs puts AI answering, chat, and follow-up on the phone number and website you already have — so fewer opportunities slip by unanswered.",
-  defaultTitle: "Alizane Labs — AI Phone, Chat & Automation for Any Business",
+    "Alizane Labs builds AI automation products for businesses running paid ads — tracking every conversion and answering every enquiry instantly, so a missed call never costs you the lead.",
+  defaultTitle: "Alizane Labs — AI Automation Products for Businesses Running Paid Ads",
   defaultDescription:
-    "AI phone answering, chat, and automated follow-up — installed on the number and systems you already run, for any business tired of losing leads to a slow response.",
-  schemaSlogan: "Answers every call. Follows up on every lead. Runs without you.",
+    "Alizane Labs builds AI automation products for businesses running paid ads — tracking every conversion and answering every enquiry instantly, so a missed call never costs you the lead.",
+  schemaSlogan: "Turn ad clicks into answered leads.",
 } as const;
 
 export const nav = [
-  { href: "/#why", label: "Why us" },
-  { href: "/#capabilities", label: "What it does" },
-  { href: "/#process", label: "Process" },
-  { href: "/#price", label: "Pricing" },
-  { href: "/#faq", label: "FAQ" },
+  { href: "/", label: "Home" },
+  { href: "/product", label: "Conversion Desk" },
 ] as const;
 
 /** Primary conversion destination. Every CTA reads from here. */
@@ -29,8 +26,8 @@ export const ctaHref = "/#start";
 
 export const cta = {
   primary: { label: "Get your automation plan", href: "/#start" },
-  secondary: { label: "Ask about pricing", href: "/#start" },
-  capabilities: { label: "What it does", href: "/#capabilities" },
+  secondary: { label: "See Conversion Desk", href: "/product" },
+  product: { label: "Conversion Desk", href: "/product" },
   discuss: { label: "Get your automation plan", href: "/#start" },
 } as const;
 
@@ -38,18 +35,17 @@ export const footerNav = [
   {
     heading: "Studio",
     links: [
-      { href: "/#capabilities", label: "Capabilities" },
-      { href: "/#system", label: "Architecture" },
-      { href: "/#pricing", label: "Engagements" },
-      { href: "/contact", label: "Start a Project" },
+      { href: "/#why", label: "Why us" },
+      { href: "/product", label: "Conversion Desk" },
+      { href: "/#process", label: "Process" },
+      { href: "/#faq", label: "FAQ" },
     ],
   },
   {
-    heading: "Capabilities",
+    heading: "Products",
     links: [
-      { href: "/#capabilities", label: "Custom Web Architecture" },
-      { href: "/#capabilities", label: "AI Voice & Dispatch" },
-      { href: "/#capabilities", label: "Workflow & CRM Automations" },
+      { href: "/product", label: "Conversion Desk" },
+      { href: "/#start", label: "Get Your Plan" },
     ],
   },
   {
@@ -57,6 +53,7 @@ export const footerNav = [
     links: [
       { href: "/privacy", label: "Privacy" },
       { href: "/terms", label: "Terms" },
+      { href: "/ai-disclosure", label: "AI Disclosure" },
     ],
   },
 ] as const;

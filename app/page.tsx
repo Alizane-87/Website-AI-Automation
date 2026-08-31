@@ -3,8 +3,7 @@
 import React, { useCallback } from "react";
 import { HeroSection } from "@/components/hero-section";
 import { TheGapSection } from "@/components/the-gap-section";
-import { BentoCapabilities } from "@/components/bento-capabilities";
-import { PricingPlans } from "@/components/pricing-plans";
+import { ProductSection } from "@/components/product-section";
 import { FaqAccordion } from "@/components/faq-accordion";
 import { ContactSection } from "@/components/contact-section";
 
@@ -22,7 +21,7 @@ export default function HomePage() {
       {/* 1. HERO SECTION */}
       <HeroSection />
 
-      {/* 2. THE GAP SECTION (REPLACES WEBSITE SLIDER) */}
+      {/* 2. THE GAP SECTION */}
       <TheGapSection />
 
       {/* 3. WHY US SECTION */}
@@ -51,7 +50,7 @@ export default function HomePage() {
                   Someone tunes it, not a login
                 </h3>
                 <p className="text-sm leading-relaxed text-[#57534E]">
-                  The prompts, the routing rules, the follow-up timing — someone who knows your business adjusts them when something&apos;s off. You ask for a change; you don&apos;t go find a setting.
+                  The prompts, the routing rules, the alert timing — someone who knows your business adjusts them when something&apos;s off. You ask for a change; you don&apos;t go find a setting.
                 </p>
               </div>
             </article>
@@ -95,8 +94,8 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* 4. WHAT IT ACTUALLY DOES (CAPABILITIES) */}
-      <BentoCapabilities />
+      {/* 4. THE PRODUCT (CONVERSION DESK) */}
+      <ProductSection />
 
       {/* 5. PROCESS SECTION */}
       <section id="process" className="border-t border-[#E7E5E4] py-24 sm:py-32 bg-[#F9F9F7]">
@@ -137,10 +136,10 @@ export default function HomePage() {
               <div className="relative z-10">
                 <span className="font-mono text-xs text-[#065F46] font-semibold">02</span>
                 <h3 className="mt-3 font-serif text-2xl text-[#111827] transition-colors group-hover:text-[#065F46]">
-                  We build the flow.
+                  We set up your page.
                 </h3>
                 <p className="mt-3 text-sm leading-relaxed text-[#57534E]">
-                  The call script, the chat, the follow-up timing — configured for your business specifically. You hear it and read it before any of it is live.
+                  The Conversion Desk page, the chat, the alert routing — configured for your business specifically. You see it before any of it is live.
                 </p>
               </div>
             </article>
@@ -157,7 +156,7 @@ export default function HomePage() {
                   You test it, then we flip it on.
                 </h3>
                 <p className="mt-3 text-sm leading-relaxed text-[#57534E]">
-                  Call it yourself. Once you&apos;re satisfied, it goes live on your existing number and site — nothing to migrate, nothing changes for your customers except who picks up.
+                  Try it yourself. Once you&apos;re satisfied, it goes live — nothing to migrate, nothing changes for your customers except that someone answers now.
                 </p>
               </div>
             </article>
@@ -174,7 +173,7 @@ export default function HomePage() {
                   We keep tuning it.
                 </h3>
                 <p className="mt-3 text-sm leading-relaxed text-[#57534E]">
-                  Real calls surface things a script can&apos;t predict. Someone adjusts it when they do — you ask, it gets fixed, not filed as a ticket.
+                  Real enquiries surface things a script can&apos;t predict. Someone adjusts it when they do — you ask, it gets fixed, not filed as a ticket.
                 </p>
               </div>
             </article>
@@ -182,13 +181,10 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* 6. PRICING (BUILT AROUND WHAT YOU ACTUALLY NEED) */}
-      <PricingPlans />
-
-      {/* 7. FAQ SECTION */}
+      {/* 6. FAQ SECTION */}
       <FaqAccordion />
 
-      {/* 8. GET YOUR AUTOMATION PLAN (REQUIREMENTS FORM) */}
+      {/* 7. GET YOUR AUTOMATION PLAN (REQUIREMENTS FORM) */}
       <ContactSection />
     </div>
   );

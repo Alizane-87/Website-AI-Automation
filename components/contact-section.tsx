@@ -2,59 +2,29 @@
 
 import React, { useState } from "react";
 
-const REQUIREMENT_CATEGORIES = [
+const REQUIREMENT_ITEMS = [
   {
-    category: "AI Voice & Chat",
-    items: [
-      {
-        id: "ai_phone_answering",
-        label: "24/7 AI Phone Answering",
-        sub: "Answers calls, answers FAQs, books calendar slots",
-      },
-      {
-        id: "ai_website_chat",
-        label: "24/7 AI Chat for Your Website",
-        sub: "Engages and qualifies online visitors",
-      },
-    ],
+    id: "page_and_chat",
+    label: "The Page & Chat",
+    sub: "Your ad landing page, with a conversation already open",
   },
   {
-    category: "Automated Follow-Up & Alerts",
-    items: [
-      {
-        id: "instant_lead_alerts",
-        label: "Instant Lead Alerts",
-        sub: "Notified the second a lead arrives",
-      },
-      {
-        id: "instant_confirmation_messages",
-        label: "Instant Confirmation Messages",
-        sub: "Reassures someone the moment they reach out",
-      },
-      {
-        id: "automated_lead_followup",
-        label: "Automated Lead Follow-Up",
-        sub: "A timed, multi-touch sequence that checks back after first contact",
-      },
-    ],
+    id: "phone_backstop",
+    label: "Phone Backstop",
+    sub: "Catches calls that would've gone to voicemail",
   },
   {
-    category: "Smart Intake",
-    items: [
-      {
-        id: "multi_step_intake_funnel",
-        label: "Multi-Step Intake Funnel",
-        sub: "Pre-qualifies inquiries automatically, embedded in the site you already have",
-      },
-    ],
+    id: "instant_alerts",
+    label: "Instant Alerts",
+    sub: "Notified the second a lead arrives",
   },
 ];
 
 export function ContactSection() {
   const [currentStep, setCurrentStep] = useState<number>(1);
   
-  // All 6 items default-checked per specification
-  const allInitialLabels = REQUIREMENT_CATEGORIES.flatMap((cat) => cat.items.map((i) => i.label));
+  // All 4 items default-checked per specification
+  const allInitialLabels = REQUIREMENT_ITEMS.map((i) => i.label);
   const [selectedFeatures, setSelectedFeatures] = useState<string[]>(allInitialLabels);
   const [customNotes, setCustomNotes] = useState<string>("");
 
@@ -135,10 +105,10 @@ export function ContactSection() {
             </span>
           </div>
           <h2 id="contact-heading" className="mt-4 font-serif text-3xl sm:text-4xl lg:text-5xl text-[#111827] leading-tight">
-            Get your automation plan
+            Get your Conversion Desk plan
           </h2>
           <p className="mt-4 text-base sm:text-lg text-[#57534E] leading-relaxed">
-            Tell us what you need automated and we&apos;ll show you what the AI would actually say on your first call, plus a setup plan and pricing within 24 hours.
+            Tell us about your business and we&apos;ll show you what it would actually say on your first enquiry, plus a setup plan and pricing within 24 hours.
           </p>
         </div>
 
@@ -227,46 +197,37 @@ export function ContactSection() {
               {currentStep === 1 && (
                 <div>
                   <h3 className="font-serif text-2xl text-[#111827]">
-                    What do you need automated?
+                    What do you need Conversion Desk to cover?
                   </h3>
                   <p className="mt-1 text-sm text-[#57534E]">
-                    Select any capabilities you want included in your system:
+                    Select any capabilities you want included in your setup:
                   </p>
 
-                  <div className="mt-6 space-y-6">
-                    {REQUIREMENT_CATEGORIES.map((cat) => (
-                      <div key={cat.category} className="rounded-xl border border-[#E7E5E4] bg-[#F9F9F7]/70 p-5">
-                        <h4 className="font-mono text-xs uppercase tracking-wider text-[#065F46] font-semibold mb-3">
-                          {cat.category}
-                        </h4>
-                        <div className="grid grid-cols-1 gap-2.5 sm:grid-cols-2">
-                          {cat.items.map((item) => {
-                            const isChecked = selectedFeatures.includes(item.label);
-                            return (
-                              <label
-                                key={item.id}
-                                className={`flex items-start gap-3 rounded-lg border p-3.5 cursor-pointer transition-all ${
-                                  isChecked
-                                    ? "border-[#A7F3D0] bg-white text-[#111827] shadow-xs"
-                                    : "border-[#E7E5E4] bg-white/50 text-[#78716C] hover:bg-white"
-                                }`}
-                              >
-                                <input
-                                  type="checkbox"
-                                  checked={isChecked}
-                                  onChange={() => toggleFeature(item.label)}
-                                  className="mt-0.5 h-4 w-4 rounded border-[#D6D3D1] text-[#065F46] focus:ring-[#065F46]"
-                                />
-                                <div>
-                                  <div className="text-xs font-medium text-[#111827]">{item.label}</div>
-                                  <div className="text-[11px] text-[#78716C] mt-0.5 leading-snug">{item.sub}</div>
-                                </div>
-                              </label>
-                            );
-                          })}
-                        </div>
-                      </div>
-                    ))}
+                  <div className="mt-6 grid grid-cols-1 gap-3.5 md:grid-cols-3">
+                    {REQUIREMENT_ITEMS.map((item) => {
+                      const isChecked = selectedFeatures.includes(item.label);
+                      return (
+                        <label
+                          key={item.id}
+                          className={`flex items-start gap-3 rounded-xl border p-4 cursor-pointer transition-all ${
+                            isChecked
+                              ? "border-[#A7F3D0] bg-[#ECFDF5]/30 text-[#111827] shadow-xs"
+                              : "border-[#E7E5E4] bg-white text-[#78716C] hover:bg-[#F9F9F7]"
+                          }`}
+                        >
+                          <input
+                            type="checkbox"
+                            checked={isChecked}
+                            onChange={() => toggleFeature(item.label)}
+                            className="mt-0.5 h-4 w-4 rounded border-[#D6D3D1] text-[#065F46] focus:ring-[#065F46]"
+                          />
+                          <div>
+                            <div className="text-sm font-semibold text-[#111827]">{item.label}</div>
+                            <div className="text-xs text-[#57534E] mt-0.5 leading-relaxed">{item.sub}</div>
+                          </div>
+                        </label>
+                      );
+                    })}
                   </div>
 
                   {/* Free-text field */}
@@ -400,7 +361,7 @@ export function ContactSection() {
                       />
                     </div>
 
-                    {/* Automated Calls & SMS Consent Checkbox */}
+                    {/* Email and Phone Contact Consent Checkbox */}
                     <div className="pt-2">
                       <label className="flex items-start gap-2.5 cursor-pointer text-xs text-[#57534E] leading-relaxed">
                         <input
@@ -410,7 +371,7 @@ export function ContactSection() {
                           className="mt-1 h-4 w-4 shrink-0 rounded border-[#D6D3D1] text-[#065F46] focus:ring-[#065F46]"
                         />
                         <span>
-                          I consent to receive automated phone calls, AI voice communications, and SMS text messages from Alizane Labs regarding my automation plan at the phone number provided. Consent is not a condition of purchase. Message and data rates may apply. Reply STOP to cancel at any time. View our{" "}
+                          I consent to be contacted by Alizane Labs by email or phone regarding my enquiry. Consent is not a condition of purchase. View our{" "}
                           <a href="/privacy" target="_blank" className="text-[#065F46] underline font-medium hover:text-[#064E3B]">
                             Privacy Policy
                           </a>{" "}
@@ -445,7 +406,7 @@ export function ContactSection() {
                           Generating Your Plan...
                         </>
                       ) : (
-                        "Get My Automation Plan →"
+                        "Get My Plan →"
                       )}
                     </button>
                   </div>

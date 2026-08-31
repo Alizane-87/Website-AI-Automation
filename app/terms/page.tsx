@@ -8,7 +8,7 @@ export const metadata: Metadata = {
   ...pageMetadata({
     title: "Terms of Service",
     description:
-      "Terms of Service governing the use of the Alizane Labs website and our SMS Messaging Terms & Compliance program.",
+      "Terms of Service governing the use of the Alizane Labs website and our digital products.",
     path: "/terms",
   }),
 };
@@ -18,7 +18,7 @@ export default function TermsPage() {
     <LegalPage
       eyebrow="Terms of Service"
       title="Terms of Service"
-      intro="These terms govern the use of this website, our digital services, and our SMS Messaging & Compliance program."
+      intro="These terms govern the use of this website and our digital products."
       bannerNotice={termsNotice}
       sections={termsSections}
     />

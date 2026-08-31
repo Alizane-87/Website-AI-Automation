@@ -8,7 +8,7 @@ export const metadata: Metadata = {
   ...pageMetadata({
     title: "Privacy Policy",
     description:
-      "Alizane Labs Privacy Policy detailing data collection, use, security, and our strict SMS Text Messaging data protection standards.",
+      "Alizane Labs Privacy Policy detailing how we collect, use, and protect information collected through this website.",
     path: "/privacy",
   }),
 };
@@ -18,8 +18,7 @@ export default function PrivacyPage() {
     <LegalPage
       eyebrow="Privacy Policy"
       title="Privacy Policy"
-      intro="How Alizane Labs handles information collected through this website and our strict commitment to text messaging data protection."
-      bannerNotice={privacyNotice}
+      intro="How Alizane Labs handles information collected through this website."
       sections={privacySections}
     />
   );

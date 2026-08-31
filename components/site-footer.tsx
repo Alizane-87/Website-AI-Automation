@@ -19,11 +19,17 @@ export function SiteFooter() {
             Alizane Labs
           </Link>
           <span>·</span>
-          <span>AI Voice &amp; Automation Studio</span>
+          <span>AI Automation Studio</span>
         </div>
 
         {/* Legal & Navigation Links */}
         <div className="flex flex-wrap items-center justify-center gap-6">
+          <Link
+            href="/product"
+            className="hover:text-[#111827] transition-colors underline underline-offset-4"
+          >
+            Conversion Desk
+          </Link>
           <Link
             href="/privacy"
             className="hover:text-[#111827] transition-colors underline underline-offset-4"

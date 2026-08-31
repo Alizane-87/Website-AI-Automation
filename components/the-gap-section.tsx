@@ -5,10 +5,10 @@ import React, { useCallback } from "react";
 const WORKFLOW_STEPS = [
   {
     num: "01",
-    label: "Answer",
+    label: "Capture",
     tag: "Immediate Response",
     summary:
-      "Every call and chat gets a response immediately, day or night. Callers are told plainly they're talking to an automated assistant.",
+      "Every chat gets a response immediately, day or night, and calls that would've gone to voicemail get caught instead.",
     meta: "24/7/365 · Zero Voicemail Dropoff",
   },
   {
@@ -21,18 +21,18 @@ const WORKFLOW_STEPS = [
   },
   {
     num: "03",
-    label: "Route or book",
-    tag: "Direct Dispatch",
+    label: "Alert",
+    tag: "Instant Notification",
     summary:
-      "Books straight onto your calendar if it's routine. Alerts you or your team immediately if it needs a person.",
-    meta: "Google/Outlook Calendar + SMS Alerts",
+      "Gets you the details within seconds — not sitting in a form you have to remember to check.",
+    meta: "Direct Dispatch Within Seconds",
   },
   {
     num: "04",
     label: "Follow up",
-    tag: "Multi-Touch Cadence",
+    tag: "Timed Sequences",
     summary:
-      "If something goes quiet after first contact, it checks back on a schedule you set, instead of sitting in an inbox until someone remembers.",
+      "If something goes quiet after first contact, it checks back on a schedule, instead of sitting in an inbox until someone remembers.",
     meta: "Helpful, Non-Intrusive Spaced Sequences",
   },
 ];
@@ -116,14 +116,14 @@ export function TheGapSection() {
                 Rigorous Pre-Launch Verification
               </span>
               <p className="mt-2 text-sm sm:text-base leading-relaxed text-[#111827]">
-                Before it answers a real caller, we run it through the situations that actually come up for your business — a routine request, someone who&apos;s clearly in a hurry, someone who just wants quick information, an obvious robocall. You hear it work before a customer does.
+                Before it&apos;s live, we run it through the situations that actually come up for your business — a routine request, someone in a hurry, someone who just wants quick information, an obvious robocall. You hear it work before a customer does.
               </p>
             </div>
             <a
-              href="#capabilities"
+              href="#product"
               className="inline-flex shrink-0 items-center gap-2 rounded-md bg-[#065F46] px-5 py-2.5 text-xs font-medium text-white transition-colors hover:bg-[#064E3B]"
             >
-              <span>Explore capabilities</span>
+              <span>See the product</span>
               <span>→</span>
             </a>
           </div>

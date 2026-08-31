@@ -21,44 +21,32 @@ export const pendingValueLabel = "Available upon request";
 
 export type LegalSection = { heading: string; paragraphs: string[]; bullets?: string[] };
 
-export const privacyNotice = {
-  title: "IMPORTANT NOTICE REGARDING TELEPHONY & TEXT MESSAGING DATA",
-  body: "Alizane Labs (\"we,\" \"us,\" or \"our\") DOES NOT share customer opt-in information, including phone numbers and consent records, with any affiliates or third parties for marketing, promotional, or any other purposes unrelated to providing our direct services. All text messaging and voice originator opt-in data is kept strictly confidential.",
-};
+export const privacyNotice = null;
 
 export const privacySections: LegalSection[] = [
   {
     heading: "1. Information We Collect",
     paragraphs: ["We collect the following types of information when you interact with our website:"],
     bullets: [
-      "Personal Information: Name, business name, work email address, phone number, website URL, and timestamped opt-in records for communications (automated calls, SMS, email). We DO NOT collect or store credit card, debit card, or bank account information on this website.",
+      "Personal Information: Name, business name, work email address, phone number, and website URL. We DO NOT collect or store credit card, debit card, or bank account information on this website.",
       "Non-Personal Information: IP address, browser type, device information, and anonymous website analytics to improve site performance.",
-      "Communication Records: Details of your project inquiries, requested feature scopes, call transcripts, and appointment details.",
+      "Communication Records: Details of your inquiries, requested capabilities, and chat transcripts.",
     ],
   },
   {
     heading: "2. How We Use Your Information",
     paragraphs: ["We use collected data solely for:"],
     bullets: [
-      "Preparing and delivering your custom website and automation build plan",
-      "Communicating with you regarding your inquiry, proposal discussions, and appointment scheduling via phone, AI voice, and SMS",
-      "Delivering project agreements, milestone scopes, and invoices payable via ACH bank transfer or wire to our designated U.S. bank account",
-      "Maintaining accurate records of your communication preferences and consent",
+      "Communicating with you regarding your enquiry, by email or phone",
+      "Delivering project proposals, capability scopes, and agreements",
+      "Maintaining accurate records of your communication preferences",
       "Ensuring website security and preventing automated form spam",
     ],
   },
   {
-    heading: "3. Automated Calls, Voice AI & SMS Messaging Compliance",
+    heading: "3. Email and Phone Communications",
     paragraphs: [
-      "Communications Program Terms & Conditions: By opting into our communication services, you agree to receive automated phone calls, AI voice interactions, and text messages related to our services, including proposal discussions, scheduling confirmations, appointment reminders, and customer support.",
-    ],
-    bullets: [
-      "Opt-In & Consent: You will only receive automated calls or text messages if you have explicitly opted in via our website form. Consent is not a condition of purchase. We maintain timestamped records of all opt-in actions and comply with the Telephone Consumer Protection Act (TCPA) and all applicable laws.",
-      "Opt-Out Instructions: You can cancel SMS notifications at any time by replying 'STOP'. You will receive a final confirmation message, and no further messages will be sent unless you re-opt in. All opt-out requests are processed immediately.",
-      "Message Frequency & Content: Message and call frequency varies based on your interactions with our business. Communications will be directly related to the services you have requested. We do not send promotional content without specific consent.",
-      "Help & Support: Reply 'HELP' for assistance or contact us at hello@alizanelabs.site. Customer support is available during regular business hours.",
-      "Carrier Information: Standard message and data rates may apply. Carriers are not liable for delayed or undelivered messages. Supported carriers include AT&T, Verizon, T-Mobile, Sprint, and most regional carriers.",
-      "Data Protection Statement: No mobile or telephony information will be shared with third parties/affiliates for marketing/promotional purposes. Information sharing to subcontractors in support services, such as customer service is permitted. All other use case categories exclude voice and text messaging originator opt-in data and consent; this information will not be shared with any third parties.",
+      "Alizane Labs may contact you by email or phone regarding enquiries you submit through this site. We do not send automated or AI-generated calls or text messages.",
     ],
   },
   {
@@ -67,11 +55,9 @@ export const privacySections: LegalSection[] = [
       "We do not sell, rent, or trade your personal information. We only share information with trusted infrastructure and service providers necessary to operate our studio:",
     ],
     bullets: [
-      "Invoicing & Payments: All client billing, retainers, and project fees are invoiced directly and payable via ACH bank transfer or wire to our designated U.S. bank account. We do not collect, view, or store payment card numbers or banking credentials on our website.",
-      "Telephony & Messaging Providers: Telephony networks and SMS providers solely for the purpose of transmitting authorized text messages and voice calls you have requested.",
+      "Invoicing & Payments: Invoicing and payments are conducted via standard commercial banking. We do not collect, view, or store payment card numbers or banking credentials on our website.",
       "Cloud Infrastructure: Secure edge hosting and database providers (Vercel) to maintain website availability and performance.",
       "Legal Compliance: If required by law, legal process, or in response to valid court orders.",
-      "Important Exclusion: All text messaging and voice originator opt-in data and consent records are excluded from third-party sharing and are never shared for promotional purposes.",
     ],
   },
   {
@@ -94,7 +80,6 @@ export const privacySections: LegalSection[] = [
     paragraphs: ["You have full control over your data:"],
     bullets: [
       "You may request access to, correction of, or complete deletion of your personal contact records at any time.",
-      "You can opt out of SMS communications at any time by replying 'STOP'.",
       "To exercise any of these rights, contact us directly at hello@alizanelabs.site.",
     ],
   },
@@ -125,25 +110,15 @@ export const privacySections: LegalSection[] = [
 ];
 
 export const termsNotice = {
-  title: "AUTOMATED CALLS & SMS MESSAGING TERMS (TCPA / CTIA)",
-  body: "This communications program sends automated calls, AI voice interactions, and appointment confirmations to customers who have requested a website plan from Alizane Labs through https://alizanelabs.site and have explicitly opted in via our dedicated consent checkbox. Text 'STOP' to cancel SMS at any time, or text 'HELP' for support.",
+  title: "COMMUNICATION TERMS",
+  body: "When you submit an enquiry through this site, Alizane Labs may contact you by email or phone regarding your enquiry.",
 };
 
 export const termsSections: LegalSection[] = [
   {
-    heading: "1. Automated Calls, Voice AI & SMS Terms",
+    heading: "1. Communication Terms",
     paragraphs: [
-      "We comply with all applicable laws and regulations, including the Telephone Consumer Protection Act (TCPA) and CTIA guidelines, regarding the use of automated voice and SMS communications.",
-    ],
-    bullets: [
-      "Program Description: This communication program sends automated calls, AI voice interactions, and appointment confirmation and reminder messages to customers who have requested a proposal or booked an appointment with Alizane Labs through our website at https://alizanelabs.site, and have explicitly opted in to receive telephony and SMS communications. Consent is not a condition of purchase.",
-      "Cancellation Instructions: You can cancel SMS notifications at any time by texting 'STOP' to the same number that sent you messages. Following this confirmation, you will no longer receive SMS messages from us. To rejoin, sign up as you did initially, and we will resume communications.",
-      "Support Information: If you experience issues with the messaging program, reply with the keyword 'HELP' for more assistance, or reach out directly to hello@alizanelabs.site during business hours.",
-      "Carrier Liability: Carriers are not liable for delayed or undelivered messages.",
-      "Message & Data Rates: Message and data rates may apply for calls and messages sent to you from us. Communication frequency varies based on your service usage and proposal request.",
-      "Supported Carriers: Our program works with all major U.S. wireless carriers, including AT&T, T-Mobile, Verizon, Sprint, and most regional carriers.",
-      "Age Restriction: You must be 18 years or older to participate in our communications program.",
-      "Privacy Policy: For privacy-related inquiries, please refer to our Privacy Policy at https://alizanelabs.site/privacy.",
+      "Alizane Labs may contact you by email or phone regarding enquiries you submit through this site. We do not send automated or AI-generated calls or text messages.",
     ],
   },
   {

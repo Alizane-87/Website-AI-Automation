@@ -7,22 +7,22 @@ export const homeFaqs: Faq[] = [
   {
     question: "Does this replace my website?",
     answer:
-      "No — it installs on the site and number you already have. If you don't have a site yet, that's a separate conversation; this is about what happens when someone calls or messages, not about building you a new one.",
+      "No — it installs on the site and number you already have. If you don't have a site yet, that's a separate conversation; this is about what happens when someone reaches out, not about building you a new one.",
   },
   {
-    question: "How does the AI actually answer calls?",
+    question: "How does Conversion Desk actually work?",
     answer:
-      "It picks up immediately and has a conversation, not a phone tree — asks what you'd ask, then books the job or gets the details to your team right away. Callers are told up front they're talking with an automated assistant.",
+      "It's one page your ads send people to. A button to call, and a conversation already open that answers questions about your business and takes down their details. If a call comes in and nobody picks up, it catches that too instead of letting it go to voicemail.",
   },
   {
     question: "What if it gets something wrong, or a caller wants a person?",
     answer:
-      "It's built to hand off, not guess. Anything outside what it's configured for — an upset caller, a question it can't answer — routes to your team instead of the AI improvising.",
+      "It's built to capture, not to guess. Anything outside what it's configured for routes to you instead of it improvising.",
   },
   {
     question: "How much does this cost?",
     answer:
-      "It depends on call volume, how many systems it needs to plug into, and which pieces you need — answering, chat, follow-up, or all three. Send your setup through the form or ask the chat assistant, and you'll get real numbers back, not a generic range.",
+      "See current pricing on the Conversion Desk page, or ask the chat assistant here — it depends on what you need.",
   },
   {
     question: "Will this work with my existing phone number?",

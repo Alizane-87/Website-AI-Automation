@@ -102,7 +102,7 @@ export function HeroSection() {
               <span className="relative inline-flex rounded-full h-2 w-2 bg-[#059669]" />
             </span>
             <span className="uppercase tracking-widest text-[11px] font-semibold">
-              AI Voice · Chat · Automation
+              AI Automation
             </span>
           </div>
 
@@ -111,7 +111,7 @@ export function HeroSection() {
           </h1>
 
           <p className="mt-6 text-base sm:text-lg leading-relaxed text-[#57534E] max-w-xl">
-            A missed call becomes a call to the next company. A message that goes unanswered just goes cold. Alizane Labs puts AI answering, chat, and follow-up on the phone number and website you already have — so fewer of those moments slip by unanswered.
+            A missed call becomes a call to the next company. A message that goes unanswered just goes cold. Alizane Labs builds AI automation that catches what falls through — installed on the number and website you already have.
           </p>
 
           <div className="mt-10 flex flex-wrap items-center gap-4">
@@ -123,10 +123,10 @@ export function HeroSection() {
               <span className="transition-transform duration-200 group-hover:translate-x-0.5">→</span>
             </a>
             <a
-              href="#start"
+              href="#product"
               className="inline-flex items-center rounded-md border border-[#D6D3D1] bg-white px-5 py-3.5 text-sm font-medium text-[#111827] shadow-2xs transition-all duration-200 hover:border-[#111827] hover:bg-[#F9F9F7]"
             >
-              Ask about pricing
+              See Conversion Desk
             </a>
           </div>
 
