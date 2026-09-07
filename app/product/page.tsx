@@ -2,7 +2,6 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import React from "react";
 import { productPage } from "@/content/product-page";
-import { ContactSection } from "@/components/contact-section";
 
 export const metadata: Metadata = {
   title: productPage.metaTitle,
@@ -57,12 +56,12 @@ export default function ProductRoute() {
                 <span>{productPage.hero.ctaPrimary}</span>
                 <span className="transition-transform duration-200 group-hover:translate-x-0.5">→</span>
               </a>
-              <a
-                href="#pricing"
+              <Link
+                href="/pricing"
                 className="inline-flex items-center rounded-md border border-[#D6D3D1] bg-white px-5 py-3.5 text-sm font-medium text-[#111827] shadow-2xs transition-all duration-200 hover:border-[#111827] hover:bg-[#F9F9F7]"
               >
-                View pricing tiers
-              </a>
+                See pricing →
+              </Link>
             </div>
 
             <div className="mt-10 flex flex-wrap items-center gap-6 text-xs font-mono text-[#78716C]">
@@ -200,78 +199,7 @@ export default function ProductRoute() {
         </div>
       </section>
 
-      {/* 6. PRICING TABLE */}
-      <section id="pricing" className="border-t border-[#E7E5E4] py-24 sm:py-32 bg-[#F5F5F4]/70">
-        <div className="mx-auto max-w-5xl px-6">
-          <div className="mb-14 max-w-2xl">
-            <span className="font-mono text-xs uppercase tracking-widest text-[#065F46] font-semibold">
-              {productPage.pricing.eyebrow}
-            </span>
-            <h2 className="mt-4 font-serif text-3xl sm:text-4xl lg:text-5xl text-[#111827] leading-tight">
-              {productPage.pricing.title}
-            </h2>
-          </div>
-
-          <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 max-w-4xl">
-            {productPage.pricing.tiers.map((tier) => (
-              <div
-                key={tier.name}
-                className={`relative flex flex-col justify-between rounded-2xl border p-8 transition-all ${
-                  tier.popular
-                    ? "border-[#065F46] bg-white shadow-md ring-1 ring-[#065F46]"
-                    : "border-[#E7E5E4] bg-white shadow-xs hover:border-[#065F46]/40"
-                }`}
-              >
-                {tier.popular && (
-                  <span className="absolute -top-3 left-8 rounded-full bg-[#065F46] px-3 py-0.5 font-mono text-[10px] uppercase tracking-wider text-white font-semibold">
-                    Most Popular
-                  </span>
-                )}
-
-                <div>
-                  <h3 className="font-serif text-2xl text-[#111827]">{tier.name}</h3>
-                  <p className="mt-2 text-xs leading-relaxed text-[#57534E] min-h-[36px]">
-                    {tier.description}
-                  </p>
-
-                  <div className="mt-6 flex items-baseline gap-1 border-b border-[#E7E5E4] pb-6">
-                    <span className="font-serif text-4xl sm:text-5xl text-[#111827] font-normal">
-                      {tier.price}
-                    </span>
-                    <span className="font-mono text-xs text-[#78716C]">{tier.period}</span>
-                  </div>
-
-                  <div className="mt-6 space-y-3 font-mono text-xs">
-                    <div>
-                      <div className="text-[#78716C]">Included:</div>
-                      <div className="font-semibold text-[#111827] mt-0.5">{tier.included}</div>
-                    </div>
-                    <div>
-                      <div className="text-[#78716C]">Voice Overage:</div>
-                      <div className="font-semibold text-[#111827] mt-0.5">{tier.overage}</div>
-                    </div>
-                  </div>
-                </div>
-
-                <div className="mt-8 pt-6 border-t border-[#E7E5E4]">
-                  <a
-                    href="#start"
-                    className={`block w-full text-center rounded-md py-3 text-sm font-medium transition-all ${
-                      tier.popular
-                        ? "bg-[#065F46] text-white hover:bg-[#064E3B]"
-                        : "border border-[#D6D3D1] bg-white text-[#111827] hover:bg-[#F9F9F7] hover:border-[#111827]"
-                    }`}
-                  >
-                    Select {tier.name} →
-                  </a>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* 7. CALL TO ACTION (TRY DEMO) */}
+      {/* 6. CALL TO ACTION (TRY DEMO) */}
       <section className="border-t border-[#E7E5E4] py-20 sm:py-28 bg-[#F9F9F7]">
         <div className="mx-auto max-w-5xl px-6">
           <div className="rounded-2xl border border-[#065F46]/30 bg-[#ECFDF5]/60 p-8 sm:p-12 shadow-xs text-center max-w-3xl mx-auto">
@@ -290,19 +218,16 @@ export default function ProductRoute() {
               >
                 <span>{productPage.cta.button}</span>
               </a>
-              <a
-                href="#start"
+              <Link
+                href="/pricing"
                 className="inline-flex items-center rounded-md border border-[#D6D3D1] bg-white px-6 py-3.5 text-sm font-medium text-[#111827] shadow-2xs transition-all hover:border-[#111827] hover:bg-[#F9F9F7]"
               >
-                Get your setup plan
-              </a>
+                See pricing tiers →
+              </Link>
             </div>
           </div>
         </div>
       </section>
-
-      {/* 8. DIRECT REQUIREMENTS INTAKE FORM */}
-      <ContactSection />
     </div>
   );
 }

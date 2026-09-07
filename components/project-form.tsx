@@ -387,7 +387,7 @@ export function ProjectForm() {
             label="Tools you already use"
             htmlFor={`${formId}-tools`}
             optional
-            hint="CRM, calendar, email platform, or anything the system must connect to."
+            hint="Email platform, messaging, or anything the system should alert."
             error={errors.tools}
           >
             <input

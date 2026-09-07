@@ -62,7 +62,7 @@ export function PricingPlans() {
               <span className="text-[#065F46] font-bold">02</span>
               <div>
                 <div className="font-semibold text-[#111827]">Installed on Existing Systems</div>
-                <p className="mt-1 text-[#78716C] font-sans text-xs">Plugs into the phone number, website, and calendar you already run.</p>
+                <p className="mt-1 text-[#78716C] font-sans text-xs">Plugs into the phone number and website you already run.</p>
               </div>
             </div>
             <div className="flex items-start gap-3">

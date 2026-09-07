@@ -5,7 +5,7 @@ import { HeroSection } from "@/components/hero-section";
 import { TheGapSection } from "@/components/the-gap-section";
 import { ProductSection } from "@/components/product-section";
 import { FaqAccordion } from "@/components/faq-accordion";
-import { ContactSection } from "@/components/contact-section";
+import Link from "next/link";
 
 export default function HomePage() {
   const handleMouseMove = useCallback((e: React.MouseEvent<HTMLElement>) => {
@@ -68,7 +68,7 @@ export default function HomePage() {
                   Works with what you&apos;ve already got
                 </h3>
                 <p className="text-sm leading-relaxed text-[#57534E]">
-                  Your number, your site, your calendar, your CRM if you have one. Nothing to migrate, nothing to switch off first.
+                  Your number, your site, your existing setup. Nothing to migrate, nothing to switch off first.
                 </p>
               </div>
             </article>
@@ -94,7 +94,7 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* 4. THE PRODUCT (CONVERSION DESK) */}
+      {/* 4. THE PRODUCTS (CONVERSION CHAT & CONVERSION DESK) */}
       <ProductSection />
 
       {/* 5. PROCESS SECTION */}
@@ -184,8 +184,46 @@ export default function HomePage() {
       {/* 6. FAQ SECTION */}
       <FaqAccordion />
 
-      {/* 7. GET YOUR AUTOMATION PLAN (REQUIREMENTS FORM) */}
-      <ContactSection />
+      {/* 7. GET STARTED CTA */}
+      <section id="start" className="border-t border-[#E7E5E4] py-20 sm:py-28 bg-[#F9F9F7]">
+        <div className="mx-auto max-w-5xl px-6">
+          <div className="rounded-2xl border border-[#065F46]/30 bg-[#ECFDF5]/60 p-8 sm:p-14 shadow-xs text-center max-w-3xl mx-auto">
+            <span className="font-mono text-xs uppercase tracking-widest text-[#065F46] font-semibold">
+              Get Started
+            </span>
+            <h2 className="mt-3 font-serif text-3xl sm:text-4xl lg:text-5xl text-[#111827]">
+              Start catching the leads you already paid for.
+            </h2>
+            <p className="mt-4 text-base sm:text-lg text-[#57534E] max-w-xl mx-auto leading-relaxed">
+              Try Conversion Chat free for 14 days on the site you already have, or explore our transparent pricing plans.
+            </p>
+            <div className="mt-8 flex flex-wrap justify-center items-center gap-4">
+              <Link
+                href="/conversion-chat"
+                className="inline-flex items-center gap-2 rounded-md bg-[#065F46] px-6 py-3.5 text-sm font-medium text-white shadow-xs transition-all hover:bg-[#064E3B] active:scale-98"
+              >
+                <span>Try Conversion Chat free →</span>
+              </Link>
+              <Link
+                href="/pricing"
+                className="inline-flex items-center rounded-md border border-[#D6D3D1] bg-white px-6 py-3.5 text-sm font-medium text-[#111827] shadow-2xs transition-all hover:border-[#111827] hover:bg-[#F9F9F7]"
+              >
+                View pricing tiers →
+              </Link>
+            </div>
+            <div className="mt-8 flex flex-wrap justify-center items-center gap-6 text-xs font-mono text-[#78716C]">
+              <span className="flex items-center gap-1.5">
+                <span className="h-1.5 w-1.5 rounded-full bg-[#059669]" />
+                14-day free trial on chat
+              </span>
+              <span className="flex items-center gap-1.5">
+                <span className="h-1.5 w-1.5 rounded-full bg-[#059669]" />
+                Zero lock-in contracts
+              </span>
+            </div>
+          </div>
+        </div>
+      </section>
     </div>
   );
 }

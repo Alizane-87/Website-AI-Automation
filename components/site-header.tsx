@@ -45,7 +45,7 @@ export function SiteHeader() {
           </span>
         </Link>
 
-        <nav className="hidden items-center gap-7 sm:flex">
+        <nav className="hidden items-center gap-6 sm:flex">
           <Link
             href="/"
             className="text-sm font-normal text-[#57534E] transition-colors hover:text-[#111827]"
@@ -53,10 +53,22 @@ export function SiteHeader() {
             Home
           </Link>
           <Link
+            href="/conversion-chat"
+            className="text-sm font-normal text-[#57534E] transition-colors hover:text-[#111827]"
+          >
+            Conversion Chat
+          </Link>
+          <Link
             href="/product"
             className="text-sm font-normal text-[#57534E] transition-colors hover:text-[#111827]"
           >
             Conversion Desk
+          </Link>
+          <Link
+            href="/pricing"
+            className="text-sm font-normal text-[#57534E] transition-colors hover:text-[#111827]"
+          >
+            Pricing
           </Link>
           <Link
             href="/#start"

@@ -20,7 +20,17 @@ const REQUIREMENT_ITEMS = [
   },
 ];
 
-export function ContactSection() {
+export interface ContactSectionProps {
+  eyebrow?: string;
+  title?: string;
+  subtitle?: string;
+}
+
+export function ContactSection({
+  eyebrow = "See What It Sounds Like",
+  title = "Start your automation plan",
+  subtitle = "Tell us about your business and we'll show you what it would actually say on your first enquiry, plus a setup plan within 24 hours.",
+}: ContactSectionProps = {}) {
   const [currentStep, setCurrentStep] = useState<number>(1);
   
   // All 4 items default-checked per specification
@@ -101,14 +111,14 @@ export function ContactSection() {
           <div className="inline-flex items-center gap-2 rounded-full border border-[#A7F3D0] bg-[#ECFDF5] px-3.5 py-1 text-xs font-mono text-[#065F46] shadow-xs">
             <span className="h-1.5 w-1.5 rounded-full bg-[#059669] animate-pulse" />
             <span className="uppercase tracking-widest text-[11px] font-semibold">
-              See What It Sounds Like
+              {eyebrow}
             </span>
           </div>
           <h2 id="contact-heading" className="mt-4 font-serif text-3xl sm:text-4xl lg:text-5xl text-[#111827] leading-tight">
-            Get your Conversion Desk plan
+            {title}
           </h2>
           <p className="mt-4 text-base sm:text-lg text-[#57534E] leading-relaxed">
-            Tell us about your business and we&apos;ll show you what it would actually say on your first enquiry, plus a setup plan and pricing within 24 hours.
+            {subtitle}
           </p>
         </div>
 
@@ -197,7 +207,7 @@ export function ContactSection() {
               {currentStep === 1 && (
                 <div>
                   <h3 className="font-serif text-2xl text-[#111827]">
-                    What do you need Conversion Desk to cover?
+                    What do you need your automation to cover?
                   </h3>
                   <p className="mt-1 text-sm text-[#57534E]">
                     Select any capabilities you want included in your setup:

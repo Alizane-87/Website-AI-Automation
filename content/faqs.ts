@@ -22,7 +22,7 @@ export const homeFaqs: Faq[] = [
   {
     question: "How much does this cost?",
     answer:
-      "See current pricing on the Conversion Desk page, or ask the chat assistant here — it depends on what you need.",
+      "See all tiers on the Pricing page (/pricing), or ask the chat assistant here. Conversion Chat starts at $99/mo with a 14-day free trial; Conversion Desk tiers start at $199/mo.",
   },
   {
     question: "Will this work with my existing phone number?",

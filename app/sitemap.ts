@@ -4,9 +4,12 @@ import { siteUrl } from "@/lib/env";
 
 const routes = [
   { path: "/", priority: 1 },
-  { path: "/services/websites", priority: 0.9 },
-  { path: "/services/ai-automation", priority: 0.9 },
-  { path: "/work", priority: 0.8 },
+  { path: "/conversion-chat", priority: 0.95 },
+  { path: "/product", priority: 0.95 },
+  { path: "/pricing", priority: 0.9 },
+  { path: "/services/websites", priority: 0.8 },
+  { path: "/services/ai-automation", priority: 0.8 },
+  { path: "/work", priority: 0.7 },
   { path: "/process", priority: 0.7 },
   { path: "/about", priority: 0.6 },
   { path: "/contact", priority: 0.9 },

@@ -27,14 +27,6 @@ const WORKFLOW_STEPS = [
       "Gets you the details within seconds — not sitting in a form you have to remember to check.",
     meta: "Direct Dispatch Within Seconds",
   },
-  {
-    num: "04",
-    label: "Follow up",
-    tag: "Timed Sequences",
-    summary:
-      "If something goes quiet after first contact, it checks back on a schedule, instead of sitting in an inbox until someone remembers.",
-    meta: "Helpful, Non-Intrusive Spaced Sequences",
-  },
 ];
 
 export function TheGapSection() {
@@ -72,11 +64,11 @@ export function TheGapSection() {
               How it actually works
             </h3>
             <span className="font-mono text-xs text-[#78716C]">
-              4-Step Automated Execution Cycle
+              3-Step Automated Execution Cycle
             </span>
           </div>
 
-          <div className="grid grid-cols-1 gap-5 md:grid-cols-2 lg:grid-cols-4">
+          <div className="grid grid-cols-1 gap-5 md:grid-cols-3">
             {WORKFLOW_STEPS.map((step, idx) => (
               <div
                 key={step.num}

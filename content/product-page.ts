@@ -15,8 +15,8 @@ export const productPage = {
     body: "Conversion Desk is a single page, built for a phone, that you send paid ad traffic to instead of your homepage. There's a button to call, and a conversation already open — an AI system trained on your business answers instantly, right there. Whoever lands here gets an answer or picks up the phone, on the spot. Nobody gets sent looking for anything else.",
     ctaPrimary: "Try our Conversion Desk →",
     ctaPrimaryHref: "https://go.alizanelabs.site",
-    ctaSecondary: "Get your Conversion Desk plan",
-    ctaSecondaryHref: "/#start",
+    ctaSecondary: "See pricing tiers →",
+    ctaSecondaryHref: "/pricing",
   },
 
   costOfNotHavingIt: {
@@ -44,7 +44,7 @@ export const productPage = {
       "One page, built for a phone, nothing to install on the site you already have",
     ],
     closingCallout:
-      "Most chat widgets can tell you someone showed up. Very few can tell you which ad brought them, or that people asked about a service and left before giving their name — most systems never catch that at all. If more than one version of this page is running, we'll also tell you which one is converting better, so ad spend can follow what's actually working. All of this comes to you directly — there's no dashboard, no login, nothing to sign into. We tell you; you don't go looking.",
+      "Most tools can tell you someone showed up. Very few can tell you which ad brought them, or that people asked about a service and left before giving their name — most systems never catch that at all. All of this comes to you directly — there's no dashboard, no login, nothing to sign into. We tell you; you don't go looking.",
   },
 
   whoItsFor: {

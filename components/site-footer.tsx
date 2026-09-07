@@ -25,10 +25,22 @@ export function SiteFooter() {
         {/* Legal & Navigation Links */}
         <div className="flex flex-wrap items-center justify-center gap-6">
           <Link
+            href="/conversion-chat"
+            className="hover:text-[#111827] transition-colors underline underline-offset-4"
+          >
+            Conversion Chat
+          </Link>
+          <Link
             href="/product"
             className="hover:text-[#111827] transition-colors underline underline-offset-4"
           >
             Conversion Desk
+          </Link>
+          <Link
+            href="/pricing"
+            className="hover:text-[#111827] transition-colors underline underline-offset-4"
+          >
+            Pricing
           </Link>
           <Link
             href="/privacy"

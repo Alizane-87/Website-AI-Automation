@@ -68,11 +68,11 @@ export function HeroSection() {
           <text x="278" y="176" fontFamily="monospace" fontSize="10" fill="#111827" fontWeight="600" textAnchor="end">AI ANSWERS &amp; QUALIFIES</text>
           <text x="278" y="191" fontFamily="monospace" fontSize="9" fill="#065F46" textAnchor="end">Immediate 24/7 triage</text>
 
-          {/* Node 03: Booked or Handed to Team */}
+          {/* Node 03: Handed to Team via Instant Alert */}
           <rect x="30" y="308" width="52" height="44" rx="8" fill="#064E3B" stroke="#064E3B" strokeWidth="1" />
           <circle cx="56" cy="330" r="4" fill="#34D399" />
-          <text x="94" y="326" fontFamily="monospace" fontSize="10" fill="#065F46" fontWeight="600">03 · BOOKED / TEAM ALERT</text>
-          <text x="94" y="341" fontFamily="monospace" fontSize="9" fill="#78716C">Calendar sync or alert</text>
+          <text x="94" y="326" fontFamily="monospace" fontSize="10" fill="#065F46" fontWeight="600">03 · INSTANT TEAM ALERT</text>
+          <text x="94" y="341" fontFamily="monospace" fontSize="9" fill="#78716C">Lead sent directly to you</text>
 
           {/* Continuous Animated Data Particles */}
           <circle r="4.5" fill="#065F46">
@@ -123,10 +123,10 @@ export function HeroSection() {
               <span className="transition-transform duration-200 group-hover:translate-x-0.5">→</span>
             </a>
             <a
-              href="#product"
+              href="#products"
               className="inline-flex items-center rounded-md border border-[#D6D3D1] bg-white px-5 py-3.5 text-sm font-medium text-[#111827] shadow-2xs transition-all duration-200 hover:border-[#111827] hover:bg-[#F9F9F7]"
             >
-              See Conversion Desk
+              See our products
             </a>
           </div>
 

@@ -19,7 +19,6 @@ const securityHeaders = [
 const legacyRedirects = [
   { source: "/restoration-emergency-engine", destination: "/services/ai-automation" },
   { source: "/how-it-works", destination: "/process" },
-  { source: "/pricing", destination: "/contact" },
   { source: "/dispatch-audit", destination: "/contact" },
   { source: "/ai-call-disclosure", destination: "/ai-disclosure" },
 ];
