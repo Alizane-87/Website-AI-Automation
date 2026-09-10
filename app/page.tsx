@@ -199,10 +199,10 @@ export default function HomePage() {
             </p>
             <div className="mt-8 flex flex-wrap justify-center items-center gap-4">
               <Link
-                href="/conversion-chat"
+                href="/pricing?plan=chat#start"
                 className="inline-flex items-center gap-2 rounded-md bg-[#065F46] px-6 py-3.5 text-sm font-medium text-white shadow-xs transition-all hover:bg-[#064E3B] active:scale-98"
               >
-                <span>Try Conversion Chat free →</span>
+                <span>Start your plan →</span>
               </Link>
               <Link
                 href="/pricing"

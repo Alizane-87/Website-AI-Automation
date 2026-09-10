@@ -60,7 +60,7 @@ export default function ProductRoute() {
                 href="/pricing"
                 className="inline-flex items-center rounded-md border border-[#D6D3D1] bg-white px-5 py-3.5 text-sm font-medium text-[#111827] shadow-2xs transition-all duration-200 hover:border-[#111827] hover:bg-[#F9F9F7]"
               >
-                See pricing →
+                {productPage.hero.ctaSecondary}
               </Link>
             </div>
 
@@ -102,7 +102,7 @@ export default function ProductRoute() {
         </div>
       </section>
 
-      {/* 3. WHAT IT DOES (9 CAPABILITIES + CLOSING CALLOUT) */}
+      {/* 3. WHAT IT DOES (10 CAPABILITIES + CLOSING CALLOUT + PRO NOTE) */}
       <section id="capabilities" className="border-t border-[#E7E5E4] py-24 sm:py-32 bg-[#F9F9F7]">
         <div className="mx-auto max-w-5xl px-6">
           <div className="mb-14 max-w-2xl">
@@ -114,8 +114,8 @@ export default function ProductRoute() {
             </h2>
           </div>
 
-          {/* 9 Capabilities Grid */}
-          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+          {/* 10 Capabilities Grid */}
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
             {productPage.whatItDoes.items.map((item, idx) => (
               <div
                 key={idx}
@@ -123,7 +123,7 @@ export default function ProductRoute() {
               >
                 <div>
                   <span className="font-mono text-xs font-semibold text-[#065F46]">
-                    0{idx + 1}
+                    {idx < 9 ? `0${idx + 1}` : `${idx + 1}`}
                   </span>
                   <p className="mt-3 text-sm font-medium leading-relaxed text-[#111827]">
                     {item}
@@ -143,6 +143,24 @@ export default function ProductRoute() {
                 {productPage.whatItDoes.closingCallout}
               </p>
             </div>
+          </div>
+
+          {/* Conversion Desk Pro Callout Note */}
+          <div className="mt-4 rounded-xl border border-[#E7E5E4] bg-white p-6 sm:p-7 shadow-2xs flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+            <div className="flex items-start sm:items-center gap-3">
+              <span className="rounded-full bg-[#F5F5F4] border border-[#E7E5E4] px-2.5 py-0.5 font-mono text-[11px] font-semibold text-[#78716C] shrink-0">
+                Pro Option
+              </span>
+              <p className="text-sm leading-relaxed text-[#57534E]">
+                {productPage.whatItDoes.proNote}
+              </p>
+            </div>
+            <Link
+              href="/pricing"
+              className="text-xs font-mono font-semibold text-[#065F46] hover:underline shrink-0"
+            >
+              View Pro details →
+            </Link>
           </div>
         </div>
       </section>
@@ -222,7 +240,7 @@ export default function ProductRoute() {
                 href="/pricing"
                 className="inline-flex items-center rounded-md border border-[#D6D3D1] bg-white px-6 py-3.5 text-sm font-medium text-[#111827] shadow-2xs transition-all hover:border-[#111827] hover:bg-[#F9F9F7]"
               >
-                See pricing tiers →
+                See full pricing →
               </Link>
             </div>
           </div>

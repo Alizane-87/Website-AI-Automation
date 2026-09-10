@@ -14,7 +14,7 @@ export const conversionChatPage = {
     subhead: "AI chat for the website you already have.",
     body: "A chat bubble in the corner of your site — one script tag, nothing to rebuild, no plugin, no migration. It answers using your actual services and business information, captures a visitor's phone and email from the conversation — plus their name, when they give it alongside their contact details — and gets you the details within seconds. Once a month, it also sends you a report of everything that happened, by email. No dashboard, nothing to log into.",
     ctaPrimary: "Try Conversion Chat free for 14 days →",
-    ctaPrimaryHref: "#start",
+    ctaPrimaryHref: "/pricing?plan=chat#start",
     ctaSecondary: "See full pricing →",
     ctaSecondaryHref: "/pricing",
     badges: [
@@ -136,7 +136,7 @@ export const conversionChatPage = {
   cta: {
     line: "See it in action — there's one running in the corner of this page right now.",
     button: "Try Conversion Chat free for 14 days →",
-    buttonHref: "#start",
+    buttonHref: "/pricing?plan=chat#start",
     pricingLinkText: "See full pricing →",
     pricingHref: "/pricing",
   },

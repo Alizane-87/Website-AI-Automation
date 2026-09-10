@@ -56,12 +56,12 @@ export default function ConversionChatRoute() {
 
             {/* CTAs */}
             <div className="mt-10 flex flex-wrap items-center gap-4">
-              <a
+              <Link
                 href={hero.ctaPrimaryHref}
                 className="group relative inline-flex items-center gap-2 overflow-hidden rounded-md bg-[#065F46] px-6 py-3.5 text-sm font-medium text-white shadow-xs transition-all duration-200 hover:bg-[#064E3B] hover:shadow-md active:scale-98"
               >
                 <span>{hero.ctaPrimary}</span>
-              </a>
+              </Link>
               <Link
                 href={hero.ctaSecondaryHref}
                 className="inline-flex items-center rounded-md border border-[#D6D3D1] bg-white px-5 py-3.5 text-sm font-medium text-[#111827] shadow-2xs transition-all duration-200 hover:border-[#111827] hover:bg-[#F9F9F7]"
@@ -314,7 +314,7 @@ export default function ConversionChatRoute() {
                   {cta.pricingLinkText}
                 </Link>
                 <Link
-                  href="/pricing#start"
+                  href={cta.buttonHref}
                   className="inline-flex items-center justify-center rounded-md bg-[#065F46] px-5 py-3 text-sm font-medium text-white shadow-xs hover:bg-[#064E3B]"
                 >
                   {cta.button}

@@ -1,6 +1,7 @@
 "use client";
 
 import React from "react";
+import Link from "next/link";
 
 export function HeroSection() {
   const handleOpenChat = (e: React.MouseEvent) => {
@@ -115,13 +116,13 @@ export function HeroSection() {
           </p>
 
           <div className="mt-10 flex flex-wrap items-center gap-4">
-            <a
-              href="#start"
+            <Link
+              href="/pricing#start"
               className="group relative inline-flex items-center gap-2 overflow-hidden rounded-md bg-[#065F46] px-6 py-3.5 text-sm font-medium text-white shadow-xs transition-all duration-200 hover:bg-[#064E3B] hover:shadow-md active:scale-98"
             >
               <span>Start your automation plan</span>
               <span className="transition-transform duration-200 group-hover:translate-x-0.5">→</span>
-            </a>
+            </Link>
             <a
               href="#products"
               className="inline-flex items-center rounded-md border border-[#D6D3D1] bg-white px-5 py-3.5 text-sm font-medium text-[#111827] shadow-2xs transition-all duration-200 hover:border-[#111827] hover:bg-[#F9F9F7]"

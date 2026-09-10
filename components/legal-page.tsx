@@ -2,6 +2,32 @@ import React from "react";
 import Link from "next/link";
 import { legalIdentity, type LegalSection } from "@/content/legal";
 
+function renderFormattedText(text: string) {
+  if (!text) return text;
+  const parts = text.split(/(\*\*.*?\*\*|`.*?`)/g);
+  if (parts.length === 1) return text;
+  return parts.map((part, i) => {
+    if (part.startsWith("**") && part.endsWith("**")) {
+      return (
+        <strong key={i} className="font-semibold text-[#111827]">
+          {part.slice(2, -2)}
+        </strong>
+      );
+    }
+    if (part.startsWith("`") && part.endsWith("`")) {
+      return (
+        <code
+          key={i}
+          className="rounded bg-[#F5F5F4] px-1.5 py-0.5 font-mono text-xs text-[#065F46] border border-[#E7E5E4]"
+        >
+          {part.slice(1, -1)}
+        </code>
+      );
+    }
+    return part;
+  });
+}
+
 export function LegalPage({
   eyebrow,
   title,
@@ -40,7 +66,7 @@ export function LegalPage({
       {/* Main Body */}
       <main className="mx-auto max-w-4xl px-6 py-16 sm:py-20">
         <div className="flex flex-col gap-12">
-          {/* Optional Prominent Banner Notice (e.g. SMS Compliance Notice) */}
+          {/* Optional Prominent Banner Notice */}
           {bannerNotice ? (
             <div className="rounded-xl border border-[#A7F3D0] bg-[#ECFDF5] p-6 sm:p-8 shadow-xs">
               <h2 className="font-mono text-xs font-bold uppercase tracking-wider text-[#065F46]">
@@ -59,9 +85,43 @@ export function LegalPage({
               </h2>
               {section.paragraphs.map((paragraph, idx) => (
                 <p key={idx} className="text-base leading-relaxed text-[#57534E]">
-                  {paragraph}
+                  {renderFormattedText(paragraph)}
                 </p>
               ))}
+              {section.table ? (
+                <div className="mt-2 overflow-x-auto rounded-xl border border-[#E7E5E4] bg-white shadow-2xs">
+                  <table className="w-full text-left text-sm text-[#57534E]">
+                    <thead className="border-b border-[#E7E5E4] bg-[#F9F9F7] font-mono text-xs uppercase tracking-wider text-[#111827]">
+                      <tr>
+                        {section.table.headers.map((header, hIdx) => (
+                          <th key={hIdx} className="px-5 py-3.5 font-semibold">
+                            {header}
+                          </th>
+                        ))}
+                      </tr>
+                    </thead>
+                    <tbody className="divide-y divide-[#E7E5E4]">
+                      {section.table.rows.map((row, rIdx) => (
+                        <tr key={rIdx} className="transition-colors hover:bg-[#F9F9F7]/60">
+                          <td className="px-5 py-3.5 font-semibold text-[#111827] whitespace-nowrap align-top">
+                            {renderFormattedText(row[0])}
+                          </td>
+                          <td className="px-5 py-3.5 leading-relaxed align-top">
+                            {renderFormattedText(row[1])}
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              ) : null}
+              {section.afterTableParagraphs ? (
+                section.afterTableParagraphs.map((paragraph, idx) => (
+                  <p key={idx} className="text-base leading-relaxed text-[#57534E]">
+                    {renderFormattedText(paragraph)}
+                  </p>
+                ))
+              ) : null}
               {section.bullets ? (
                 <ul className="mt-2 flex flex-col gap-3">
                   {section.bullets.map((bullet, idx) => (
@@ -73,7 +133,7 @@ export function LegalPage({
                         aria-hidden="true"
                         className="mt-2.5 h-1.5 w-1.5 rounded-full bg-[#065F46]"
                       />
-                      <span>{bullet}</span>
+                      <span>{renderFormattedText(bullet)}</span>
                     </li>
                   ))}
                 </ul>

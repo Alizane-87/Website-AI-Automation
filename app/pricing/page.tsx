@@ -192,8 +192,8 @@ export default function PricingRoute() {
       <section className="border-t border-[#E7E5E4] py-16 sm:py-20 bg-[#F5F5F4]/70">
         <div className="mx-auto max-w-5xl px-6">
           <div className="rounded-xl border border-[#065F46]/30 bg-[#ECFDF5]/60 p-7 sm:p-9 shadow-xs">
-            <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6">
-              <div className="max-w-2xl">
+            <div className="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-6">
+              <div className="max-w-xl">
                 <span className="font-mono text-xs uppercase tracking-widest text-[#065F46] font-semibold">
                   Get Started
                 </span>
@@ -203,6 +203,20 @@ export default function PricingRoute() {
                 <p className="mt-2 text-sm text-[#57534E]">
                   Select your tier below to begin your 14-day free trial on Conversion Chat or join the pre-launch list for Conversion Desk.
                 </p>
+              </div>
+              <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 shrink-0">
+                <Link
+                  href={closingCta.deskHref}
+                  className="inline-flex items-center justify-center rounded-md border border-[#D6D3D1] bg-white px-5 py-3 text-sm font-medium text-[#111827] shadow-2xs hover:border-[#111827] hover:bg-[#F9F9F7] text-center"
+                >
+                  {closingCta.deskButton}
+                </Link>
+                <Link
+                  href={closingCta.chatHref}
+                  className="inline-flex items-center justify-center rounded-md bg-[#065F46] px-5 py-3 text-sm font-medium text-white shadow-xs hover:bg-[#064E3B] text-center"
+                >
+                  {closingCta.chatButton}
+                </Link>
               </div>
             </div>
           </div>

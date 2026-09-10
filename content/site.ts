@@ -22,13 +22,13 @@ export const nav = [
 ] as const;
 
 /** Primary conversion destination. Every CTA reads from here. */
-export const ctaHref = "/#start";
+export const ctaHref = "/pricing#start";
 
 export const cta = {
-  primary: { label: "Get your automation plan", href: "/#start" },
+  primary: { label: "Get your automation plan", href: "/pricing#start" },
   secondary: { label: "See Conversion Desk", href: "/product" },
   product: { label: "Conversion Desk", href: "/product" },
-  discuss: { label: "Get your automation plan", href: "/#start" },
+  discuss: { label: "Get your automation plan", href: "/pricing#start" },
 } as const;
 
 export const footerNav = [
@@ -45,7 +45,7 @@ export const footerNav = [
     heading: "Products",
     links: [
       { href: "/product", label: "Conversion Desk" },
-      { href: "/#start", label: "Get Your Plan" },
+      { href: "/pricing#start", label: "Get Your Plan" },
     ],
   },
   {

@@ -108,7 +108,7 @@ export function ProductSection() {
               </h3>
 
               <p className="mt-4 text-sm sm:text-base leading-relaxed text-[#57534E]">
-                A dedicated page your ads point to instead of your homepage — built for a phone, with every enquiry tracked back to the exact ad that produced it.
+                A dedicated page your ads point to instead of your homepage — built for a phone, with every click-to-call and chat enquiry tracked back to its ad.
               </p>
 
               {/* Specimen Badges */}

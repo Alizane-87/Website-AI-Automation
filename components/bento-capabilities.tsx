@@ -204,7 +204,7 @@ export function BentoCapabilities() {
               </p>
             </div>
             <a
-              href="#start"
+              href="/pricing#start"
               className="inline-flex shrink-0 items-center gap-2 rounded-md bg-[#065F46] px-5 py-3 text-sm font-medium text-white shadow-xs transition-all hover:bg-[#064E3B] active:scale-98"
             >
               <span>Get your automation plan</span>

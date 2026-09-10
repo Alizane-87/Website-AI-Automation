@@ -19,14 +19,25 @@ export const legalIdentity = {
 
 export const pendingValueLabel = "Available upon request";
 
-export type LegalSection = { heading: string; paragraphs: string[]; bullets?: string[] };
+export type LegalTable = { headers: string[]; rows: [string, string][] };
+
+export type LegalSection = {
+  heading: string;
+  paragraphs: string[];
+  table?: LegalTable;
+  afterTableParagraphs?: string[];
+  bullets?: string[];
+};
 
 export const privacyNotice = null;
 
 export const privacySections: LegalSection[] = [
   {
     heading: "1. Information We Collect",
-    paragraphs: ["We collect the following types of information when you interact with our website:"],
+    paragraphs: [
+      "Alizane Labs operates this website and can be reached directly at hello@alizanelabs.site for any privacy questions or data requests.",
+      "We collect the following types of information when you interact with our website:",
+    ],
     bullets: [
       "Personal Information: Name, business name, work email address, phone number, and website URL. We DO NOT collect or store credit card, debit card, or bank account information on this website.",
       "Non-Personal Information: IP address, browser type, device information, and anonymous website analytics to improve site performance.",
@@ -50,26 +61,46 @@ export const privacySections: LegalSection[] = [
     ],
   },
   {
-    heading: "4. Information Sharing & Third-Party Service Providers",
+    heading: "4. Service Providers",
     paragraphs: [
-      "We do not sell, rent, or trade your personal information. We only share information with trusted infrastructure and service providers necessary to operate our studio:",
+      "We use a small number of third-party services to run this site and the chat assistant. Each receives only what it needs to do its job:",
     ],
-    bullets: [
-      "Invoicing & Payments: Invoicing and payments are conducted via standard commercial banking. We do not collect, view, or store payment card numbers or banking credentials on our website.",
-      "Cloud Infrastructure: Secure edge hosting and database providers (Vercel) to maintain website availability and performance.",
-      "Legal Compliance: If required by law, legal process, or in response to valid court orders.",
+    table: {
+      headers: ["Provider", "What it handles"],
+      rows: [
+        ["Vercel", "Website hosting and privacy-friendly page analytics"],
+        ["Supabase", "Our database — where enquiries and chat transcripts are stored"],
+        ["OpenRouter", "Routes your chat messages to the language model that writes the reply"],
+        ["OpenAI", "The language model itself (`gpt-5.6-luna`), which generates the assistant's responses"],
+        ["n8n Cloud", "Moves a completed enquiry from the chat to our notification systems"],
+        ["Telegram", "Delivers enquiry alerts to us"],
+        ["Resend", "Sends email — enquiry alerts and monthly reports"],
+        ["Meta", "Receives conversion events for our own advertising, including your phone number and email address in hashed (irreversible) form"],
+      ],
+    },
+    afterTableParagraphs: [
+      "We do not sell your data, and we do not share it with anyone outside this list.",
     ],
   },
   {
-    heading: "5. Data Security",
+    heading: "5. How Long We Keep Things",
     paragraphs: [
-      "We take data protection seriously and apply industry-standard technical measures to safeguard your information:",
-      "All traffic and form submissions are encrypted in transit using HTTPS / TLS 1.3 encryption. Administrative access to project data is secured with strong authentication and least-privilege credentials. We do not maintain unencrypted local copies of sensitive prospect data.",
-      "While no Internet transmission or digital storage method is 100% immune from risk, we follow rigorous security best practices to protect your data from unauthorized access, alteration, or disclosure.",
+      "**Chat transcripts are deleted after 12 months.** This runs automatically every night, not on request.",
+      "**Enquiry details are kept.** If you gave us your name, phone number or email, we keep those as a record of the enquiry — a business needs to know who contacted it. The conversation that produced them is still deleted on the 12-month schedule.",
+      "**Anonymous records are deleted after 12 months.** Visit counts and the one-word topic label we attach to a conversation contain no names or contact details, and they expire on the same clock.",
+      "You can ask us to delete your data sooner. Contact details are in section 1.",
     ],
   },
   {
-    heading: "6. Cookies & Analytics",
+    heading: "6. Talking to an AI",
+    paragraphs: [
+      "**The chat on this site is answered by an AI assistant, not a person.** It says so when you open it. What you type is sent to the providers named in section 4 so a reply can be generated.",
+      "**Our phone line is answered by an AI voice agent, and calls are recorded.** You are told both at the start of every call, before anything is asked of you. If you would rather speak to a person, say so and the call will be passed to one.",
+      "**Nothing is decided about you automatically.** The assistant takes down what you need and passes it to a human. It does not price, approve or reject anything.",
+    ],
+  },
+  {
+    heading: "7. Cookies & Analytics",
     paragraphs: [
       "We use privacy-friendly, cookieless web analytics (Vercel Web Analytics) on our main website to understand aggregate site traffic and page performance without tracking individual personal identities.",
       "Conversion Desk, our dedicated landing page product, uses Google Analytics 4 and the Meta Pixel to measure which advertising campaigns produce enquiries, and sends hashed contact details (such as an email address) to Meta server-side to report ad conversions. This applies to Conversion Desk pages specifically — it does not apply to the rest of this website.",
@@ -77,7 +108,15 @@ export const privacySections: LegalSection[] = [
     ],
   },
   {
-    heading: "7. Your Rights & Choices",
+    heading: "8. Data Security",
+    paragraphs: [
+      "We take data protection seriously and apply industry-standard technical measures to safeguard your information:",
+      "All traffic and form submissions are encrypted in transit using HTTPS / TLS 1.3 encryption. Administrative access to project data is secured with strong authentication and least-privilege credentials. We do not maintain unencrypted local copies of sensitive prospect data.",
+      "While no Internet transmission or digital storage method is 100% immune from risk, we follow rigorous security best practices to protect your data from unauthorized access, alteration, or disclosure.",
+    ],
+  },
+  {
+    heading: "9. Your Rights & Choices",
     paragraphs: ["You have full control over your data:"],
     bullets: [
       "You may request access to, correction of, or complete deletion of your personal contact records at any time.",
@@ -85,19 +124,19 @@ export const privacySections: LegalSection[] = [
     ],
   },
   {
-    heading: "8. Third-Party Links",
+    heading: "10. Third-Party Links",
     paragraphs: [
       "Our website may contain links to external sites. We are not responsible for the privacy practices of external platforms and encourage you to review their respective policies.",
     ],
   },
   {
-    heading: "9. Changes to This Privacy Policy",
+    heading: "11. Changes to This Privacy Policy",
     paragraphs: [
       "We may update this policy periodically to reflect operational changes. The latest version will always be posted here with the effective date.",
     ],
   },
   {
-    heading: "10. Contact Us",
+    heading: "12. Contact Us",
     paragraphs: [
       "If you have questions about this Privacy Policy or how your data is handled, please contact:",
     ],

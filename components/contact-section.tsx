@@ -1,22 +1,22 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
 const REQUIREMENT_ITEMS = [
   {
-    id: "page_and_chat",
-    label: "The Page & Chat",
-    sub: "Your ad landing page, with a conversation already open",
+    id: "conversion_chat",
+    label: "Conversion Chat",
+    sub: "Chat on the site you already have — available now, 14 days free",
   },
   {
-    id: "phone_backstop",
-    label: "Phone Backstop",
-    sub: "Catches calls that would've gone to voicemail",
+    id: "conversion_desk",
+    label: "Conversion Desk",
+    sub: "A dedicated page for your ad traffic — launching soon, join the list",
   },
   {
-    id: "instant_alerts",
-    label: "Instant Alerts",
-    sub: "Notified the second a lead arrives",
+    id: "conversion_desk_pro",
+    label: "Conversion Desk Pro",
+    sub: "The page plus AI phone answering — launching soon, join the list",
   },
 ];
 
@@ -33,10 +33,60 @@ export function ContactSection({
 }: ContactSectionProps = {}) {
   const [currentStep, setCurrentStep] = useState<number>(1);
   
-  // All 4 items default-checked per specification
-  const allInitialLabels = REQUIREMENT_ITEMS.map((i) => i.label);
-  const [selectedFeatures, setSelectedFeatures] = useState<string[]>(allInitialLabels);
+  // Default to Conversion Chat (only live product available today)
+  const [selectedFeatures, setSelectedFeatures] = useState<string[]>(["Conversion Chat"]);
   const [customNotes, setCustomNotes] = useState<string>("");
+
+  // Sync selected plan from URL parameters (?plan=chat) or in-page CTA clicks
+  useEffect(() => {
+    const syncPlanFromUrl = () => {
+      if (typeof window === "undefined") return;
+      const params = new URLSearchParams(window.location.search);
+      const plan = params.get("plan") || params.get("tier") || params.get("product");
+
+      if (plan === "chat" || plan === "conversion_chat" || plan === "conversion-chat") {
+        setSelectedFeatures(["Conversion Chat"]);
+      } else if (plan === "desk" || plan === "conversion_desk" || plan === "conversion-desk") {
+        setSelectedFeatures(["Conversion Desk"]);
+      } else if (plan === "pro" || plan === "conversion_desk_pro" || plan === "conversion-desk-pro") {
+        setSelectedFeatures(["Conversion Desk Pro"]);
+      }
+    };
+
+    syncPlanFromUrl();
+    window.addEventListener("popstate", syncPlanFromUrl);
+
+    // Listen for in-page clicks on plan CTA links
+    const handleDocumentClick = (e: MouseEvent) => {
+      const target = (e.target as HTMLElement).closest("a, button");
+      if (!target) return;
+      const href = target.getAttribute("href") || "";
+
+      if (href.includes("plan=chat") || href.includes("plan=conversion_chat")) {
+        setSelectedFeatures(["Conversion Chat"]);
+        setCurrentStep(1);
+        const el = document.getElementById("start");
+        if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
+      } else if (href.includes("plan=desk") || href.includes("plan=conversion_desk")) {
+        setSelectedFeatures(["Conversion Desk"]);
+        setCurrentStep(1);
+        const el = document.getElementById("start");
+        if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
+      } else if (href.includes("plan=pro") || href.includes("plan=conversion_desk_pro")) {
+        setSelectedFeatures(["Conversion Desk Pro"]);
+        setCurrentStep(1);
+        const el = document.getElementById("start");
+        if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
+      }
+    };
+
+    document.addEventListener("click", handleDocumentClick);
+
+    return () => {
+      window.removeEventListener("popstate", syncPlanFromUrl);
+      document.removeEventListener("click", handleDocumentClick);
+    };
+  }, []);
 
   const [contactData, setContactData] = useState({
     name: "",
@@ -149,7 +199,7 @@ export function ContactSection({
               <div className="mt-8 rounded-xl border border-[#E7E5E4] bg-[#F9F9F7] p-6 text-left space-y-3 font-mono text-xs text-[#57534E]">
                 <div className="flex justify-between border-b border-[#E7E5E4] pb-2">
                   <span className="text-[#78716C]">Capabilities Selected:</span>
-                  <span className="font-semibold text-[#065F46]">{selectedFeatures.length} included</span>
+                  <span className="font-semibold text-[#065F46]">{selectedFeatures.length} selected</span>
                 </div>
                 <div className="flex justify-between border-b border-[#E7E5E4] pb-2">
                   <span className="text-[#78716C]">Destination:</span>
@@ -207,10 +257,10 @@ export function ContactSection({
               {currentStep === 1 && (
                 <div>
                   <h3 className="font-serif text-2xl text-[#111827]">
-                    What do you need your automation to cover?
+                    Which product are you interested in?
                   </h3>
                   <p className="mt-1 text-sm text-[#57534E]">
-                    Select any capabilities you want included in your setup:
+                    Pick one, or more than one if you want both:
                   </p>
 
                   <div className="mt-6 grid grid-cols-1 gap-3.5 md:grid-cols-3">

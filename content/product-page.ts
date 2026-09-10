@@ -12,10 +12,10 @@ export const productPage = {
     eyebrow: "The Product",
     title: "Conversion Desk",
     subhead: "The one page your ad traffic should land on — not your homepage.",
-    body: "Conversion Desk is a single page, built for a phone, that you send paid ad traffic to instead of your homepage. There's a button to call, and a conversation already open — an AI system trained on your business answers instantly, right there. Whoever lands here gets an answer or picks up the phone, on the spot. Nobody gets sent looking for anything else.",
+    body: "Conversion Desk is a single page, built for a phone, that you send paid ad traffic to instead of your homepage. There's a button to call, and a conversation already open — an AI system trained on your business answers instantly, right there. No navigation, no second page, nowhere to wander — whoever lands here gets an answer or picks up the phone, on the spot.",
     ctaPrimary: "Try our Conversion Desk →",
     ctaPrimaryHref: "https://go.alizanelabs.site",
-    ctaSecondary: "See pricing tiers →",
+    ctaSecondary: "See full pricing →",
     ctaSecondaryHref: "/pricing",
   },
 
@@ -33,18 +33,21 @@ export const productPage = {
     eyebrow: "Capabilities",
     title: "Built to capture, qualify, and attribute every inquiry.",
     items: [
+      "A dedicated landing page, built for a phone and written for your specific services and area — matched to what your ad promised, replacing your homepage as where that traffic lands, with nothing to install on the site you already have",
       "An AI system answers every enquiry instantly, any hour — nights, weekends, all of it",
       "Pulls the name, phone, and email straight out of the conversation automatically",
       "Alerts you within seconds of a lead arriving",
-      "Tracks every conversion the moment it happens, saved before any alert goes out — so nothing gets lost",
+      "The lead is saved before you're ever alerted, so nothing depends on the alert succeeding",
       "You'll know which ad, campaign, and platform brought each enquiry — not just that someone reached out",
       "You'll know about the ones who ask something and leave without giving their details, too — most systems never catch those at all",
+      "A monthly report by email, broken down by campaign — nothing to log into",
       "Answers using your actual services and your actual business, not a generic script",
       "Set up specifically for you — your wording, your questions, your branding",
-      "One page, built for a phone, nothing to install on the site you already have",
     ],
     closingCallout:
       "Most tools can tell you someone showed up. Very few can tell you which ad brought them, or that people asked about a service and left before giving their name — most systems never catch that at all. All of this comes to you directly — there's no dashboard, no login, nothing to sign into. We tell you; you don't go looking.",
+    proNote:
+      "Want the phone covered too? Conversion Desk Pro adds a call agent that answers the calls chat can't — launching soon.",
   },
 
   whoItsFor: {

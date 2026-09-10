@@ -61,7 +61,7 @@ export const pricingPage = {
         "Custom branded to your website colours",
       ],
       ctaText: "Get Conversion Chat free for 14 days →",
-      ctaHref: "#start",
+      ctaHref: "/pricing?plan=chat#start",
       productLinkText: "See Conversion Chat details →",
       productHref: "/conversion-chat",
       popular: true,
@@ -78,7 +78,7 @@ export const pricingPage = {
       badgeColor: "stone",
       headline: "Dedicated ad landing page with per-ad tracking",
       description:
-        "A dedicated phone-first page built specifically for your paid ad traffic. Every enquiry tagged with the exact ad and keyword that produced it.",
+        "A dedicated phone-first page built specifically for your paid ad traffic. Every click-to-call and chat enquiry tracked back to its ad.",
       features: [
         "Everything in Conversion Chat",
         "Dedicated mobile-first landing page for ads",
@@ -89,7 +89,7 @@ export const pricingPage = {
         "Zero site migration or downtime required",
       ],
       ctaText: "Join the trial list →",
-      ctaHref: "#start",
+      ctaHref: "/pricing?plan=desk#start",
       productLinkText: "See Conversion Desk details →",
       productHref: "/product",
       popular: false,
@@ -116,7 +116,7 @@ export const pricingPage = {
         "Continuous engineer tuning and custom script updates",
       ],
       ctaText: "Join the trial list →",
-      ctaHref: "#start",
+      ctaHref: "/pricing?plan=pro#start",
       productLinkText: "See Conversion Desk details →",
       productHref: "/product",
       popular: false,
@@ -153,8 +153,8 @@ export const pricingPage = {
   closingCta: {
     line: "Conversion Chat you can start today. Conversion Desk you can get in line for.",
     chatButton: "Get Conversion Chat free for 14 days →",
-    chatHref: "#start",
+    chatHref: "/pricing?plan=chat#start",
     deskButton: "Join the Conversion Desk trial list →",
-    deskHref: "#start",
+    deskHref: "/pricing?plan=desk#start",
   },
 } as const;

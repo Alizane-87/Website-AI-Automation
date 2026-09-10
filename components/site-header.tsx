@@ -71,7 +71,7 @@ export function SiteHeader() {
             Pricing
           </Link>
           <Link
-            href="/#start"
+            href="/pricing#start"
             className="relative overflow-hidden rounded-md bg-[#065F46] px-4 py-2 text-sm font-medium text-white shadow-xs transition-all duration-200 hover:bg-[#064E3B] hover:shadow-sm active:scale-98"
           >
             Get your plan
@@ -80,7 +80,7 @@ export function SiteHeader() {
 
         <div className="flex items-center gap-3 sm:hidden">
           <Link
-            href="/#start"
+            href="/pricing#start"
             className="rounded-md bg-[#065F46] px-3.5 py-1.5 text-xs font-medium text-white shadow-xs active:scale-95"
           >
             Get plan
