@@ -103,7 +103,7 @@ export const privacySections: LegalSection[] = [
     heading: "7. Cookies & Analytics",
     paragraphs: [
       "We use privacy-friendly, cookieless web analytics (Vercel Web Analytics) on our main website to understand aggregate site traffic and page performance without tracking individual personal identities.",
-      "Conversion Desk, our dedicated landing page product, uses Google Analytics 4 and the Meta Pixel to measure which advertising campaigns produce enquiries, and sends hashed contact details (such as an email address) to Meta server-side to report ad conversions. This applies to Conversion Desk pages specifically — it does not apply to the rest of this website.",
+      "Conversion Desk, our dedicated landing page product, uses Google Analytics 4 and the Meta Pixel to measure which advertising campaigns bring visitors to the page. Enquiry details are recorded by our own systems, not by these tags. Hashed contact details (such as an email address) are sent to Meta server-side to report ad conversions. This applies to Conversion Desk pages specifically — it does not apply to the rest of this website.",
       "You may manage your browser cookie settings at any time.",
     ],
   },
