@@ -108,7 +108,7 @@ export function ProductSection() {
               </h3>
 
               <p className="mt-4 text-sm sm:text-base leading-relaxed text-[#57534E]">
-                A dedicated page your ads point to instead of your homepage — built for a phone, with every click-to-call and chat enquiry tracked back to its ad.
+                A dedicated page your ads point to instead of your homepage — built for a phone, with every chat enquiry tracked back to the campaign that sent it.
               </p>
 
               {/* Desk Pro Add-on Note */}
@@ -126,9 +126,6 @@ export function ProductSection() {
                 </span>
                 <span className="rounded border border-[#E7E5E4] bg-[#F9F9F7] px-2.5 py-1">
                   Meta CAPI per-ad attribution
-                </span>
-                <span className="rounded border border-[#E7E5E4] bg-[#F9F9F7] px-2.5 py-1">
-                  Google Ads click-to-call conversion tracking
                 </span>
               </div>
             </div>
