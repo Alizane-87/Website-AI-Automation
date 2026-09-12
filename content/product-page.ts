@@ -12,7 +12,7 @@ export const productPage = {
     eyebrow: "The Product",
     title: "Conversion Desk",
     subhead: "The one page your ad traffic should land on — not your homepage.",
-    body: "Conversion Desk is a single page, built for a phone, that you send paid ad traffic to instead of your homepage. There's a button to call, and a conversation already open — an AI system trained on your business answers instantly, right there. No navigation, no second page, nowhere to wander — whoever lands here gets an answer or picks up the phone, on the spot.",
+    body: "Conversion Desk is a single page, built for a phone, that you send paid ad traffic to instead of your homepage. There's a conversation already open — an AI system trained on your business answers instantly, right there — and with Desk Pro, a button to call that's answered any hour. No navigation, no second page, nowhere to wander — whoever lands here gets an answer on the spot.",
     ctaPrimary: "Try our Conversion Desk →",
     ctaPrimaryHref: "https://go.alizanelabs.site",
     ctaSecondary: "See full pricing →",
@@ -47,7 +47,7 @@ export const productPage = {
     closingCallout:
       "Most tools can tell you someone showed up. Very few can tell you which ad brought them, or that people asked about a service and left before giving their name — most systems never catch that at all. All of this comes to you directly — there's no dashboard, no login, nothing to sign into. We tell you; you don't go looking.",
     proNote:
-      "Want the phone covered too? Conversion Desk Pro adds a call agent that answers the calls chat can't — launching soon.",
+      "Want the phone covered too? Conversion Desk Pro adds a call agent that answers the calls chat can't.",
   },
 
   whoItsFor: {
@@ -68,7 +68,7 @@ export const productPage = {
       {
         num: "02",
         title: "Instant conversation",
-        body: "They call, or tap a question and start a conversation — answered instantly, using your business's own information.",
+        body: "They tap a question and start a conversation — answered instantly, using your business's own information — or on Desk Pro, tap the call button for 24/7 live AI phone answering.",
       },
       {
         num: "03",
@@ -97,10 +97,10 @@ export const productPage = {
         popular: false,
       },
       {
-        name: "Desk + Answer",
+        name: "Conversion Desk Pro",
         price: "$399",
         period: "/mo",
-        description: "Everything in Desk plus missed-call phone backstop answering with lead details dispatch.",
+        description: "Everything in Desk plus 24/7 AI phone answering to catch calls that would go to voicemail.",
         included: "300 voice minutes",
         overage: "$0.55/min",
         popular: true,

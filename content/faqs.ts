@@ -12,7 +12,7 @@ export const homeFaqs: Faq[] = [
   {
     question: "How does Conversion Desk actually work?",
     answer:
-      "It's one page your ads send people to. A button to call, and a conversation already open that answers questions about your business and takes down their details. If a call comes in and nobody picks up, it catches that too instead of letting it go to voicemail.",
+      "It's a dedicated page your ads send people to, with a conversation already open that answers questions about your business and takes down visitor details on the spot. If you want the phone covered too, Conversion Desk Pro adds a call button and 24/7 AI phone answering on your existing number to catch calls that would otherwise go to voicemail.",
   },
   {
     question: "What if it gets something wrong, or a caller wants a person?",

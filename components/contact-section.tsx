@@ -11,12 +11,12 @@ const REQUIREMENT_ITEMS = [
   {
     id: "conversion_desk",
     label: "Conversion Desk",
-    sub: "A dedicated page for your ad traffic — launching soon, join the list",
+    sub: "A dedicated page for your ad traffic — available now",
   },
   {
     id: "conversion_desk_pro",
     label: "Conversion Desk Pro",
-    sub: "The page plus AI phone answering — launching soon, join the list",
+    sub: "The page plus 24/7 AI phone answering — available now",
   },
 ];
 
@@ -33,7 +33,7 @@ export function ContactSection({
 }: ContactSectionProps = {}) {
   const [currentStep, setCurrentStep] = useState<number>(1);
   
-  // Default to Conversion Chat (only live product available today)
+  // Default to Conversion Chat
   const [selectedFeatures, setSelectedFeatures] = useState<string[]>(["Conversion Chat"]);
   const [customNotes, setCustomNotes] = useState<string>("");
 

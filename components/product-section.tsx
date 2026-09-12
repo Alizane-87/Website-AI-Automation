@@ -27,10 +27,10 @@ export function ProductSection() {
             </span>
           </div>
           <h2 className="mt-4 font-serif text-3xl sm:text-4xl lg:text-5xl text-[#111827] leading-tight">
-            Two ways to add AI to how leads reach you.
+            Ways to add AI to how leads reach you.
           </h2>
           <p className="mt-4 text-base sm:text-lg text-[#57534E] leading-relaxed">
-            Start with chat on the site you have, or go further with a dedicated page built for your ad traffic.
+            Start with chat on the site you have, or deploy a dedicated page for your ad traffic — with 24/7 AI phone answering available on Desk Pro.
           </p>
         </div>
 
@@ -95,11 +95,11 @@ export function ProductSection() {
           >
             <div className="relative z-10">
               <div className="flex items-center justify-between gap-2">
-                <span className="rounded-full bg-[#F5F5F4] border border-[#E7E5E4] px-3 py-1 font-mono text-[11px] uppercase tracking-wider text-[#78716C] font-semibold">
+                <span className="rounded-full bg-[#ECFDF5] border border-[#A7F3D0] px-3 py-1 font-mono text-[11px] uppercase tracking-wider text-[#065F46] font-semibold">
                   02 · Ad Landing Page
                 </span>
-                <span className="rounded bg-[#F5F5F4] border border-[#E7E5E4] px-2.5 py-0.5 font-mono text-[11px] font-semibold text-[#78716C]">
-                  Launching soon
+                <span className="rounded bg-[#ECFDF5] border border-[#A7F3D0] px-2.5 py-0.5 font-mono text-[11px] font-semibold text-[#065F46]">
+                  Available now
                 </span>
               </div>
 
@@ -110,6 +110,14 @@ export function ProductSection() {
               <p className="mt-4 text-sm sm:text-base leading-relaxed text-[#57534E]">
                 A dedicated page your ads point to instead of your homepage — built for a phone, with every click-to-call and chat enquiry tracked back to its ad.
               </p>
+
+              {/* Desk Pro Add-on Note */}
+              <div className="mt-4 rounded-lg border border-[#E7E5E4] bg-[#F9F9F7] p-3.5 text-xs leading-relaxed text-[#57534E]">
+                <span className="font-mono font-semibold text-[#065F46] uppercase tracking-wider text-[11px] mr-1.5">
+                  Desk Pro Add-on:
+                </span>
+                Adds 24/7 AI phone answering on your existing number, so calls that would go to voicemail get answered, with call details sent straight after.
+              </div>
 
               {/* Specimen Badges */}
               <div className="mt-6 flex flex-wrap items-center gap-2 border-t border-[#E7E5E4] pt-5 text-xs font-mono text-[#78716C]">
@@ -130,7 +138,7 @@ export function ProductSection() {
                 href="/product"
                 className="group/btn inline-flex items-center gap-2 text-sm font-medium text-[#065F46] hover:text-[#064E3B] transition-colors"
               >
-                <span>See Conversion Desk</span>
+                <span>See Conversion Desk &amp; Pro</span>
                 <span className="transition-transform duration-200 group-hover/btn:translate-x-1">→</span>
               </Link>
             </div>
@@ -148,7 +156,7 @@ export function ProductSection() {
                 Compare features, trial terms, and setup options.
               </h3>
               <p className="mt-2 text-sm text-[#57534E] leading-relaxed">
-                Conversion Chat is live today with a 14-day free trial. Conversion Desk is open for early trial list reservations.
+                All three options are available now. Conversion Chat includes a 14-day free trial; Conversion Desk and Desk Pro are custom-built for your business.
               </p>
             </div>
             <Link

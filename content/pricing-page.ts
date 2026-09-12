@@ -26,7 +26,7 @@ export interface PricingTier {
 export const pricingPage = {
   metaTitle: "Pricing — Conversion Chat & Conversion Desk | Alizane Labs",
   metaDescription:
-    "Transparent pricing for Alizane Labs lead automation. Conversion Chat at $99/mo with 14 days free. Conversion Desk and Desk Pro launching soon.",
+    "Transparent pricing for Alizane Labs lead automation. All three products available now: Conversion Chat ($99/mo with 14 days free), Conversion Desk ($199/mo), and Conversion Desk Pro ($399/mo).",
 
   hero: {
     eyebrow: "Transparent Pricing",
@@ -34,7 +34,7 @@ export const pricingPage = {
     subhead:
       "Three ways to add AI to how leads reach you. Start with chat on the site you have, or go further with a dedicated page built for your ad traffic.",
     bannerNotice:
-      "Conversion Chat is live today with a 14-day free trial. Conversion Desk and Conversion Desk Pro are launching soon — join the early trial list to secure first access.",
+      "All three products are available now. Conversion Chat includes a 14-day free trial; Conversion Desk and Desk Pro are custom-built and deployed for your business.",
   },
 
   tiers: [
@@ -74,8 +74,8 @@ export const pricingPage = {
       period: "/mo",
       buildFee: "$997",
       trial: "—",
-      status: "Launching soon",
-      badgeColor: "stone",
+      status: "Available now",
+      badgeColor: "emerald",
       headline: "Dedicated ad landing page with per-ad tracking",
       description:
         "A dedicated phone-first page built specifically for your paid ad traffic. Every click-to-call and chat enquiry tracked back to its ad.",
@@ -88,7 +88,7 @@ export const pricingPage = {
         "Instant email and push alert notifications",
         "Zero site migration or downtime required",
       ],
-      ctaText: "Join the trial list →",
+      ctaText: "Get Conversion Desk →",
       ctaHref: "/pricing?plan=desk#start",
       productLinkText: "See Conversion Desk details →",
       productHref: "/product",
@@ -102,8 +102,8 @@ export const pricingPage = {
       period: "/mo",
       buildFee: "$1,497",
       trial: "—",
-      status: "Launching soon",
-      badgeColor: "stone",
+      status: "Available now",
+      badgeColor: "emerald",
       headline: "Everything in Desk plus 24/7 AI phone answering",
       description:
         "The complete conversion backstop: ad landing page triage plus an AI receptionist answering missed calls 24/7 so no caller hits voicemail.",
@@ -115,7 +115,7 @@ export const pricingPage = {
         "Direct lead details dispatch immediately after call",
         "Continuous engineer tuning and custom script updates",
       ],
-      ctaText: "Join the trial list →",
+      ctaText: "Get Conversion Desk Pro →",
       ctaHref: "/pricing?plan=pro#start",
       productLinkText: "See Conversion Desk details →",
       productHref: "/product",
@@ -128,14 +128,9 @@ export const pricingPage = {
     title: "A few pricing questions, answered plainly",
     questions: [
       {
-        question: "Do the pre-launch tiers have a set launch date?",
+        question: "What happens after I sign up for Desk or Desk Pro?",
         answer:
-          "We don't have a rigid public calendar date. We are rolling out Conversion Desk to contractors from our early trial list in batches to ensure attribution, tracking, and telephony run with zero issues. Joining the trial list gives you first access when onboarding opens.",
-      },
-      {
-        question: "What happens when I join the trial list?",
-        answer:
-          "We take down your business details and what ads you currently run. When your onboarding spot is ready, we reach out directly with your preview build before public signup opens.",
+          "We set up your dedicated page (and phone answering on Pro) for your business and show it to you before it goes live. The setup fee is invoiced at the start, and your monthly retainer begins once your build is approved and live.",
       },
       {
         question: "Can I start with Conversion Chat and move to Conversion Desk later?",
@@ -151,10 +146,10 @@ export const pricingPage = {
   },
 
   closingCta: {
-    line: "Conversion Chat you can start today. Conversion Desk you can get in line for.",
+    line: "All three options are ready to deploy today.",
     chatButton: "Get Conversion Chat free for 14 days →",
     chatHref: "/pricing?plan=chat#start",
-    deskButton: "Join the Conversion Desk trial list →",
+    deskButton: "Get Conversion Desk or Pro →",
     deskHref: "/pricing?plan=desk#start",
   },
 } as const;

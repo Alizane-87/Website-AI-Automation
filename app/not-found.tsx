@@ -15,8 +15,8 @@ export default function NotFound() {
           <ButtonLink href="/" size="lg">
             Back to the homepage
           </ButtonLink>
-          <ButtonLink href="/contact" variant="secondary" size="lg">
-            Start a project
+          <ButtonLink href="/pricing#start" variant="secondary" size="lg">
+            Start your plan
           </ButtonLink>
         </div>
       </div>

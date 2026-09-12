@@ -201,7 +201,7 @@ export default function PricingRoute() {
                   {closingCta.line}
                 </h3>
                 <p className="mt-2 text-sm text-[#57534E]">
-                  Select your tier below to begin your 14-day free trial on Conversion Chat or join the pre-launch list for Conversion Desk.
+                  Select your tier below to begin your 14-day free trial on Conversion Chat, or get started with Conversion Desk or Desk Pro.
                 </p>
               </div>
               <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 shrink-0">
@@ -226,8 +226,8 @@ export default function PricingRoute() {
       {/* 5. INTAKE FORM */}
       <ContactSection
         eyebrow="Get Started"
-        title="Start your plan or join the trial list"
-        subtitle="Tell us about your business and select which tier you need — 14-day free trial on Conversion Chat or early access for Conversion Desk."
+        title="Start your automation plan"
+        subtitle="Tell us about your business and select which tier you need — 14-day free trial on Conversion Chat, or get started with Conversion Desk or Desk Pro."
       />
     </div>
   );
