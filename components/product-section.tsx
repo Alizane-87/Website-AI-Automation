@@ -117,10 +117,10 @@ export function ProductSection() {
                   Mobile-first standalone page
                 </span>
                 <span className="rounded border border-[#E7E5E4] bg-[#F9F9F7] px-2.5 py-1">
-                  Google Ads &amp; Meta CAPI
+                  Meta CAPI per-ad attribution
                 </span>
                 <span className="rounded border border-[#E7E5E4] bg-[#F9F9F7] px-2.5 py-1">
-                  Per-ad lead attribution
+                  Google Ads click-to-call conversion tracking
                 </span>
               </div>
             </div>
