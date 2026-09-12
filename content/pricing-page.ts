@@ -82,7 +82,7 @@ export const pricingPage = {
       features: [
         "Everything in Conversion Chat",
         "Dedicated mobile-first landing page for ads",
-        "Google Ads & Meta CAPI per-ad attribution",
+        "Meta CAPI per-ad attribution · Google Ads click-to-call conversion tracking",
         "GCLID and UTM keyword capture",
         "Unsubmitted inquiry triage and logging",
         "Instant email and push alert notifications",
