@@ -4,6 +4,7 @@ import { usePathname } from "next/navigation";
 import Script from "next/script";
 import { SiteHeader } from "@/components/site-header";
 import { SiteFooter } from "@/components/site-footer";
+import { CookieConsent } from "@/components/cookie-consent";
 import { ReactNode } from "react";
 
 export function GlobalAgencyLayout({ children }: { children: ReactNode }) {
@@ -23,6 +24,7 @@ export function GlobalAgencyLayout({ children }: { children: ReactNode }) {
         {children}
       </main>
       <SiteFooter />
+      <CookieConsent />
       {/*
         The chat widget is the Alizane chatbot service, embedded exactly the way
         a client embeds it — one script tag, tenant resolved from data-client-id.

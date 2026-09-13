@@ -1,8 +1,16 @@
+"use client";
+
 import React from "react";
 import Image from "next/image";
 import Link from "next/link";
 
 export function SiteFooter() {
+  const handleOpenCookieSettings = () => {
+    if (typeof window !== "undefined") {
+      window.dispatchEvent(new CustomEvent("alizane:open-cookie-settings"));
+    }
+  };
+
   return (
     <footer className="border-t border-[#E7E5E4] bg-[#F9F9F7] py-12">
       <div className="mx-auto flex max-w-5xl flex-col items-center justify-between gap-6 px-6 sm:flex-row text-xs text-[#78716C]">
@@ -60,6 +68,13 @@ export function SiteFooter() {
           >
             AI Disclosure
           </Link>
+          <button
+            type="button"
+            onClick={handleOpenCookieSettings}
+            className="hover:text-[#111827] transition-colors underline underline-offset-4 cursor-pointer"
+          >
+            Cookie Preferences
+          </button>
           <a
             href="mailto:hello@alizanelabs.site"
             className="hover:text-[#065F46] transition-colors font-medium"
