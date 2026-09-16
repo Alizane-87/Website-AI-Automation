@@ -78,10 +78,12 @@ export const pricingPage = {
       badgeColor: "emerald",
       headline: "Dedicated ad landing page with per-ad tracking",
       description:
-        "A dedicated phone-first page built specifically for your paid ad traffic. Every chat enquiry tracked back to the campaign that sent it.",
+        "A dedicated phone-first page built specifically for your paid ad traffic. Every enquiry tracked back to the campaign that sent it, whether they type or tap to call.",
       features: [
         "Everything in Conversion Chat",
         "Dedicated mobile-first landing page for ads",
+        "Call button that dials your own business number",
+        "Google Ads click-to-call conversion tracking",
         "Meta CAPI per-ad attribution",
         "GCLID and UTM keyword capture",
         "Unsubmitted inquiry triage and logging",
@@ -109,7 +111,7 @@ export const pricingPage = {
         "The complete conversion backstop: ad landing page triage plus an AI receptionist answering missed calls 24/7 so no caller hits voicemail.",
       features: [
         "Everything in Conversion Desk",
-        "Google Ads click-to-call conversion tracking",
+        "Page call button answered 24/7 by AI rather than ringing your line",
         "24/7 AI phone answering on your existing number",
         "300 voice minutes included ($0.55/min overage)",
         "Instant emergency scope and caller qualification",

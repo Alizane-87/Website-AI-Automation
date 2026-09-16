@@ -108,7 +108,7 @@ export function ProductSection() {
               </h3>
 
               <p className="mt-4 text-sm sm:text-base leading-relaxed text-[#57534E]">
-                A dedicated page your ads point to instead of your homepage — built for a phone, with every chat enquiry tracked back to the campaign that sent it.
+                A dedicated page your ads point to instead of your homepage — built for a phone, with every enquiry tracked back to the campaign that sent it.
               </p>
 
               {/* Desk Pro Add-on Note */}
@@ -123,6 +123,9 @@ export function ProductSection() {
               <div className="mt-6 flex flex-wrap items-center gap-2 border-t border-[#E7E5E4] pt-5 text-xs font-mono text-[#78716C]">
                 <span className="rounded border border-[#E7E5E4] bg-[#F9F9F7] px-2.5 py-1">
                   Mobile-first standalone page
+                </span>
+                <span className="rounded border border-[#E7E5E4] bg-[#F9F9F7] px-2.5 py-1">
+                  Call button with click-to-call tracking
                 </span>
                 <span className="rounded border border-[#E7E5E4] bg-[#F9F9F7] px-2.5 py-1">
                   Meta CAPI per-ad attribution

@@ -6,13 +6,13 @@
 export const productPage = {
   metaTitle: "Conversion Desk — Turn Ad Clicks Into Answered Leads | Alizane Labs",
   metaDescription:
-    "Conversion Desk is an AI chatbot landing page for your paid ads — tracking every conversion and answering every enquiry instantly, so nothing you paid for goes unnoticed.",
+    "Conversion Desk is a dedicated ad landing page with instant AI chat, a direct call button, and per-ad conversion tracking — so nothing you paid for goes unnoticed.",
 
   hero: {
     eyebrow: "The Product",
     title: "Conversion Desk",
     subhead: "The one page your ad traffic should land on — not your homepage.",
-    body: "Conversion Desk is a single page, built for a phone, that you send paid ad traffic to instead of your homepage. There's a conversation already open — an AI system trained on your business answers instantly, right there — and with Desk Pro, a button to call that's answered any hour. No navigation, no second page, nowhere to wander — whoever lands here gets an answer on the spot.",
+    body: "Conversion Desk is a single page, built for a phone, that you send paid ad traffic to instead of your homepage. There's a conversation already open — an AI system trained on your business answers instantly, right there — and a button to call that dials your business, with Desk Pro answering that call any hour instead of ringing your phone. No navigation, no second page, nowhere to wander — whoever lands here gets an answer on the spot.",
     ctaPrimary: "Try our Conversion Desk →",
     ctaPrimaryHref: "https://go.alizanelabs.site",
     ctaSecondary: "See full pricing →",
@@ -35,6 +35,7 @@ export const productPage = {
     items: [
       "A dedicated landing page, built for a phone and written for your specific services and area — matched to what your ad promised, replacing your homepage as where that traffic lands, with nothing to install on the site you already have",
       "An AI system answers every enquiry instantly, any hour — nights, weekends, all of it",
+      "A visitor who would rather talk than type calls the business in one tap, and the tap is tracked as a conversion in Google Ads and Meta",
       "Pulls the name, phone, and email straight out of the conversation automatically",
       "Alerts you within seconds of a lead arriving",
       "The lead is saved before you're ever alerted, so nothing depends on the alert succeeding",
@@ -47,7 +48,7 @@ export const productPage = {
     closingCallout:
       "Most tools can tell you someone showed up. Very few can tell you which ad brought them, or that people asked about a service and left before giving their name — most systems never catch that at all. All of this comes to you directly — there's no dashboard, no login, nothing to sign into. We tell you; you don't go looking.",
     proNote:
-      "Want the phone covered too? Conversion Desk Pro adds a call agent that answers the calls chat can't.",
+      "The page already includes a call button — Conversion Desk Pro puts an AI assistant behind it that answers at any hour, including the calls that would otherwise hit voicemail on your own line.",
   },
 
   whoItsFor: {
@@ -68,7 +69,7 @@ export const productPage = {
       {
         num: "02",
         title: "Instant conversation",
-        body: "They tap a question and start a conversation — answered instantly, using your business's own information — or on Desk Pro, tap the call button for 24/7 live AI phone answering.",
+        body: "They tap a question and start a conversation, or tap the call button and ring the business — and on Desk Pro that call is answered 24/7 by the AI rather than ringing out.",
       },
       {
         num: "03",
@@ -92,7 +93,7 @@ export const productPage = {
         price: "$199",
         period: "/mo",
         description: "Ad landing page with conversational chat triage, conversion tracking, and instant alerts.",
-        included: "Page + chat only, no phone",
+        included: "Page + chat + direct call button",
         overage: "—",
         popular: false,
       },
